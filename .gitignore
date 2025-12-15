@@ -10,11 +10,13 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+.venv/
+
 # secrets
 .env
 *.key
-set_api_key.sh
 secrets.json
+.envrc
 
 # outputs
 results/
