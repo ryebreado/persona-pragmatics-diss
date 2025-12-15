@@ -1,0 +1,266 @@
+[
+  {
+    "scenario": "The monkey loves eating yummy stuff.",
+    "items": "There's a banana, a cake, an orange and a biscuit.",
+    "outcome": "The monkey ate the orange and the biscuit.",
+    "question": "So, what did the monkey eat?",
+    "statement": "The monkey ate the biscuit",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 1,
+    "notes": "Semantically true but pragmatically false - incomplete answer"
+  },
+  {
+    "scenario": "The dancer likes packing beautiful clothes in her suitcase.",
+    "items": "There's a skirt, a shirt, a pair of shoes and a dress.",
+    "outcome": "The dancer packed the shirt and the skirt.",
+    "question": "So, what did the dancer pack?",
+    "statement": "The dancer packed the skirt",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 2
+  },
+  {
+    "scenario": "The spaceman wants to buy stuff for his new spaceship.",
+    "items": "There's a computer, a desk, a TV and a radio.",
+    "outcome": "The spaceman bought the computer and the desk.",
+    "question": "So, what did the spaceman buy?",
+    "statement": "The spaceman bought the desk",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 3
+  },
+  {
+    "scenario": "The dog is an artist. He likes painting things.",
+    "items": "There's a square, a star, a triangle and a heart.",
+    "outcome": "The dog painted the heart and the triangle.",
+    "question": "So, what did the dog paint?",
+    "statement": "The dog painted the triangle",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 4
+  },
+  {
+    "scenario": "The flamingo likes giving presents to his friend, the owl.",
+    "items": "There's a pen, a ball, a car, and an umbrella.",
+    "outcome": "The flamingo gave the owl the ball and the pen.",
+    "question": "So, what did the flamingo give to the owl?",
+    "statement": "The flamingo gave the owl the pen",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 5
+  },
+  {
+    "scenario": "The boy likes watering the plants in the garden.",
+    "items": "There's a tree, a flower, some grass, and a cactus.",
+    "outcome": "The boy watered the flower and the tree.",
+    "question": "So, what did the boy water?",
+    "statement": "The boy watered the tree",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 6
+  },
+  {
+    "scenario": "The squirrel is hungry and wants to eat something tasty.",
+    "items": "There's a pizza, a hamburger, a lollipop and an ice-cream.",
+    "outcome": "The squirrel ate the pizza.",
+    "question": "So, what did the squirrel eat?",
+    "statement": "The squirrel ate the pizza",
+    "expected": "yes",
+    "category": "true",
+    "test_id": 7
+  },
+  {
+    "scenario": "The doctor likes washing his toys.",
+    "items": "Here's a bicycle, a set of drums, a car and a telephone.",
+    "outcome": "The doctor washed the car.",
+    "question": "So, what did the doctor wash?",
+    "statement": "The doctor washed the bicycle",
+    "expected": "no",
+    "category": "false",
+    "test_id": 8
+  },
+  {
+    "scenario": "Mr. Tough likes pushing things.",
+    "items": "There's a box, a car, a desk and a TV.",
+    "outcome": "Mr. Tough pushed the TV.",
+    "question": "So, what did Mr. Tough push?",
+    "statement": "Mr. Tough pushed the box",
+    "expected": "no",
+    "category": "false",
+    "test_id": 9
+  },
+  {
+    "scenario": "The builder likes carrying things around.",
+    "items": "There's a piano, a parcel, a bucket and a ladder.",
+    "outcome": "The builder carried the bucket and the ladder.",
+    "question": "So, what did the builder carry?",
+    "statement": "The builder carried the bucket and the ladder",
+    "expected": "yes",
+    "category": "true",
+    "test_id": 10
+  },
+  {
+    "scenario": "The spaceman wants to play with his toys.",
+    "items": "There is a puppet, a ball, a truck and a set of pencils.",
+    "outcome": "The spaceman played with the truck and the ball.",
+    "question": "So, what did the spaceman play with?",
+    "statement": "The spaceman played with the truck and the ball",
+    "expected": "yes",
+    "category": "true",
+    "test_id": 11
+  },
+  {
+    "scenario": "The dog wants to eat some fruit.",
+    "items": "There's an apple, a pear, an orange and a banana.",
+    "outcome": "The dog ate the banana and the apple.",
+    "question": "So, what did the dog eat?",
+    "statement": "The dog ate the banana and the orange",
+    "expected": "no",
+    "category": "false",
+    "test_id": 12
+  },
+  {
+    "scenario": "The elephant likes pushing things.",
+    "items": "There are buses and trucks.",
+    "outcome": "The elephant pushed all the trucks.",
+    "question": "So, what did the elephant push?",
+    "statement": "The elephant pushed some of the trucks",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 13
+  },
+  {
+    "scenario": "The giraffe is hungry for fruit.",
+    "items": "There are apples and pears on the trees.",
+    "outcome": "The giraffe ate all the pears.",
+    "question": "So, what did the giraffe eat?",
+    "statement": "The giraffe ate some of the pears",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 14
+  },
+  {
+    "scenario": "Mr. Tough likes lifting stuff up.",
+    "items": "There are boxes and stones.",
+    "outcome": "Mr. Tough lifted all the boxes.",
+    "question": "So, what did Mr. Tough lift?",
+    "statement": "Mr. Tough lifted some of the boxes",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 15
+  },
+  {
+    "scenario": "The crocodile wants to play with toys.",
+    "items": "There are cars and dolls.",
+    "outcome": "The crocodile played with all the cars.",
+    "question": "So, what did the crocodile play with?",
+    "statement": "The crocodile played with some of the cars",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 16
+  },
+  {
+    "scenario": "The lady likes shooting arrows at things.",
+    "items": "There are doors and windows.",
+    "outcome": "The lady hit all the doors.",
+    "question": "So, what did the lady hit?",
+    "statement": "The lady hit some of the doors",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 17
+  },
+  {
+    "scenario": "The mouse wants to pick up vegetables.",
+    "items": "There are pumpkins and carrots.",
+    "outcome": "The mouse picked up all the carrots.",
+    "question": "So, what did the mouse pick up?",
+    "statement": "The mouse picked up some of the carrots",
+    "expected": "no",
+    "category": "underinformative",
+    "test_id": 18
+  },
+  {
+    "scenario": "The goat likes jumping over things.",
+    "items": "There are fences and bushes.",
+    "outcome": "The goat jumped over three out of five fences.",
+    "question": "So, what did the goat jump over?",
+    "statement": "The goat jumped over some of the fences",
+    "expected": "yes",
+    "category": "true",
+    "test_id": 19
+  },
+  {
+    "scenario": "The dancer likes picking flowers.",
+    "items": "There are red flowers and yellow flowers.",
+    "outcome": "The dancer picked up three out of five red flowers.",
+    "question": "So, what did the dancer pick up?",
+    "statement": "The dancer picked up some of the yellow flowers",
+    "expected": "no",
+    "category": "false",
+    "test_id": 20
+  },
+  {
+    "scenario": "The turtle likes playing with his toys.",
+    "items": "There are balls and trucks.",
+    "outcome": "The turtle played with three out of five balls.",
+    "question": "So, what did the turtles play with?",
+    "statement": "The turtle played with some of the trucks",
+    "expected": "no",
+    "category": "false",
+    "test_id": 21
+  },
+  {
+    "scenario": "The boy likes lifting things up.",
+    "items": "There are books and shoes.",
+    "outcome": "The boy lifted five out of five books.",
+    "question": "So, what did the boy lift?",
+    "statement": "The boy lifted all the books",
+    "expected": "yes",
+    "category": "true",
+    "test_id": 22
+  },
+  {
+    "scenario": "The flamingo likes painting things.",
+    "items": "There are circles and squares.",
+    "outcome": "The flamingo painted five out of five circles.",
+    "question": "So, what did the flamingo paint?",
+    "statement": "The flamingo painted all the circles",
+    "expected": "yes",
+    "category": "true",
+    "test_id": 23
+  },
+  {
+    "scenario": "The postman likes giving yummy stuff to his friend the elephant.",
+    "items": "There are bananas and biscuits.",
+    "outcome": "The postman gave the elephant five out of five bananas.",
+    "question": "So, what did the postman give the elephant?",
+    "statement": "The postman gave the elephant all the biscuits",
+    "expected": "no",
+    "category": "false",
+    "test_id": 24
+  },
+  
+  {
+  "scenario": "Sarah loves collecting colorful things.",
+  "items": "There are red marbles, blue marbles, green marbles, and yellow marbles in the box.",
+  "outcome": "Sarah picked up the red marbles and the blue marbles.",
+  "question": "What marbles did Sarah pick up?",
+  "statement": "Sarah picked up the red marbles",
+  "expected": "no", 
+  "category": "underinformative",
+  "test_id": 25,
+  "notes": "Incomplete - she also picked up blue marbles"
+},
+{
+  "scenario": "The cat is very hungry.",
+  "items": "There's fish, chicken, and tuna in the kitchen.",
+  "outcome": "The cat ate all the fish and chicken.",
+  "question": "What did the cat eat?",
+  "statement": "The cat ate some food",
+  "expected": "no",
+  "category": "underinformative",
+  "test_id": 26,
+  "notes": "Too vague - doesn't specify what food"
+}
+]

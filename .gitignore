@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.ipynb_checkpoints/
+*.egg-info/
+
+.DS_Store
+Thumbs.db
+
+# secrets
+.env
+*.key
+set_api_key.sh
+secrets.json
+
+# outputs
+results/
+outputs/
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
