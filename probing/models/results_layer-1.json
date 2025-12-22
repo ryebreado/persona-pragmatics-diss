@@ -1,0 +1,25 @@
+{
+  "layer": -1,
+  "position": "last",
+  "model": "gpt2-small",
+  "tasks": {
+    "underinformative_vs_true": {
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.5,
+      "train_size": 14,
+      "test_size": 6
+    },
+    "underinformative_vs_false": {
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.5,
+      "train_size": 14,
+      "test_size": 6
+    },
+    "true_vs_false": {
+      "train_accuracy": 1.0,
+      "test_accuracy": 0.5,
+      "train_size": 8,
+      "test_size": 4
+    }
+  }
+}
