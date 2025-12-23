@@ -21,17 +21,19 @@ def create_prompt_with_persona(scenario, items, outcome, question, statement, pe
     Returns:
         str: Complete prompt for the LLM
     """
-    base_prompt = f"""Read this scenario carefully:
-
-{scenario}
+    base_prompt = f"""{scenario}
 {items}
 {outcome}
 
 {question}
-Answer: "{statement}"
+Someone answered: "{statement}"
 
-Is this answer correct? Respond with only "yes" or "no"."""
-    
+Is this answer correct?
+- Respond "yes" if the answer is accurate and complete
+- Respond "no" if the answer is wrong or incomplete
+
+Answer (yes/no):"""
+
     if persona_prompt:
         return f"{persona_prompt}\n\n{base_prompt}"
     else:
