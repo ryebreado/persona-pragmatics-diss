@@ -47,12 +47,23 @@ class LocalModelWithActivations:
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
+        # Prepare model loading kwargs
+        model_kwargs = {
+            "low_cpu_mem_usage": True
+        }
+
+        # Note: Quantization (load_in_8bit/load_in_4bit) doesn't work on Mac/MPS
+        # Only use normal loading
+        if device != "cpu":
+            model_kwargs["dtype"] = torch.float16
+            model_kwargs["device_map"] = device
+        else:
+            model_kwargs["dtype"] = torch.float32
+
         # Load model
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16 if device != "cpu" else torch.float32,
-            device_map=device if device != "cpu" else None,
-            low_cpu_mem_usage=True
+            **model_kwargs
         )
 
         if device == "cpu":
@@ -451,7 +462,7 @@ def main():
     parser.add_argument('--model', default='meta-llama/Llama-3.2-1B-Instruct',
                        help='HuggingFace model name')
     parser.add_argument('--device', default='mps', choices=['mps', 'cuda', 'cpu'],
-                       help='Device to use')
+                       help='Device to use (note: large models may need cpu)')
     parser.add_argument('--temperature', type=float, default=0.0,
                        help='Sampling temperature')
     parser.add_argument('--persona', type=str, help='Persona prompt to prepend')
