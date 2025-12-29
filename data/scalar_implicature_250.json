@@ -1,0 +1,2502 @@
+[
+  {
+    "scenario": "The rabbit loves collecting shiny things.",
+    "items": "There's a coin, a button, a ring and a marble.",
+    "outcome": "The rabbit collected the coin and the ring.",
+    "question": "So, what did the rabbit collect?",
+    "statement": "The rabbit collected the coin",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 27
+  },
+  {
+    "scenario": "The penguin likes sliding on ice.",
+    "items": "There are hills and slopes.",
+    "outcome": "The penguin slid down all the hills.",
+    "question": "So, what did the penguin slide down?",
+    "statement": "The penguin slid down some of the hills",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 28
+  },
+  {
+    "scenario": "The baker wants to decorate cakes.",
+    "items": "There's a chocolate cake, a vanilla cake, a strawberry cake and a lemon cake.",
+    "outcome": "The baker decorated the chocolate cake and the lemon cake.",
+    "question": "So, what did the baker decorate?",
+    "statement": "The baker decorated the chocolate cake and the lemon cake",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 29
+  },
+  {
+    "scenario": "The kangaroo likes jumping over obstacles.",
+    "items": "There are logs and rocks.",
+    "outcome": "The kangaroo jumped over three out of five logs.",
+    "question": "So, what did the kangaroo jump over?",
+    "statement": "The kangaroo jumped over some of the logs",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 30
+  },
+  {
+    "scenario": "The chef likes chopping vegetables.",
+    "items": "There's a carrot, an onion, a potato and a pepper.",
+    "outcome": "The chef chopped the carrot.",
+    "question": "So, what did the chef chop?",
+    "statement": "The chef chopped the onion",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 31
+  },
+  {
+    "scenario": "The fox likes hiding toys.",
+    "items": "There are balls and blocks.",
+    "outcome": "The fox hid all the balls.",
+    "question": "So, what did the fox hide?",
+    "statement": "The fox hid some of the blocks",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 32
+  },
+  {
+    "scenario": "The librarian enjoys stacking books.",
+    "items": "There's a red book, a blue book, a green book and a yellow book.",
+    "outcome": "The librarian stacked the red book and the blue book.",
+    "question": "So, what did the librarian stack?",
+    "statement": "The librarian stacked the blue book",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 33
+  },
+  {
+    "scenario": "The bear likes catching fish.",
+    "items": "There are salmon and trout in the river.",
+    "outcome": "The bear caught all the salmon.",
+    "question": "So, what did the bear catch?",
+    "statement": "The bear caught some of the salmon",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 34
+  },
+  {
+    "scenario": "The pirate wants to bury treasure.",
+    "items": "There's a chest, a bag, a box and a jar.",
+    "outcome": "The pirate buried the chest and the bag.",
+    "question": "So, what did the pirate bury?",
+    "statement": "The pirate buried the chest and the bag",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 35
+  },
+  {
+    "scenario": "The owl likes reading stories.",
+    "items": "There are fairy tales and adventure books.",
+    "outcome": "The owl read three out of five fairy tales.",
+    "question": "So, what did the owl read?",
+    "statement": "The owl read some of the fairy tales",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 36
+  },
+  {
+    "scenario": "The nurse likes folding towels.",
+    "items": "There's a white towel, a pink towel, a blue towel and a gray towel.",
+    "outcome": "The nurse folded the white towel and the pink towel.",
+    "question": "So, what did the nurse fold?",
+    "statement": "The nurse folded the blue towel and the gray towel",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 37
+  },
+  {
+    "scenario": "The lion likes chasing butterflies.",
+    "items": "There are blue butterflies and yellow butterflies.",
+    "outcome": "The lion chased all the blue butterflies.",
+    "question": "So, what did the lion chase?",
+    "statement": "The lion chased all the yellow butterflies",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 38
+  },
+  {
+    "scenario": "The wizard loves mixing potions.",
+    "items": "There's a purple potion, a green potion, a red potion and a blue potion.",
+    "outcome": "The wizard mixed the purple potion and the green potion.",
+    "question": "So, what did the wizard mix?",
+    "statement": "The wizard mixed the green potion",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 39
+  },
+  {
+    "scenario": "The tiger likes knocking down towers.",
+    "items": "There are block towers and cup towers.",
+    "outcome": "The tiger knocked down all the block towers.",
+    "question": "So, what did the tiger knock down?",
+    "statement": "The tiger knocked down some of the block towers",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 40
+  },
+  {
+    "scenario": "The farmer wants to pick apples.",
+    "items": "There's a red apple, a green apple, a yellow apple and a pink apple.",
+    "outcome": "The farmer picked the red apple and the yellow apple.",
+    "question": "So, what did the farmer pick?",
+    "statement": "The farmer picked the red apple and the yellow apple",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 41
+  },
+  {
+    "scenario": "The zebra likes kicking balls.",
+    "items": "There are footballs and basketballs.",
+    "outcome": "The zebra kicked all the footballs.",
+    "question": "So, what did the zebra kick?",
+    "statement": "The zebra kicked all the footballs",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 42
+  },
+  {
+    "scenario": "The clown likes juggling fruits.",
+    "items": "There's an apple, an orange, a banana and a pear.",
+    "outcome": "The clown juggled the apple and the banana.",
+    "question": "So, what did the clown juggle?",
+    "statement": "The clown juggled the orange and the pear",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 43
+  },
+  {
+    "scenario": "The hippo likes splashing in puddles.",
+    "items": "There are big puddles and small puddles.",
+    "outcome": "The hippo splashed in two out of five big puddles.",
+    "question": "So, what did the hippo splash in?",
+    "statement": "The hippo splashed in some of the small puddles",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 44
+  },
+  {
+    "scenario": "The parrot enjoys opening boxes.",
+    "items": "There's a wooden box, a cardboard box, a metal box and a plastic box.",
+    "outcome": "The parrot opened the wooden box and the cardboard box.",
+    "question": "So, what did the parrot open?",
+    "statement": "The parrot opened the wooden box",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 45
+  },
+  {
+    "scenario": "The duck likes collecting acorns.",
+    "items": "There are big acorns and small acorns.",
+    "outcome": "The duck collected all the big acorns.",
+    "question": "So, what did the duck collect?",
+    "statement": "The duck collected some of the big acorns",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 46
+  },
+  {
+    "scenario": "The knight wants to polish his armor.",
+    "items": "There's a helmet, a shield, a sword and some boots.",
+    "outcome": "The knight polished the helmet and the shield.",
+    "question": "So, what did the knight polish?",
+    "statement": "The knight polished the helmet and the shield",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 47
+  },
+  {
+    "scenario": "The frog likes catching flies.",
+    "items": "There are houseflies and fruit flies.",
+    "outcome": "The frog caught four out of six houseflies.",
+    "question": "So, what did the frog catch?",
+    "statement": "The frog caught some of the houseflies",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 48
+  },
+  {
+    "scenario": "The pilot likes flying kites.",
+    "items": "There's a red kite, a blue kite, a green kite and a purple kite.",
+    "outcome": "The pilot flew the red kite.",
+    "question": "So, what did the pilot fly?",
+    "statement": "The pilot flew the green kite",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 49
+  },
+  {
+    "scenario": "The hedgehog likes rolling apples.",
+    "items": "There are green apples and red apples.",
+    "outcome": "The hedgehog rolled all the green apples.",
+    "question": "So, what did the hedgehog roll?",
+    "statement": "The hedgehog rolled some of the red apples",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 50
+  },
+  {
+    "scenario": "The dentist enjoys arranging tools.",
+    "items": "There's a mirror, a brush, a pick and some floss.",
+    "outcome": "The dentist arranged the mirror and the brush.",
+    "question": "So, what did the dentist arrange?",
+    "statement": "The dentist arranged the mirror",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 51
+  },
+  {
+    "scenario": "The seal likes balancing balls.",
+    "items": "There are striped balls and spotted balls.",
+    "outcome": "The seal balanced all the striped balls.",
+    "question": "So, what did the seal balance?",
+    "statement": "The seal balanced some of the striped balls",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 52
+  },
+  {
+    "scenario": "The princess wants to try on shoes.",
+    "items": "There's a glass slipper, a red heel, a silver sandal and a gold boot.",
+    "outcome": "The princess tried on the glass slipper and the gold boot.",
+    "question": "So, what did the princess try on?",
+    "statement": "The princess tried on the glass slipper and the gold boot",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 53
+  },
+  {
+    "scenario": "The badger likes digging holes.",
+    "items": "There are shallow holes and deep holes to dig.",
+    "outcome": "The badger dug all the deep holes.",
+    "question": "So, what did the badger dig?",
+    "statement": "The badger dug all the deep holes",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 54
+  },
+  {
+    "scenario": "The sailor likes tying knots.",
+    "items": "There's a red rope, a blue rope, a white rope and a black rope.",
+    "outcome": "The sailor tied knots in the red rope and the blue rope.",
+    "question": "So, what did the sailor tie knots in?",
+    "statement": "The sailor tied knots in the white rope and the black rope",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 55
+  },
+  {
+    "scenario": "The otter likes stacking stones.",
+    "items": "There are round stones and flat stones.",
+    "outcome": "The otter stacked all the round stones.",
+    "question": "So, what did the otter stack?",
+    "statement": "The otter stacked all the flat stones",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 56
+  },
+  {
+    "scenario": "The magician loves pulling things from his hat.",
+    "items": "There's a rabbit, a dove, a scarf and some flowers.",
+    "outcome": "The magician pulled out the rabbit and the dove.",
+    "question": "So, what did the magician pull out?",
+    "statement": "The magician pulled out the rabbit",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 57
+  },
+  {
+    "scenario": "The whale likes blowing bubbles.",
+    "items": "There are big bubbles and tiny bubbles.",
+    "outcome": "The whale blew all the big bubbles.",
+    "question": "So, what did the whale blow?",
+    "statement": "The whale blew some of the big bubbles",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 58
+  },
+  {
+    "scenario": "The gardener wants to plant seeds.",
+    "items": "There's a sunflower seed, a daisy seed, a rose seed and a tulip seed.",
+    "outcome": "The gardener planted the sunflower seed and the rose seed.",
+    "question": "So, what did the gardener plant?",
+    "statement": "The gardener planted the sunflower seed and the rose seed",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 59
+  },
+  {
+    "scenario": "The panda likes munching bamboo.",
+    "items": "There are tall bamboo stalks and short bamboo stalks.",
+    "outcome": "The panda munched two out of four tall bamboo stalks.",
+    "question": "So, what did the panda munch?",
+    "statement": "The panda munched some of the tall bamboo stalks",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 60
+  },
+  {
+    "scenario": "The firefighter likes climbing ladders.",
+    "items": "There's a wooden ladder, a metal ladder, a rope ladder and a plastic ladder.",
+    "outcome": "The firefighter climbed the wooden ladder.",
+    "question": "So, what did the firefighter climb?",
+    "statement": "The firefighter climbed the metal ladder",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 61
+  },
+  {
+    "scenario": "The koala likes hugging trees.",
+    "items": "There are eucalyptus trees and oak trees.",
+    "outcome": "The koala hugged three out of five eucalyptus trees.",
+    "question": "So, what did the koala hug?",
+    "statement": "The koala hugged some of the oak trees",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 62
+  },
+  {
+    "scenario": "The teacher enjoys sharpening pencils.",
+    "items": "There's a red pencil, a blue pencil, a yellow pencil and a green pencil.",
+    "outcome": "The teacher sharpened the red pencil and the yellow pencil.",
+    "question": "So, what did the teacher sharpen?",
+    "statement": "The teacher sharpened the yellow pencil",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 63
+  },
+  {
+    "scenario": "The dolphin likes jumping through hoops.",
+    "items": "There are red hoops and blue hoops.",
+    "outcome": "The dolphin jumped through all the red hoops.",
+    "question": "So, what did the dolphin jump through?",
+    "statement": "The dolphin jumped through some of the red hoops",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 64
+  },
+  {
+    "scenario": "The artist wants to sketch animals.",
+    "items": "There's a cat, a dog, a bird and a fish.",
+    "outcome": "The artist sketched the cat and the bird.",
+    "question": "So, what did the artist sketch?",
+    "statement": "The artist sketched the cat and the bird",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 65
+  },
+  {
+    "scenario": "The sloth likes hanging from branches.",
+    "items": "There are thick branches and thin branches.",
+    "outcome": "The sloth hung from all the thick branches.",
+    "question": "So, what did the sloth hang from?",
+    "statement": "The sloth hung from all the thick branches",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 66
+  },
+  {
+    "scenario": "The beaver likes chewing logs.",
+    "items": "There's a birch log, an oak log, a pine log and a maple log.",
+    "outcome": "The beaver chewed the birch log and the oak log.",
+    "question": "So, what did the beaver chew?",
+    "statement": "The beaver chewed the pine log and the maple log",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 67
+  },
+  {
+    "scenario": "The raccoon likes washing berries.",
+    "items": "There are blueberries and raspberries.",
+    "outcome": "The raccoon washed all the blueberries.",
+    "question": "So, what did the raccoon wash?",
+    "statement": "The raccoon washed all the raspberries",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 68
+  },
+  {
+    "scenario": "The musician enjoys tuning instruments.",
+    "items": "There's a guitar, a violin, a piano and a flute.",
+    "outcome": "The musician tuned the guitar and the violin.",
+    "question": "So, what did the musician tune?",
+    "statement": "The musician tuned the guitar",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 69
+  },
+  {
+    "scenario": "The octopus likes grabbing shells.",
+    "items": "There are spiral shells and clam shells.",
+    "outcome": "The octopus grabbed all the spiral shells.",
+    "question": "So, what did the octopus grab?",
+    "statement": "The octopus grabbed some of the spiral shells",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 70
+  },
+  {
+    "scenario": "The cowboy wants to lasso animals.",
+    "items": "There's a horse, a cow, a sheep and a goat.",
+    "outcome": "The cowboy lassoed the horse and the cow.",
+    "question": "So, what did the cowboy lasso?",
+    "statement": "The cowboy lassoed the horse and the cow",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 71
+  },
+  {
+    "scenario": "The deer likes nibbling leaves.",
+    "items": "There are oak leaves and maple leaves.",
+    "outcome": "The deer nibbled three out of six oak leaves.",
+    "question": "So, what did the deer nibble?",
+    "statement": "The deer nibbled some of the oak leaves",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 72
+  },
+  {
+    "scenario": "The detective likes examining clues.",
+    "items": "There's a footprint, a fingerprint, a hair and a note.",
+    "outcome": "The detective examined the footprint.",
+    "question": "So, what did the detective examine?",
+    "statement": "The detective examined the fingerprint",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 73
+  },
+  {
+    "scenario": "The wolf likes howling at moons.",
+    "items": "There are full moons and half moons in the picture book.",
+    "outcome": "The wolf howled at all the full moons.",
+    "question": "So, what did the wolf howl at?",
+    "statement": "The wolf howled at some of the half moons",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 74
+  },
+  {
+    "scenario": "The queen loves wearing crowns.",
+    "items": "There's a gold crown, a silver crown, a diamond crown and a ruby crown.",
+    "outcome": "The queen wore the gold crown and the diamond crown.",
+    "question": "So, what did the queen wear?",
+    "statement": "The queen wore the diamond crown",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 75
+  },
+  {
+    "scenario": "The moose likes stomping on ice.",
+    "items": "There are thick ice patches and thin ice patches.",
+    "outcome": "The moose stomped on all the thick ice patches.",
+    "question": "So, what did the moose stomp on?",
+    "statement": "The moose stomped on some of the thick ice patches",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 76
+  },
+  {
+    "scenario": "The prince likes polishing gems.",
+    "items": "There's a ruby, a sapphire, an emerald and a diamond.",
+    "outcome": "The prince polished the ruby and the emerald.",
+    "question": "So, what did the prince polish?",
+    "statement": "The prince polished the ruby and the emerald",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 77
+  },
+  {
+    "scenario": "The chipmunk likes stuffing nuts in his cheeks.",
+    "items": "There are walnuts and hazelnuts.",
+    "outcome": "The chipmunk stuffed all the walnuts in his cheeks.",
+    "question": "So, what did the chipmunk stuff in his cheeks?",
+    "statement": "The chipmunk stuffed all the walnuts in his cheeks",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 78
+  },
+  {
+    "scenario": "The skunk likes spraying perfume.",
+    "items": "There's a rose perfume, a lily perfume, a daisy perfume and a tulip perfume.",
+    "outcome": "The skunk sprayed the rose perfume and the lily perfume.",
+    "question": "So, what did the skunk spray?",
+    "statement": "The skunk sprayed the lily perfume",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 79
+  },
+  {
+    "scenario": "The crab likes pinching balloons.",
+    "items": "There are round balloons and long balloons.",
+    "outcome": "The crab pinched all the round balloons.",
+    "question": "So, what did the crab pinch?",
+    "statement": "The crab pinched some of the round balloons",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 80
+  },
+  {
+    "scenario": "The astronaut likes pressing buttons.",
+    "items": "There's a red button, a green button, a blue button and a yellow button.",
+    "outcome": "The astronaut pressed the red button.",
+    "question": "So, what did the astronaut press?",
+    "statement": "The astronaut pressed the green button",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 81
+  },
+  {
+    "scenario": "The snail likes crossing bridges.",
+    "items": "There are wooden bridges and stone bridges.",
+    "outcome": "The snail crossed all the wooden bridges.",
+    "question": "So, what did the snail cross?",
+    "statement": "The snail crossed all the stone bridges",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 82
+  },
+  {
+    "scenario": "The plumber enjoys fixing pipes.",
+    "items": "There's a copper pipe, a plastic pipe, a steel pipe and a brass pipe.",
+    "outcome": "The plumber fixed the copper pipe and the steel pipe.",
+    "question": "So, what did the plumber fix?",
+    "statement": "The plumber fixed the copper pipe and the steel pipe",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 83
+  },
+  {
+    "scenario": "The pelican likes swallowing fish.",
+    "items": "There are goldfish and silverfish.",
+    "outcome": "The pelican swallowed two out of five goldfish.",
+    "question": "So, what did the pelican swallow?",
+    "statement": "The pelican swallowed some of the goldfish",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 84
+  },
+  {
+    "scenario": "The king loves signing documents.",
+    "items": "There's a treaty, a decree, a letter and a proclamation.",
+    "outcome": "The king signed the treaty and the decree.",
+    "question": "So, what did the king sign?",
+    "statement": "The king signed the treaty",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 85
+  },
+  {
+    "scenario": "The toucan likes pecking at fruit.",
+    "items": "There are mangoes and papayas.",
+    "outcome": "The toucan pecked at all the mangoes.",
+    "question": "So, what did the toucan peck at?",
+    "statement": "The toucan pecked at some of the mangoes",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 86
+  },
+  {
+    "scenario": "The sculptor likes carving statues.",
+    "items": "There's a horse statue, a lion statue, an eagle statue and a bear statue.",
+    "outcome": "The sculptor carved the horse statue and the eagle statue.",
+    "question": "So, what did the sculptor carve?",
+    "statement": "The sculptor carved the lion statue and the bear statue",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 87
+  },
+  {
+    "scenario": "The cricket likes jumping on leaves.",
+    "items": "There are green leaves and brown leaves.",
+    "outcome": "The cricket jumped on all the green leaves.",
+    "question": "So, what did the cricket jump on?",
+    "statement": "The cricket jumped on some of the brown leaves",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 88
+  },
+  {
+    "scenario": "The mailman enjoys delivering packages.",
+    "items": "There's a small package, a medium package, a large package and a tiny package.",
+    "outcome": "The mailman delivered the small package and the large package.",
+    "question": "So, what did the mailman deliver?",
+    "statement": "The mailman delivered the small package and the large package",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 89
+  },
+  {
+    "scenario": "The ant likes carrying crumbs.",
+    "items": "There are bread crumbs and cookie crumbs.",
+    "outcome": "The ant carried all the bread crumbs.",
+    "question": "So, what did the ant carry?",
+    "statement": "The ant carried all the bread crumbs",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 90
+  },
+  {
+    "scenario": "The ballerina loves spinning tops.",
+    "items": "There's a wooden top, a metal top, a plastic top and a glass top.",
+    "outcome": "The ballerina spun the wooden top and the metal top.",
+    "question": "So, what did the ballerina spin?",
+    "statement": "The ballerina spun the metal top",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 91
+  },
+  {
+    "scenario": "The bee likes visiting flowers.",
+    "items": "There are sunflowers and daisies.",
+    "outcome": "The bee visited all the sunflowers.",
+    "question": "So, what did the bee visit?",
+    "statement": "The bee visited some of the sunflowers",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 92
+  },
+  {
+    "scenario": "The jester likes throwing pies.",
+    "items": "There's a cherry pie, an apple pie, a pumpkin pie and a blueberry pie.",
+    "outcome": "The jester threw the cherry pie.",
+    "question": "So, what did the jester throw?",
+    "statement": "The jester threw the pumpkin pie",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 93
+  },
+  {
+    "scenario": "The caterpillar likes eating leaves.",
+    "items": "There are lettuce leaves and cabbage leaves.",
+    "outcome": "The caterpillar ate all the lettuce leaves.",
+    "question": "So, what did the caterpillar eat?",
+    "statement": "The caterpillar ate all the cabbage leaves",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 94
+  },
+  {
+    "scenario": "The locksmith enjoys opening locks.",
+    "items": "There's a brass lock, a steel lock, an iron lock and a silver lock.",
+    "outcome": "The locksmith opened the brass lock and the iron lock.",
+    "question": "So, what did the locksmith open?",
+    "statement": "The locksmith opened the brass lock and the iron lock",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 95
+  },
+  {
+    "scenario": "The grasshopper likes landing on flowers.",
+    "items": "There are roses and tulips.",
+    "outcome": "The grasshopper landed on three out of five roses.",
+    "question": "So, what did the grasshopper land on?",
+    "statement": "The grasshopper landed on some of the roses",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 96
+  },
+  {
+    "scenario": "The photographer loves taking pictures.",
+    "items": "There's a bird, a tree, a cloud and a rainbow.",
+    "outcome": "The photographer took pictures of the bird and the rainbow.",
+    "question": "So, what did the photographer take pictures of?",
+    "statement": "The photographer took a picture of the bird",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 97
+  },
+  {
+    "scenario": "The spider likes weaving webs.",
+    "items": "There are corners and doorways.",
+    "outcome": "The spider wove webs in all the corners.",
+    "question": "So, where did the spider weave webs?",
+    "statement": "The spider wove webs in some of the corners",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 98
+  },
+  {
+    "scenario": "The butcher likes cutting meat.",
+    "items": "There's a ham, a steak, a sausage and some bacon.",
+    "outcome": "The butcher cut the ham and the steak.",
+    "question": "So, what did the butcher cut?",
+    "statement": "The butcher cut the sausage and the bacon",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 99
+  },
+  {
+    "scenario": "The ladybug likes resting on petals.",
+    "items": "There are pink petals and white petals.",
+    "outcome": "The ladybug rested on all the pink petals.",
+    "question": "So, what did the ladybug rest on?",
+    "statement": "The ladybug rested on some of the white petals",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 100
+  },
+  {
+    "scenario": "The zookeeper enjoys feeding animals.",
+    "items": "There's a tiger, a zebra, a giraffe and a monkey.",
+    "outcome": "The zookeeper fed the tiger and the giraffe.",
+    "question": "So, what did the zookeeper feed?",
+    "statement": "The zookeeper fed the tiger and the giraffe",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 101
+  },
+  {
+    "scenario": "The butterfly likes sipping nectar.",
+    "items": "There are lilies and orchids.",
+    "outcome": "The butterfly sipped nectar from all the lilies.",
+    "question": "So, what did the butterfly sip from?",
+    "statement": "The butterfly sipped nectar from all the lilies",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 102
+  },
+  {
+    "scenario": "The inventor loves building machines.",
+    "items": "There's a robot, a rocket, a submarine and a helicopter.",
+    "outcome": "The inventor built the robot and the submarine.",
+    "question": "So, what did the inventor build?",
+    "statement": "The inventor built the submarine",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 103
+  },
+  {
+    "scenario": "The flamingo likes standing on rocks.",
+    "items": "There are gray rocks and brown rocks.",
+    "outcome": "The flamingo stood on all the gray rocks.",
+    "question": "So, what did the flamingo stand on?",
+    "statement": "The flamingo stood on some of the gray rocks",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 104
+  },
+  {
+    "scenario": "The carpenter likes sawing wood.",
+    "items": "There's a pine board, an oak board, a cherry board and a walnut board.",
+    "outcome": "The carpenter sawed the pine board.",
+    "question": "So, what did the carpenter saw?",
+    "statement": "The carpenter sawed the oak board",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 105
+  },
+  {
+    "scenario": "The seagull likes stealing chips.",
+    "items": "There are potato chips and corn chips.",
+    "outcome": "The seagull stole all the potato chips.",
+    "question": "So, what did the seagull steal?",
+    "statement": "The seagull stole all the corn chips",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 106
+  },
+  {
+    "scenario": "The tailor enjoys sewing buttons.",
+    "items": "There's a gold button, a silver button, a pearl button and a wooden button.",
+    "outcome": "The tailor sewed the gold button and the pearl button.",
+    "question": "So, what did the tailor sew?",
+    "statement": "The tailor sewed the gold button and the pearl button",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 107
+  },
+  {
+    "scenario": "The sparrow likes picking up seeds.",
+    "items": "There are sunflower seeds and pumpkin seeds.",
+    "outcome": "The sparrow picked up four out of six sunflower seeds.",
+    "question": "So, what did the sparrow pick up?",
+    "statement": "The sparrow picked up some of the sunflower seeds",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 108
+  },
+  {
+    "scenario": "The gnome loves polishing mushrooms.",
+    "items": "There's a red mushroom, a brown mushroom, a white mushroom and a spotted mushroom.",
+    "outcome": "The gnome polished the red mushroom and the brown mushroom.",
+    "question": "So, what did the gnome polish?",
+    "statement": "The gnome polished the red mushroom",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 109
+  },
+  {
+    "scenario": "The peacock likes showing off feathers.",
+    "items": "There are blue feathers and green feathers.",
+    "outcome": "The peacock showed off all the blue feathers.",
+    "question": "So, what did the peacock show off?",
+    "statement": "The peacock showed off some of the blue feathers",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 110
+  },
+  {
+    "scenario": "The mechanic likes testing engines.",
+    "items": "There's a car engine, a boat engine, a plane engine and a train engine.",
+    "outcome": "The mechanic tested the car engine and the boat engine.",
+    "question": "So, what did the mechanic test?",
+    "statement": "The mechanic tested the plane engine and the train engine",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 111
+  },
+  {
+    "scenario": "The crow likes collecting shiny objects.",
+    "items": "There are coins and bottle caps.",
+    "outcome": "The crow collected all the coins.",
+    "question": "So, what did the crow collect?",
+    "statement": "The crow collected some of the bottle caps",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 112
+  },
+  {
+    "scenario": "The elf enjoys wrapping presents.",
+    "items": "There's a toy car, a teddy bear, a puzzle and a ball.",
+    "outcome": "The elf wrapped the toy car and the teddy bear.",
+    "question": "So, what did the elf wrap?",
+    "statement": "The elf wrapped the toy car and the teddy bear",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 113
+  },
+  {
+    "scenario": "The robin likes pulling worms.",
+    "items": "There are pink worms and brown worms.",
+    "outcome": "The robin pulled all the pink worms.",
+    "question": "So, what did the robin pull?",
+    "statement": "The robin pulled all the pink worms",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 114
+  },
+  {
+    "scenario": "The giant loves stomping on castles.",
+    "items": "There's a sand castle, a block castle, a card castle and a snow castle.",
+    "outcome": "The giant stomped on the sand castle and the snow castle.",
+    "question": "So, what did the giant stomp on?",
+    "statement": "The giant stomped on the snow castle",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 115
+  },
+  {
+    "scenario": "The swan likes gliding across ponds.",
+    "items": "There are lily ponds and duck ponds.",
+    "outcome": "The swan glided across all the lily ponds.",
+    "question": "So, what did the swan glide across?",
+    "statement": "The swan glided across some of the lily ponds",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 116
+  },
+  {
+    "scenario": "The florist likes arranging bouquets.",
+    "items": "There's a rose bouquet, a lily bouquet, a daisy bouquet and a tulip bouquet.",
+    "outcome": "The florist arranged the rose bouquet.",
+    "question": "So, what did the florist arrange?",
+    "statement": "The florist arranged the daisy bouquet",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 117
+  },
+  {
+    "scenario": "The heron likes catching frogs.",
+    "items": "There are green frogs and brown frogs.",
+    "outcome": "The heron caught all the green frogs.",
+    "question": "So, what did the heron catch?",
+    "statement": "The heron caught all the brown frogs",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 118
+  },
+  {
+    "scenario": "The shepherd enjoys counting sheep.",
+    "items": "There's a white sheep, a black sheep, a brown sheep and a spotted sheep.",
+    "outcome": "The shepherd counted the white sheep and the black sheep.",
+    "question": "So, what did the shepherd count?",
+    "statement": "The shepherd counted the white sheep and the black sheep",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 119
+  },
+  {
+    "scenario": "The woodpecker likes tapping trees.",
+    "items": "There are pine trees and birch trees.",
+    "outcome": "The woodpecker tapped three out of five pine trees.",
+    "question": "So, what did the woodpecker tap?",
+    "statement": "The woodpecker tapped some of the pine trees",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 120
+  },
+  {
+    "scenario": "The dwarf loves mining gems.",
+    "items": "There's a topaz, an amethyst, a garnet and a pearl.",
+    "outcome": "The dwarf mined the topaz and the garnet.",
+    "question": "So, what did the dwarf mine?",
+    "statement": "The dwarf mined the topaz",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 121
+  },
+  {
+    "scenario": "The stork likes delivering babies.",
+    "items": "There are baby boys and baby girls.",
+    "outcome": "The stork delivered all the baby boys.",
+    "question": "So, who did the stork deliver?",
+    "statement": "The stork delivered some of the baby boys",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 122
+  },
+  {
+    "scenario": "The chef likes grilling vegetables.",
+    "items": "There's a zucchini, a pepper, an eggplant and a mushroom.",
+    "outcome": "The chef grilled the zucchini and the pepper.",
+    "question": "So, what did the chef grill?",
+    "statement": "The chef grilled the eggplant and the mushroom",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 123
+  },
+  {
+    "scenario": "The hawk likes swooping at mice.",
+    "items": "There are field mice and house mice.",
+    "outcome": "The hawk swooped at all the field mice.",
+    "question": "So, what did the hawk swoop at?",
+    "statement": "The hawk swooped at some of the house mice",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 124
+  },
+  {
+    "scenario": "The mermaid enjoys combing her hair.",
+    "items": "There's a golden comb, a silver comb, a pearl comb and a shell comb.",
+    "outcome": "The mermaid used the golden comb and the shell comb.",
+    "question": "So, what did the mermaid use?",
+    "statement": "The mermaid used the golden comb and the shell comb",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 125
+  },
+  {
+    "scenario": "The finch likes cracking seeds.",
+    "items": "There are small seeds and large seeds.",
+    "outcome": "The finch cracked all the small seeds.",
+    "question": "So, what did the finch crack?",
+    "statement": "The finch cracked all the small seeds",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 126
+  },
+  {
+    "scenario": "The dragon loves collecting treasure.",
+    "items": "There's a gold coin, a silver coin, a bronze coin and a copper coin.",
+    "outcome": "The dragon collected the gold coin and the silver coin.",
+    "question": "So, what did the dragon collect?",
+    "statement": "The dragon collected the gold coin",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 127
+  },
+  {
+    "scenario": "The penguin likes sliding down slopes.",
+    "items": "There are icy slopes and snowy slopes.",
+    "outcome": "The penguin slid down all the icy slopes.",
+    "question": "So, what did the penguin slide down?",
+    "statement": "The penguin slid down some of the icy slopes",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 128
+  },
+  {
+    "scenario": "The postman enjoys stamping letters.",
+    "items": "There's a white envelope, a brown envelope, a blue envelope and a yellow envelope.",
+    "outcome": "The postman stamped the white envelope and the blue envelope.",
+    "question": "So, what did the postman stamp?",
+    "statement": "The postman stamped the white envelope and the blue envelope",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 129
+  },
+  {
+    "scenario": "The goose likes honking at cars.",
+    "items": "There are red cars and blue cars.",
+    "outcome": "The goose honked at two out of four red cars.",
+    "question": "So, what did the goose honk at?",
+    "statement": "The goose honked at some of the red cars",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 130
+  },
+  {
+    "scenario": "The witch likes brewing potions.",
+    "items": "There's a love potion, a sleep potion, a shrinking potion and a flying potion.",
+    "outcome": "The witch brewed the love potion and the sleep potion.",
+    "question": "So, what did the witch brew?",
+    "statement": "The witch brewed the shrinking potion and the flying potion",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 131
+  },
+  {
+    "scenario": "The pigeon likes pecking at breadcrumbs.",
+    "items": "There are white breadcrumbs and brown breadcrumbs.",
+    "outcome": "The pigeon pecked at all the white breadcrumbs.",
+    "question": "So, what did the pigeon peck at?",
+    "statement": "The pigeon pecked at all the brown breadcrumbs",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 132
+  },
+  {
+    "scenario": "The unicorn loves collecting rainbows.",
+    "items": "There's a pink rainbow, a purple rainbow, a gold rainbow and a silver rainbow.",
+    "outcome": "The unicorn collected the pink rainbow and the purple rainbow.",
+    "question": "So, what did the unicorn collect?",
+    "statement": "The unicorn collected the purple rainbow",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 133
+  },
+  {
+    "scenario": "The hamster likes running on wheels.",
+    "items": "There are plastic wheels and metal wheels.",
+    "outcome": "The hamster ran on all the plastic wheels.",
+    "question": "So, what did the hamster run on?",
+    "statement": "The hamster ran on some of the plastic wheels",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 134
+  },
+  {
+    "scenario": "The lumberjack enjoys chopping trees.",
+    "items": "There's an elm tree, a maple tree, a willow tree and an ash tree.",
+    "outcome": "The lumberjack chopped the elm tree and the willow tree.",
+    "question": "So, what did the lumberjack chop?",
+    "statement": "The lumberjack chopped the elm tree and the willow tree",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 135
+  },
+  {
+    "scenario": "The mole likes digging tunnels.",
+    "items": "There are long tunnels and short tunnels.",
+    "outcome": "The mole dug all the long tunnels.",
+    "question": "So, what did the mole dig?",
+    "statement": "The mole dug all the long tunnels",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 136
+  },
+  {
+    "scenario": "The troll likes guarding bridges.",
+    "items": "There's a stone bridge, a wooden bridge, a rope bridge and an iron bridge.",
+    "outcome": "The troll guarded the stone bridge.",
+    "question": "So, what did the troll guard?",
+    "statement": "The troll guarded the rope bridge",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 137
+  },
+  {
+    "scenario": "The moth likes flying around lamps.",
+    "items": "There are table lamps and floor lamps.",
+    "outcome": "The moth flew around all the table lamps.",
+    "question": "So, what did the moth fly around?",
+    "statement": "The moth flew around some of the floor lamps",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 138
+  },
+  {
+    "scenario": "The fairy loves granting wishes.",
+    "items": "There's a birthday wish, a holiday wish, a bedtime wish and a star wish.",
+    "outcome": "The fairy granted the birthday wish and the star wish.",
+    "question": "So, what did the fairy grant?",
+    "statement": "The fairy granted the birthday wish",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 139
+  },
+  {
+    "scenario": "The worm likes crawling through apples.",
+    "items": "There are red apples and green apples.",
+    "outcome": "The worm crawled through all the red apples.",
+    "question": "So, what did the worm crawl through?",
+    "statement": "The worm crawled through some of the red apples",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 140
+  },
+  {
+    "scenario": "The sailor enjoys tying ropes.",
+    "items": "There's a thick rope, a thin rope, a long rope and a short rope.",
+    "outcome": "The sailor tied the thick rope and the long rope.",
+    "question": "So, what did the sailor tie?",
+    "statement": "The sailor tied the thick rope and the long rope",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 141
+  },
+  {
+    "scenario": "The squirrel likes burying nuts.",
+    "items": "There are chestnuts and almonds.",
+    "outcome": "The squirrel buried three out of five chestnuts.",
+    "question": "So, what did the squirrel bury?",
+    "statement": "The squirrel buried some of the chestnuts",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 142
+  },
+  {
+    "scenario": "The ogre likes smashing pumpkins.",
+    "items": "There's an orange pumpkin, a white pumpkin, a green pumpkin and a yellow pumpkin.",
+    "outcome": "The ogre smashed the orange pumpkin and the white pumpkin.",
+    "question": "So, what did the ogre smash?",
+    "statement": "The ogre smashed the green pumpkin and the yellow pumpkin",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 143
+  },
+  {
+    "scenario": "The firefly likes lighting up meadows.",
+    "items": "There are daisy meadows and clover meadows.",
+    "outcome": "The firefly lit up all the daisy meadows.",
+    "question": "So, what did the firefly light up?",
+    "statement": "The firefly lit up all the clover meadows",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 144
+  },
+  {
+    "scenario": "The leprechaun loves hiding gold.",
+    "items": "There's a gold nugget, a gold ring, a gold chain and a gold coin.",
+    "outcome": "The leprechaun hid the gold nugget and the gold chain.",
+    "question": "So, what did the leprechaun hide?",
+    "statement": "The leprechaun hid the gold chain",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 145
+  },
+  {
+    "scenario": "The beaver likes building dams.",
+    "items": "There are small streams and large streams.",
+    "outcome": "The beaver built dams on all the small streams.",
+    "question": "So, where did the beaver build dams?",
+    "statement": "The beaver built dams on some of the small streams",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 146
+  },
+  {
+    "scenario": "The wizard enjoys casting spells.",
+    "items": "There's a fire spell, an ice spell, a wind spell and a water spell.",
+    "outcome": "The wizard cast the fire spell and the ice spell.",
+    "question": "So, what did the wizard cast?",
+    "statement": "The wizard cast the fire spell and the ice spell",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 147
+  },
+  {
+    "scenario": "The fly likes buzzing around food.",
+    "items": "There are sandwiches and cookies.",
+    "outcome": "The fly buzzed around all the sandwiches.",
+    "question": "So, what did the fly buzz around?",
+    "statement": "The fly buzzed around all the sandwiches",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 148
+  },
+  {
+    "scenario": "The vampire likes visiting castles.",
+    "items": "There's a mountain castle, a lake castle, a forest castle and a desert castle.",
+    "outcome": "The vampire visited the mountain castle.",
+    "question": "So, what did the vampire visit?",
+    "statement": "The vampire visited the forest castle",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 149
+  },
+  {
+    "scenario": "The dragonfly likes landing on lily pads.",
+    "items": "There are big lily pads and small lily pads.",
+    "outcome": "The dragonfly landed on all the big lily pads.",
+    "question": "So, what did the dragonfly land on?",
+    "statement": "The dragonfly landed on some of the small lily pads",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 150
+  },
+  {
+    "scenario": "The goblin loves stealing socks.",
+    "items": "There's a red sock, a blue sock, a striped sock and a polka dot sock.",
+    "outcome": "The goblin stole the red sock and the striped sock.",
+    "question": "So, what did the goblin steal?",
+    "statement": "The goblin stole the red sock",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 151
+  },
+  {
+    "scenario": "The mouse likes nibbling cheese.",
+    "items": "There are cheddar pieces and swiss pieces.",
+    "outcome": "The mouse nibbled all the cheddar pieces.",
+    "question": "So, what did the mouse nibble?",
+    "statement": "The mouse nibbled some of the cheddar pieces",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 152
+  },
+  {
+    "scenario": "The gnome enjoys watering plants.",
+    "items": "There's a fern, a cactus, a succulent and a palm.",
+    "outcome": "The gnome watered the fern and the palm.",
+    "question": "So, what did the gnome water?",
+    "statement": "The gnome watered the fern and the palm",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 153
+  },
+  {
+    "scenario": "The catfish likes hiding under rocks.",
+    "items": "There are gray rocks and mossy rocks.",
+    "outcome": "The catfish hid under two out of four gray rocks.",
+    "question": "So, what did the catfish hide under?",
+    "statement": "The catfish hid under some of the gray rocks",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 154
+  },
+  {
+    "scenario": "The yeti likes throwing snowballs.",
+    "items": "There's a big snowball, a medium snowball, a small snowball and a tiny snowball.",
+    "outcome": "The yeti threw the big snowball and the medium snowball.",
+    "question": "So, what did the yeti throw?",
+    "statement": "The yeti threw the small snowball and the tiny snowball",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 155
+  },
+  {
+    "scenario": "The beetle likes crawling on logs.",
+    "items": "There are rotting logs and fresh logs.",
+    "outcome": "The beetle crawled on all the rotting logs.",
+    "question": "So, what did the beetle crawl on?",
+    "statement": "The beetle crawled on all the fresh logs",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 156
+  },
+  {
+    "scenario": "The pixie loves sprinkling dust.",
+    "items": "There's gold dust, silver dust, star dust and moon dust.",
+    "outcome": "The pixie sprinkled the gold dust and the star dust.",
+    "question": "So, what did the pixie sprinkle?",
+    "statement": "The pixie sprinkled the star dust",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 157
+  },
+  {
+    "scenario": "The parrot likes repeating words.",
+    "items": "There are silly words and serious words.",
+    "outcome": "The parrot repeated all the silly words.",
+    "question": "So, what did the parrot repeat?",
+    "statement": "The parrot repeated some of the silly words",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 158
+  },
+  {
+    "scenario": "The fisherman enjoys catching fish.",
+    "items": "There's a salmon, a tuna, a cod and a trout.",
+    "outcome": "The fisherman caught the salmon and the cod.",
+    "question": "So, what did the fisherman catch?",
+    "statement": "The fisherman caught the salmon and the cod",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 159
+  },
+  {
+    "scenario": "The rooster likes crowing at sunrises.",
+    "items": "There are cloudy sunrises and clear sunrises.",
+    "outcome": "The rooster crowed at all the cloudy sunrises.",
+    "question": "So, what did the rooster crow at?",
+    "statement": "The rooster crowed at all the cloudy sunrises",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 160
+  },
+  {
+    "scenario": "The phoenix likes flying over mountains.",
+    "items": "There's a snowy mountain, a rocky mountain, a green mountain and a misty mountain.",
+    "outcome": "The phoenix flew over the snowy mountain.",
+    "question": "So, what did the phoenix fly over?",
+    "statement": "The phoenix flew over the misty mountain",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 161
+  },
+  {
+    "scenario": "The gecko likes climbing walls.",
+    "items": "There are brick walls and glass walls.",
+    "outcome": "The gecko climbed all the brick walls.",
+    "question": "So, what did the gecko climb?",
+    "statement": "The gecko climbed some of the glass walls",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 162
+  },
+  {
+    "scenario": "The nymph loves dancing on flowers.",
+    "items": "There's a rose, a daisy, a violet and a lily.",
+    "outcome": "The nymph danced on the rose and the violet.",
+    "question": "So, what did the nymph dance on?",
+    "statement": "The nymph danced on the rose",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 163
+  },
+  {
+    "scenario": "The owl likes hooting at stars.",
+    "items": "There are bright stars and dim stars.",
+    "outcome": "The owl hooted at all the bright stars.",
+    "question": "So, what did the owl hoot at?",
+    "statement": "The owl hooted at some of the bright stars",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 164
+  },
+  {
+    "scenario": "The astronaut enjoys exploring planets.",
+    "items": "There's a red planet, a blue planet, a green planet and a purple planet.",
+    "outcome": "The astronaut explored the red planet and the blue planet.",
+    "question": "So, what did the astronaut explore?",
+    "statement": "The astronaut explored the red planet and the blue planet",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 165
+  },
+  {
+    "scenario": "The hen likes sitting on eggs.",
+    "items": "There are white eggs and brown eggs.",
+    "outcome": "The hen sat on three out of five white eggs.",
+    "question": "So, what did the hen sit on?",
+    "statement": "The hen sat on some of the white eggs",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 166
+  },
+  {
+    "scenario": "The centaur likes racing horses.",
+    "items": "There's a black horse, a white horse, a brown horse and a spotted horse.",
+    "outcome": "The centaur raced the black horse and the white horse.",
+    "question": "So, what did the centaur race?",
+    "statement": "The centaur raced the brown horse and the spotted horse",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 167
+  },
+  {
+    "scenario": "The vulture likes circling mountains.",
+    "items": "There are tall mountains and short mountains.",
+    "outcome": "The vulture circled all the tall mountains.",
+    "question": "So, what did the vulture circle?",
+    "statement": "The vulture circled all the short mountains",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 168
+  },
+  {
+    "scenario": "The imp loves playing pranks.",
+    "items": "There's a bucket prank, a whoopee cushion prank, a fake spider prank and a water balloon prank.",
+    "outcome": "The imp played the bucket prank and the water balloon prank.",
+    "question": "So, what pranks did the imp play?",
+    "statement": "The imp played the water balloon prank",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 169
+  },
+  {
+    "scenario": "The turkey likes gobbling at visitors.",
+    "items": "There are tall visitors and short visitors.",
+    "outcome": "The turkey gobbled at all the tall visitors.",
+    "question": "So, who did the turkey gobble at?",
+    "statement": "The turkey gobbled at some of the tall visitors",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 170
+  },
+  {
+    "scenario": "The ninja enjoys throwing stars.",
+    "items": "There's a gold star, a silver star, a bronze star and a steel star.",
+    "outcome": "The ninja threw the gold star and the bronze star.",
+    "question": "So, what did the ninja throw?",
+    "statement": "The ninja threw the gold star and the bronze star",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 171
+  },
+  {
+    "scenario": "The bat likes hanging from branches.",
+    "items": "There are oak branches and willow branches.",
+    "outcome": "The bat hung from all the oak branches.",
+    "question": "So, what did the bat hang from?",
+    "statement": "The bat hung from all the oak branches",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 172
+  },
+  {
+    "scenario": "The sphinx likes guarding temples.",
+    "items": "There's a gold temple, a stone temple, a marble temple and a crystal temple.",
+    "outcome": "The sphinx guarded the gold temple.",
+    "question": "So, what did the sphinx guard?",
+    "statement": "The sphinx guarded the marble temple",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 173
+  },
+  {
+    "scenario": "The jay likes stealing berries.",
+    "items": "There are blackberries and mulberries.",
+    "outcome": "The jay stole all the blackberries.",
+    "question": "So, what did the jay steal?",
+    "statement": "The jay stole some of the mulberries",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 174
+  },
+  {
+    "scenario": "The sprite loves painting rainbows.",
+    "items": "There's a morning rainbow, an evening rainbow, a double rainbow and a faint rainbow.",
+    "outcome": "The sprite painted the morning rainbow and the double rainbow.",
+    "question": "So, what did the sprite paint?",
+    "statement": "The sprite painted the morning rainbow",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 175
+  },
+  {
+    "scenario": "The crane likes standing in ponds.",
+    "items": "There are shallow ponds and deep ponds.",
+    "outcome": "The crane stood in all the shallow ponds.",
+    "question": "So, what did the crane stand in?",
+    "statement": "The crane stood in some of the shallow ponds",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 176
+  },
+  {
+    "scenario": "The baker enjoys frosting cupcakes.",
+    "items": "There's a chocolate cupcake, a vanilla cupcake, a strawberry cupcake and a lemon cupcake.",
+    "outcome": "The baker frosted the chocolate cupcake and the vanilla cupcake.",
+    "question": "So, what did the baker frost?",
+    "statement": "The baker frosted the chocolate cupcake and the vanilla cupcake",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 177
+  },
+  {
+    "scenario": "The starfish likes clinging to rocks.",
+    "items": "There are purple rocks and orange rocks.",
+    "outcome": "The starfish clung to two out of four purple rocks.",
+    "question": "So, what did the starfish cling to?",
+    "statement": "The starfish clung to some of the purple rocks",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 178
+  },
+  {
+    "scenario": "The griffin loves guarding treasures.",
+    "items": "There's a crown, a scepter, an orb and a throne.",
+    "outcome": "The griffin guarded the crown and the scepter.",
+    "question": "So, what did the griffin guard?",
+    "statement": "The griffin guarded the crown",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 179
+  },
+  {
+    "scenario": "The puffin likes diving for fish.",
+    "items": "There are herring and mackerel.",
+    "outcome": "The puffin dove for all the herring.",
+    "question": "So, what did the puffin dive for?",
+    "statement": "The puffin dove for some of the herring",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 180
+  },
+  {
+    "scenario": "The samurai likes polishing swords.",
+    "items": "There's a long sword, a short sword, a curved sword and a straight sword.",
+    "outcome": "The samurai polished the long sword.",
+    "question": "So, what did the samurai polish?",
+    "statement": "The samurai polished the curved sword",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 181
+  },
+  {
+    "scenario": "The minnow likes swimming through weeds.",
+    "items": "There are tall weeds and short weeds.",
+    "outcome": "The minnow swam through all the tall weeds.",
+    "question": "So, what did the minnow swim through?",
+    "statement": "The minnow swam through all the short weeds",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 182
+  },
+  {
+    "scenario": "The acrobat enjoys swinging on trapezes.",
+    "items": "There's a red trapeze, a blue trapeze, a green trapeze and a yellow trapeze.",
+    "outcome": "The acrobat swung on the red trapeze and the green trapeze.",
+    "question": "So, what did the acrobat swing on?",
+    "statement": "The acrobat swung on the red trapeze and the green trapeze",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 183
+  },
+  {
+    "scenario": "The jellyfish likes floating past boats.",
+    "items": "There are sailboats and rowboats.",
+    "outcome": "The jellyfish floated past all the sailboats.",
+    "question": "So, what did the jellyfish float past?",
+    "statement": "The jellyfish floated past all the sailboats",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 184
+  },
+  {
+    "scenario": "The viking loves raiding villages.",
+    "items": "There's a fishing village, a farming village, a mining village and a trading village.",
+    "outcome": "The viking raided the fishing village and the mining village.",
+    "question": "So, what did the viking raid?",
+    "statement": "The viking raided the fishing village",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 185
+  },
+  {
+    "scenario": "The albatross likes soaring over waves.",
+    "items": "There are big waves and small waves.",
+    "outcome": "The albatross soared over all the big waves.",
+    "question": "So, what did the albatross soar over?",
+    "statement": "The albatross soared over some of the big waves",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 186
+  },
+  {
+    "scenario": "The gladiator likes fighting animals.",
+    "items": "There's a lion, a tiger, a bear and a wolf.",
+    "outcome": "The gladiator fought the lion and the tiger.",
+    "question": "So, what did the gladiator fight?",
+    "statement": "The gladiator fought the bear and the wolf",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 187
+  },
+  {
+    "scenario": "The shrimp likes hiding in coral.",
+    "items": "There are pink coral and blue coral.",
+    "outcome": "The shrimp hid in all the pink coral.",
+    "question": "So, what did the shrimp hide in?",
+    "statement": "The shrimp hid in some of the blue coral",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 188
+  },
+  {
+    "scenario": "The jockey enjoys riding horses.",
+    "items": "There's a brown horse, a gray horse, a white horse and a black horse.",
+    "outcome": "The jockey rode the brown horse and the gray horse.",
+    "question": "So, what did the jockey ride?",
+    "statement": "The jockey rode the gray horse",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 189
+  },
+  {
+    "scenario": "The clam likes filtering water.",
+    "items": "There are salty waters and fresh waters.",
+    "outcome": "The clam filtered all the salty waters.",
+    "question": "So, what did the clam filter?",
+    "statement": "The clam filtered some of the salty waters",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 190
+  },
+  {
+    "scenario": "The archer enjoys hitting targets.",
+    "items": "There's a round target, a square target, a triangle target and a star target.",
+    "outcome": "The archer hit the round target and the star target.",
+    "question": "So, what did the archer hit?",
+    "statement": "The archer hit the round target and the star target",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 191
+  },
+  {
+    "scenario": "The perch likes swimming near plants.",
+    "items": "There are lily plants and reed plants.",
+    "outcome": "The perch swam near three out of five lily plants.",
+    "question": "So, what did the perch swim near?",
+    "statement": "The perch swam near some of the lily plants",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 192
+  },
+  {
+    "scenario": "The pharaoh likes building pyramids.",
+    "items": "There's a small pyramid, a medium pyramid, a large pyramid and a giant pyramid.",
+    "outcome": "The pharaoh built the small pyramid.",
+    "question": "So, what did the pharaoh build?",
+    "statement": "The pharaoh built the giant pyramid",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 193
+  },
+  {
+    "scenario": "The eel likes slithering through caves.",
+    "items": "There are dark caves and bright caves.",
+    "outcome": "The eel slithered through all the dark caves.",
+    "question": "So, what did the eel slither through?",
+    "statement": "The eel slithered through all the bright caves",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 194
+  },
+  {
+    "scenario": "The sorceress loves reading scrolls.",
+    "items": "There's an ancient scroll, a magic scroll, a cursed scroll and a healing scroll.",
+    "outcome": "The sorceress read the ancient scroll and the magic scroll.",
+    "question": "So, what did the sorceress read?",
+    "statement": "The sorceress read the ancient scroll",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 195
+  },
+  {
+    "scenario": "The mackerel likes jumping out of water.",
+    "items": "There are calm waters and choppy waters.",
+    "outcome": "The mackerel jumped out of all the calm waters.",
+    "question": "So, what did the mackerel jump out of?",
+    "statement": "The mackerel jumped out of some of the calm waters",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 196
+  },
+  {
+    "scenario": "The sultan enjoys collecting carpets.",
+    "items": "There's a silk carpet, a wool carpet, a cotton carpet and a velvet carpet.",
+    "outcome": "The sultan collected the silk carpet and the velvet carpet.",
+    "question": "So, what did the sultan collect?",
+    "statement": "The sultan collected the silk carpet and the velvet carpet",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 197
+  },
+  {
+    "scenario": "The carp likes eating algae.",
+    "items": "There are green algae and brown algae.",
+    "outcome": "The carp ate all the green algae.",
+    "question": "So, what did the carp eat?",
+    "statement": "The carp ate all the green algae",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 198
+  },
+  {
+    "scenario": "The empress likes wearing necklaces.",
+    "items": "There's a ruby necklace, a sapphire necklace, an emerald necklace and a diamond necklace.",
+    "outcome": "The empress wore the ruby necklace and the emerald necklace.",
+    "question": "So, what did the empress wear?",
+    "statement": "The empress wore the sapphire necklace and the diamond necklace",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 199
+  },
+  {
+    "scenario": "The pike likes chasing minnows.",
+    "items": "There are silver minnows and gold minnows.",
+    "outcome": "The pike chased all the silver minnows.",
+    "question": "So, what did the pike chase?",
+    "statement": "The pike chased some of the gold minnows",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 200
+  },
+  {
+    "scenario": "The monk loves lighting candles.",
+    "items": "There's a white candle, a red candle, a purple candle and a gold candle.",
+    "outcome": "The monk lit the white candle and the purple candle.",
+    "question": "So, what did the monk light?",
+    "statement": "The monk lit the white candle",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 201
+  },
+  {
+    "scenario": "The bass likes hiding under logs.",
+    "items": "There are sunken logs and floating logs.",
+    "outcome": "The bass hid under all the sunken logs.",
+    "question": "So, what did the bass hide under?",
+    "statement": "The bass hid under some of the sunken logs",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 202
+  },
+  {
+    "scenario": "The duchess enjoys hosting parties.",
+    "items": "There's a garden party, a ball, a tea party and a masquerade.",
+    "outcome": "The duchess hosted the garden party and the ball.",
+    "question": "So, what did the duchess host?",
+    "statement": "The duchess hosted the garden party and the ball",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 203
+  },
+  {
+    "scenario": "The crayfish likes pinching fingers.",
+    "items": "There are big fingers and little fingers.",
+    "outcome": "The crayfish pinched two out of five big fingers.",
+    "question": "So, what did the crayfish pinch?",
+    "statement": "The crayfish pinched some of the big fingers",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 204
+  },
+  {
+    "scenario": "The duke likes hunting animals.",
+    "items": "There's a stag, a boar, a fox and a hare.",
+    "outcome": "The duke hunted the stag.",
+    "question": "So, what did the duke hunt?",
+    "statement": "The duke hunted the boar",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 205
+  },
+  {
+    "scenario": "The tadpole likes swimming in circles.",
+    "items": "There are big circles and small circles.",
+    "outcome": "The tadpole swam in all the big circles.",
+    "question": "So, what did the tadpole swim in?",
+    "statement": "The tadpole swam in all the small circles",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 206
+  },
+  {
+    "scenario": "The earl loves collecting stamps.",
+    "items": "There's a rare stamp, a common stamp, an old stamp and a new stamp.",
+    "outcome": "The earl collected the rare stamp and the old stamp.",
+    "question": "So, what did the earl collect?",
+    "statement": "The earl collected the rare stamp",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 207
+  },
+  {
+    "scenario": "The newt likes crawling on stones.",
+    "items": "There are wet stones and dry stones.",
+    "outcome": "The newt crawled on all the wet stones.",
+    "question": "So, what did the newt crawl on?",
+    "statement": "The newt crawled on some of the wet stones",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 208
+  },
+  {
+    "scenario": "The baron enjoys riding carriages.",
+    "items": "There's a gold carriage, a silver carriage, a black carriage and a white carriage.",
+    "outcome": "The baron rode the gold carriage and the black carriage.",
+    "question": "So, what did the baron ride?",
+    "statement": "The baron rode the gold carriage and the black carriage",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 209
+  },
+  {
+    "scenario": "The trout likes jumping over rapids.",
+    "items": "There are small rapids and large rapids.",
+    "outcome": "The trout jumped over all the small rapids.",
+    "question": "So, what did the trout jump over?",
+    "statement": "The trout jumped over all the small rapids",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 210
+  },
+  {
+    "scenario": "The countess likes arranging flowers.",
+    "items": "There's a rose, a tulip, a carnation and a lily.",
+    "outcome": "The countess arranged the rose and the tulip.",
+    "question": "So, what did the countess arrange?",
+    "statement": "The countess arranged the carnation and the lily",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 211
+  },
+  {
+    "scenario": "The guppy likes blowing bubbles.",
+    "items": "There are tiny bubbles and medium bubbles.",
+    "outcome": "The guppy blew all the tiny bubbles.",
+    "question": "So, what did the guppy blow?",
+    "statement": "The guppy blew some of the medium bubbles",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 212
+  },
+  {
+    "scenario": "The viscount loves playing instruments.",
+    "items": "There's a harp, a lute, a flute and a violin.",
+    "outcome": "The viscount played the harp and the lute.",
+    "question": "So, what did the viscount play?",
+    "statement": "The viscount played the harp",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 213
+  },
+  {
+    "scenario": "The sardine likes swimming in schools.",
+    "items": "There are big schools and small schools.",
+    "outcome": "The sardine swam in all the big schools.",
+    "question": "So, what did the sardine swim in?",
+    "statement": "The sardine swam in some of the big schools",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 214
+  },
+  {
+    "scenario": "The marquis enjoys tasting wines.",
+    "items": "There's a red wine, a white wine, a rose wine and a sparkling wine.",
+    "outcome": "The marquis tasted the red wine and the sparkling wine.",
+    "question": "So, what did the marquis taste?",
+    "statement": "The marquis tasted the red wine and the sparkling wine",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 215
+  },
+  {
+    "scenario": "The flounder likes resting on sand.",
+    "items": "There are white sand patches and brown sand patches.",
+    "outcome": "The flounder rested on three out of five white sand patches.",
+    "question": "So, what did the flounder rest on?",
+    "statement": "The flounder rested on some of the white sand patches",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 216
+  },
+  {
+    "scenario": "The lady likes picking berries.",
+    "items": "There's a raspberry bush, a blueberry bush, a strawberry bush and a blackberry bush.",
+    "outcome": "The lady picked from the raspberry bush.",
+    "question": "So, what did the lady pick from?",
+    "statement": "The lady picked from the blackberry bush",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 217
+  },
+  {
+    "scenario": "The anchovy likes darting through kelp.",
+    "items": "There are tall kelp and short kelp.",
+    "outcome": "The anchovy darted through all the tall kelp.",
+    "question": "So, what did the anchovy dart through?",
+    "statement": "The anchovy darted through all the short kelp",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 218
+  },
+  {
+    "scenario": "The lord loves signing decrees.",
+    "items": "There's a tax decree, a land decree, a trade decree and a peace decree.",
+    "outcome": "The lord signed the tax decree and the trade decree.",
+    "question": "So, what did the lord sign?",
+    "statement": "The lord signed the trade decree",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 219
+  },
+  {
+    "scenario": "The herring likes swimming in currents.",
+    "items": "There are warm currents and cold currents.",
+    "outcome": "The herring swam in all the warm currents.",
+    "question": "So, what did the herring swim in?",
+    "statement": "The herring swam in some of the warm currents",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 220
+  },
+  {
+    "scenario": "The noble enjoys collecting art.",
+    "items": "There's a painting, a sculpture, a tapestry and a vase.",
+    "outcome": "The noble collected the painting and the sculpture.",
+    "question": "So, what did the noble collect?",
+    "statement": "The noble collected the painting and the sculpture",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 221
+  },
+  {
+    "scenario": "The swordfish likes leaping over waves.",
+    "items": "There are high waves and low waves.",
+    "outcome": "The swordfish leaped over all the high waves.",
+    "question": "So, what did the swordfish leap over?",
+    "statement": "The swordfish leaped over all the high waves",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 222
+  },
+  {
+    "scenario": "The captain likes steering ships.",
+    "items": "There's a merchant ship, a pirate ship, a navy ship and a fishing boat.",
+    "outcome": "The captain steered the merchant ship and the navy ship.",
+    "question": "So, what did the captain steer?",
+    "statement": "The captain steered the pirate ship and the fishing boat",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 223
+  },
+  {
+    "scenario": "The tuna likes racing other fish.",
+    "items": "There are fast fish and slow fish.",
+    "outcome": "The tuna raced all the fast fish.",
+    "question": "So, what did the tuna race?",
+    "statement": "The tuna raced some of the slow fish",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 224
+  },
+  {
+    "scenario": "The admiral loves commanding fleets.",
+    "items": "There's a battle fleet, a trade fleet, a fishing fleet and an exploration fleet.",
+    "outcome": "The admiral commanded the battle fleet and the exploration fleet.",
+    "question": "So, what did the admiral command?",
+    "statement": "The admiral commanded the battle fleet",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 225
+  },
+  {
+    "scenario": "The salmon likes swimming upstream.",
+    "items": "There are rocky streams and smooth streams.",
+    "outcome": "The salmon swam up all the rocky streams.",
+    "question": "So, what did the salmon swim up?",
+    "statement": "The salmon swam up some of the rocky streams",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 226
+  },
+  {
+    "scenario": "The general enjoys planning battles.",
+    "items": "There's a land battle, a sea battle, an air battle and a siege.",
+    "outcome": "The general planned the land battle and the siege.",
+    "question": "So, what did the general plan?",
+    "statement": "The general planned the land battle and the siege",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 227
+  },
+  {
+    "scenario": "The cod likes swimming near reefs.",
+    "items": "There are coral reefs and rocky reefs.",
+    "outcome": "The cod swam near two out of four coral reefs.",
+    "question": "So, what did the cod swim near?",
+    "statement": "The cod swam near some of the coral reefs",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 228
+  },
+  {
+    "scenario": "The commander loves awarding medals.",
+    "items": "There's a bronze medal, a silver medal, a gold medal and a platinum medal.",
+    "outcome": "The commander awarded the bronze medal and the gold medal.",
+    "question": "So, what did the commander award?",
+    "statement": "The commander awarded the bronze medal",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 229
+  },
+  {
+    "scenario": "The haddock likes hiding in seaweed.",
+    "items": "There are green seaweed and red seaweed.",
+    "outcome": "The haddock hid in all the green seaweed.",
+    "question": "So, what did the haddock hide in?",
+    "statement": "The haddock hid in some of the green seaweed",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 230
+  },
+  {
+    "scenario": "The colonel likes inspecting troops.",
+    "items": "There's an infantry troop, a cavalry troop, an artillery troop and a scout troop.",
+    "outcome": "The colonel inspected the infantry troop.",
+    "question": "So, what did the colonel inspect?",
+    "statement": "The colonel inspected the cavalry troop",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 231
+  },
+  {
+    "scenario": "The sole likes burying in sand.",
+    "items": "There are fine sand patches and coarse sand patches.",
+    "outcome": "The sole buried in all the fine sand patches.",
+    "question": "So, what did the sole bury in?",
+    "statement": "The sole buried in all the coarse sand patches",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 232
+  },
+  {
+    "scenario": "The major enjoys reading maps.",
+    "items": "There's a terrain map, a weather map, a troop map and a supply map.",
+    "outcome": "The major read the terrain map and the troop map.",
+    "question": "So, what did the major read?",
+    "statement": "The major read the terrain map and the troop map",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 233
+  },
+  {
+    "scenario": "The plaice likes flipping on shores.",
+    "items": "There are sandy shores and pebbly shores.",
+    "outcome": "The plaice flipped on all the sandy shores.",
+    "question": "So, what did the plaice flip on?",
+    "statement": "The plaice flipped on all the sandy shores",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 234
+  },
+  {
+    "scenario": "The sergeant loves training soldiers.",
+    "items": "There's a tall soldier, a short soldier, a strong soldier and a fast soldier.",
+    "outcome": "The sergeant trained the tall soldier and the strong soldier.",
+    "question": "So, who did the sergeant train?",
+    "statement": "The sergeant trained the strong soldier",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 235
+  },
+  {
+    "scenario": "The mullet likes jumping near docks.",
+    "items": "There are wooden docks and stone docks.",
+    "outcome": "The mullet jumped near all the wooden docks.",
+    "question": "So, what did the mullet jump near?",
+    "statement": "The mullet jumped near some of the wooden docks",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 236
+  },
+  {
+    "scenario": "The corporal likes carrying flags.",
+    "items": "There's a red flag, a blue flag, a green flag and a white flag.",
+    "outcome": "The corporal carried the red flag and the blue flag.",
+    "question": "So, what did the corporal carry?",
+    "statement": "The corporal carried the green flag and the white flag",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 237
+  },
+  {
+    "scenario": "The bream likes nibbling at worms.",
+    "items": "There are red worms and brown worms.",
+    "outcome": "The bream nibbled at all the red worms.",
+    "question": "So, what did the bream nibble at?",
+    "statement": "The bream nibbled at some of the brown worms",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 238
+  },
+  {
+    "scenario": "The scout enjoys climbing hills.",
+    "items": "There's a grassy hill, a rocky hill, a sandy hill and a muddy hill.",
+    "outcome": "The scout climbed the grassy hill and the rocky hill.",
+    "question": "So, what did the scout climb?",
+    "statement": "The scout climbed the grassy hill",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 239
+  },
+  {
+    "scenario": "The dab likes resting on mud.",
+    "items": "There are soft mud patches and hard mud patches.",
+    "outcome": "The dab rested on all the soft mud patches.",
+    "question": "So, what did the dab rest on?",
+    "statement": "The dab rested on some of the soft mud patches",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 240
+  },
+  {
+    "scenario": "The private enjoys cleaning weapons.",
+    "items": "There's a rifle, a pistol, a sword and a knife.",
+    "outcome": "The private cleaned the rifle and the sword.",
+    "question": "So, what did the private clean?",
+    "statement": "The private cleaned the rifle and the sword",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 241
+  },
+  {
+    "scenario": "The turbot likes circling around buoys.",
+    "items": "There are red buoys and yellow buoys.",
+    "outcome": "The turbot circled around three out of five red buoys.",
+    "question": "So, what did the turbot circle around?",
+    "statement": "The turbot circled around some of the red buoys",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 242
+  },
+  {
+    "scenario": "The recruit likes doing exercises.",
+    "items": "There's a jumping exercise, a running exercise, a lifting exercise and a stretching exercise.",
+    "outcome": "The recruit did the jumping exercise.",
+    "question": "So, what did the recruit do?",
+    "statement": "The recruit did the running exercise",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 243
+  },
+  {
+    "scenario": "The grouper likes lurking in caves.",
+    "items": "There are underwater caves and shore caves.",
+    "outcome": "The grouper lurked in all the underwater caves.",
+    "question": "So, what did the grouper lurk in?",
+    "statement": "The grouper lurked in all the shore caves",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 244
+  },
+  {
+    "scenario": "The cadet loves polishing boots.",
+    "items": "There's a black boot, a brown boot, a tan boot and a gray boot.",
+    "outcome": "The cadet polished the black boot and the brown boot.",
+    "question": "So, what did the cadet polish?",
+    "statement": "The cadet polished the brown boot",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 245
+  },
+  {
+    "scenario": "The snapper likes patrolling territories.",
+    "items": "There are shallow territories and deep territories.",
+    "outcome": "The snapper patrolled all the shallow territories.",
+    "question": "So, what did the snapper patrol?",
+    "statement": "The snapper patrolled some of the shallow territories",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 246
+  },
+  {
+    "scenario": "The drummer enjoys beating drums.",
+    "items": "There's a snare drum, a bass drum, a tom drum and a bongo drum.",
+    "outcome": "The drummer beat the snare drum and the bass drum.",
+    "question": "So, what did the drummer beat?",
+    "statement": "The drummer beat the snare drum and the bass drum",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 247
+  },
+  {
+    "scenario": "The ray likes gliding over floors.",
+    "items": "There are sandy floors and rocky floors.",
+    "outcome": "The ray glided over all the sandy floors.",
+    "question": "So, what did the ray glide over?",
+    "statement": "The ray glided over all the sandy floors",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 248
+  },
+  {
+    "scenario": "The trumpeter likes blowing notes.",
+    "items": "There's a high note, a low note, a long note and a short note.",
+    "outcome": "The trumpeter blew the high note and the low note.",
+    "question": "So, what did the trumpeter blow?",
+    "statement": "The trumpeter blew the long note and the short note",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 249
+  },
+  {
+    "scenario": "The wrasse likes cleaning other fish.",
+    "items": "There are big fish and small fish.",
+    "outcome": "The wrasse cleaned all the big fish.",
+    "question": "So, what did the wrasse clean?",
+    "statement": "The wrasse cleaned some of the small fish",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 250
+  },
+  {
+    "scenario": "The piper loves playing tunes.",
+    "items": "There's a march tune, a waltz tune, a jig tune and a lullaby tune.",
+    "outcome": "The piper played the march tune and the jig tune.",
+    "question": "So, what did the piper play?",
+    "statement": "The piper played the march tune",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 251
+  },
+  {
+    "scenario": "The barracuda likes hunting prey.",
+    "items": "There are fast prey and slow prey.",
+    "outcome": "The barracuda hunted all the fast prey.",
+    "question": "So, what did the barracuda hunt?",
+    "statement": "The barracuda hunted some of the fast prey",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 252
+  },
+  {
+    "scenario": "The fiddler enjoys playing songs.",
+    "items": "There's a folk song, a country song, a classical song and a dance song.",
+    "outcome": "The fiddler played the folk song and the country song.",
+    "question": "So, what did the fiddler play?",
+    "statement": "The fiddler played the folk song and the country song",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 253
+  },
+  {
+    "scenario": "The goby likes perching on rocks.",
+    "items": "There are smooth rocks and rough rocks.",
+    "outcome": "The goby perched on two out of four smooth rocks.",
+    "question": "So, what did the goby perch on?",
+    "statement": "The goby perched on some of the smooth rocks",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 254
+  },
+  {
+    "scenario": "The harpist likes strumming strings.",
+    "items": "There's a gold string, a silver string, a copper string and a bronze string.",
+    "outcome": "The harpist strummed the gold string.",
+    "question": "So, what did the harpist strum?",
+    "statement": "The harpist strummed the copper string",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 255
+  },
+  {
+    "scenario": "The blenny likes poking out of holes.",
+    "items": "There are sandy holes and rocky holes.",
+    "outcome": "The blenny poked out of all the sandy holes.",
+    "question": "So, what did the blenny poke out of?",
+    "statement": "The blenny poked out of all the rocky holes",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 256
+  },
+  {
+    "scenario": "The cellist loves bowing strings.",
+    "items": "There's a thick string, a thin string, a short string and a long string.",
+    "outcome": "The cellist bowed the thick string and the thin string.",
+    "question": "So, what did the cellist bow?",
+    "statement": "The cellist bowed the thick string",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 257
+  },
+  {
+    "scenario": "The blowfish likes puffing up near predators.",
+    "items": "There are big predators and small predators.",
+    "outcome": "The blowfish puffed up near all the big predators.",
+    "question": "So, what did the blowfish puff up near?",
+    "statement": "The blowfish puffed up near some of the big predators",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 258
+  },
+  {
+    "scenario": "The violist enjoys playing melodies.",
+    "items": "There's a sad melody, a happy melody, a slow melody and a fast melody.",
+    "outcome": "The violist played the sad melody and the fast melody.",
+    "question": "So, what did the violist play?",
+    "statement": "The violist played the sad melody and the fast melody",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 259
+  },
+  {
+    "scenario": "The moray likes slithering through crevices.",
+    "items": "There are narrow crevices and wide crevices.",
+    "outcome": "The moray slithered through all the narrow crevices.",
+    "question": "So, what did the moray slither through?",
+    "statement": "The moray slithered through all the narrow crevices",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 260
+  },
+  {
+    "scenario": "The flutist likes performing pieces.",
+    "items": "There's a sonata piece, a concerto piece, a suite piece and a symphony piece.",
+    "outcome": "The flutist performed the sonata piece and the suite piece.",
+    "question": "So, what did the flutist perform?",
+    "statement": "The flutist performed the concerto piece and the symphony piece",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 261
+  },
+  {
+    "scenario": "The angelfish likes swimming near anemones.",
+    "items": "There are purple anemones and pink anemones.",
+    "outcome": "The angelfish swam near all the purple anemones.",
+    "question": "So, what did the angelfish swim near?",
+    "statement": "The angelfish swam near some of the pink anemones",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 262
+  },
+  {
+    "scenario": "The oboist loves practicing scales.",
+    "items": "There's a major scale, a minor scale, a chromatic scale and a pentatonic scale.",
+    "outcome": "The oboist practiced the major scale and the chromatic scale.",
+    "question": "So, what did the oboist practice?",
+    "statement": "The oboist practiced the major scale",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 263
+  },
+  {
+    "scenario": "The damselfish likes defending territories.",
+    "items": "There are reef territories and rock territories.",
+    "outcome": "The damselfish defended all the reef territories.",
+    "question": "So, what did the damselfish defend?",
+    "statement": "The damselfish defended some of the reef territories",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 264
+  },
+  {
+    "scenario": "The clarinetist enjoys learning pieces.",
+    "items": "There's a jazz piece, a classical piece, a folk piece and a pop piece.",
+    "outcome": "The clarinetist learned the jazz piece and the classical piece.",
+    "question": "So, what did the clarinetist learn?",
+    "statement": "The clarinetist learned the jazz piece and the classical piece",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 265
+  },
+  {
+    "scenario": "The butterflyfish likes feeding on polyps.",
+    "items": "There are hard polyps and soft polyps.",
+    "outcome": "The butterflyfish fed on three out of five hard polyps.",
+    "question": "So, what did the butterflyfish feed on?",
+    "statement": "The butterflyfish fed on some of the hard polyps",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 266
+  },
+  {
+    "scenario": "The saxophonist likes improvising solos.",
+    "items": "There's a blues solo, a jazz solo, a funk solo and a rock solo.",
+    "outcome": "The saxophonist improvised the blues solo.",
+    "question": "So, what did the saxophonist improvise?",
+    "statement": "The saxophonist improvised the funk solo",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 267
+  },
+  {
+    "scenario": "The parrotfish likes munching coral.",
+    "items": "There are hard coral and soft coral.",
+    "outcome": "The parrotfish munched all the hard coral.",
+    "question": "So, what did the parrotfish munch?",
+    "statement": "The parrotfish munched all the soft coral",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 268
+  },
+  {
+    "scenario": "The bassoonist loves rehearsing passages.",
+    "items": "There's a fast passage, a slow passage, a loud passage and a soft passage.",
+    "outcome": "The bassoonist rehearsed the fast passage and the slow passage.",
+    "question": "So, what did the bassoonist rehearse?",
+    "statement": "The bassoonist rehearsed the fast passage",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 269
+  },
+  {
+    "scenario": "The triggerfish likes moving rocks.",
+    "items": "There are small rocks and medium rocks.",
+    "outcome": "The triggerfish moved all the small rocks.",
+    "question": "So, what did the triggerfish move?",
+    "statement": "The triggerfish moved some of the small rocks",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 270
+  },
+  {
+    "scenario": "The pianist enjoys memorizing concertos.",
+    "items": "There's a Mozart concerto, a Beethoven concerto, a Chopin concerto and a Liszt concerto.",
+    "outcome": "The pianist memorized the Mozart concerto and the Beethoven concerto.",
+    "question": "So, what did the pianist memorize?",
+    "statement": "The pianist memorized the Mozart concerto and the Beethoven concerto",
+    "expected": "yes",
+    "category": "true-conj",
+    "test_id": 271
+  },
+  {
+    "scenario": "The surgeonfish likes grazing on algae.",
+    "items": "There are turf algae and hair algae.",
+    "outcome": "The surgeonfish grazed on all the turf algae.",
+    "question": "So, what did the surgeonfish graze on?",
+    "statement": "The surgeonfish grazed on all the turf algae",
+    "expected": "yes",
+    "category": "true-quant",
+    "test_id": 272
+  },
+  {
+    "scenario": "The guitarist likes strumming chords.",
+    "items": "There's a major chord, a minor chord, a seventh chord and a suspended chord.",
+    "outcome": "The guitarist strummed the major chord and the minor chord.",
+    "question": "So, what did the guitarist strum?",
+    "statement": "The guitarist strummed the seventh chord and the suspended chord",
+    "expected": "no",
+    "category": "false-conj",
+    "test_id": 273
+  },
+  {
+    "scenario": "The boxfish likes floating near sponges.",
+    "items": "There are tube sponges and barrel sponges.",
+    "outcome": "The boxfish floated near all the tube sponges.",
+    "question": "So, what did the boxfish float near?",
+    "statement": "The boxfish floated near some of the barrel sponges",
+    "expected": "no",
+    "category": "false-quant",
+    "test_id": 274
+  },
+  {
+    "scenario": "The percussionist loves hitting cymbals.",
+    "items": "There's a crash cymbal, a ride cymbal, a hi-hat cymbal and a splash cymbal.",
+    "outcome": "The percussionist hit the crash cymbal and the ride cymbal.",
+    "question": "So, what did the percussionist hit?",
+    "statement": "The percussionist hit the crash cymbal",
+    "expected": "no",
+    "category": "underinf-conj",
+    "test_id": 275
+  },
+  {
+    "scenario": "The lionfish likes displaying spines.",
+    "items": "There are dorsal spines and pectoral spines.",
+    "outcome": "The lionfish displayed all the dorsal spines.",
+    "question": "So, what did the lionfish display?",
+    "statement": "The lionfish displayed some of the dorsal spines",
+    "expected": "no",
+    "category": "underinf-quant",
+    "test_id": 276
+  }
+]
