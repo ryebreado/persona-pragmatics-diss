@@ -117,8 +117,8 @@ def main():
     parser = argparse.ArgumentParser(description='Compare persona evaluation results with baseline')
     parser.add_argument('persona_files', nargs='+', help='Persona result JSON files to compare')
     parser.add_argument('--baseline', help='Baseline file (auto-detected if not specified)')
-    parser.add_argument('--confidence-threshold', type=float, default=0.1, 
-                       help='Confidence difference threshold (default: 0.1 = 10%)')
+    parser.add_argument('--confidence-threshold', type=float, default=0.1,
+                       help='Confidence difference threshold (default: 0.1 = 10%%)')
     parser.add_argument('--results-dir', default='results', help='Results directory')
     parser.add_argument('--summary-only', action='store_true', help='Show only summary statistics')
     
