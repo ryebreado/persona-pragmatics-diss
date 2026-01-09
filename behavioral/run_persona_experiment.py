@@ -107,7 +107,7 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument('model', help='Model to test (e.g., gpt-4o-mini, meta-llama/Llama-3.2-8B-Instruct)')
-    parser.add_argument('--test-file', default='data/scalar_implicature_full.json',
+    parser.add_argument('--test-file', default='data/scalar_implicature_250.json',
                        help='Test file to use')
     parser.add_argument('--persona-dir', default='personas',
                        help='Directory containing persona files')
@@ -121,6 +121,8 @@ def main():
                        help='Skip baseline run (use existing)')
     parser.add_argument('--skip-personas', action='store_true',
                        help='Skip persona runs (use existing)')
+    parser.add_argument('--run-comparison', action='store_true',
+                       help='Run comparison after evaluations (default: skip)')
     parser.add_argument('--comparison-only', action='store_true',
                        help='Only run comparisons (skip evaluation runs)')
     parser.add_argument('--verbose', action='store_true',
@@ -261,32 +263,34 @@ def main():
                 # Small delay between runs
                 time.sleep(1 if not use_local else 2)
     
-    # Step 3: Run comparisons
-    print(f"\nSTEP 3: Running comparisons...")
-    
-    # Find all persona result files for this model
-    persona_results = find_recent_results(args.model, "persona", args.results_dir)
-    
-    if not persona_results:
-        print(f"No persona results found for model {args.model}")
-        print("Make sure you've run the evaluations first!")
-        sys.exit(1)
-    
-    print(f"Found {len(persona_results)} persona result files to compare")
-    
-    cmd = [
-        'python', 'behavioral/compare_persona_results.py',
-        *persona_results,
-        '--confidence-threshold', str(args.confidence_threshold),
-        '--results-dir', args.results_dir
-    ]
-    
-    if not args.verbose:
-        cmd.append('--summary-only')
-    
-    total_runs += 1
-    if run_command(cmd, "Persona comparisons"):
-        success_count += 1
+    # Step 3: Run comparisons (only if requested or comparison-only mode)
+    if args.run_comparison or args.comparison_only:
+        print(f"\nSTEP 3: Running comparisons...")
+
+        # Find all persona result files for this model
+        persona_results = find_recent_results(args.model, "persona", args.results_dir)
+
+        if not persona_results:
+            print(f"No persona results found for model {args.model}")
+            print("Make sure you've run the evaluations first!")
+            sys.exit(1)
+
+        print(f"Found {len(persona_results)} persona result files to compare")
+
+        cmd = [
+            'python', 'behavioral/compare_persona_results.py',
+            args.results_dir,
+            '--confidence-threshold', str(args.confidence_threshold)
+        ]
+
+        if not args.verbose:
+            cmd.append('--summary-only')
+
+        total_runs += 1
+        if run_command(cmd, "Persona comparisons"):
+            success_count += 1
+    else:
+        print(f"\nSTEP 3: Skipping comparisons (use --run-comparison to enable)")
     
     # Summary
     experiment_end = datetime.now()

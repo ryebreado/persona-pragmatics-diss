@@ -79,6 +79,41 @@ class LocalModelWithActivations:
         print(f"Model loaded successfully on {self.device}")
         print(f"Model has {self.n_layers} layers")
 
+        # Check if this is a Qwen model (for thinking mode handling)
+        self.is_qwen = 'qwen' in model_name.lower()
+        if self.is_qwen:
+            print("Detected Qwen model - thinking mode will be disabled")
+
+    def format_prompt(self, prompt: str) -> str:
+        """
+        Format prompt using chat template if available.
+        For Qwen3 models, this disables thinking/reasoning mode.
+        """
+        # Use chat template if available
+        if hasattr(self.tokenizer, 'apply_chat_template'):
+            messages = [{"role": "user", "content": prompt}]
+            try:
+                # For Qwen3, disable thinking mode
+                if self.is_qwen:
+                    formatted = self.tokenizer.apply_chat_template(
+                        messages,
+                        tokenize=False,
+                        add_generation_prompt=True,
+                        enable_thinking=False
+                    )
+                else:
+                    formatted = self.tokenizer.apply_chat_template(
+                        messages,
+                        tokenize=False,
+                        add_generation_prompt=True
+                    )
+                return formatted
+            except Exception as e:
+                # Fall back to raw prompt if chat template fails
+                print(f"Warning: Chat template failed, using raw prompt: {e}")
+                return prompt
+        return prompt
+
     def register_hooks(self, layer_indices: Optional[List[int]] = None):
         """
         Register forward hooks to capture activations.
@@ -126,8 +161,11 @@ class LocalModelWithActivations:
         Returns:
             Dictionary with 'yes' and 'no' logprobs
         """
+        # Format prompt using chat template
+        formatted_prompt = self.format_prompt(prompt)
+
         # Tokenize input
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to(self.device)
 
         # Get token IDs for yes/no
         # Try common variations of yes/no tokens
@@ -200,8 +238,11 @@ class LocalModelWithActivations:
         if track_activations:
             self.register_hooks(layer_indices)
 
+        # Format prompt using chat template
+        formatted_prompt = self.format_prompt(prompt)
+
         # Tokenize input
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
+        inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to(self.device)
         prompt_length = inputs.input_ids.shape[1]
 
         # Generate
@@ -519,8 +560,12 @@ def main():
 
     # Run tests
     results = []
-    correct_by_category = {'true': 0, 'false': 0, 'underinformative': 0}
-    total_by_category = {'true': 0, 'false': 0, 'underinformative': 0}
+    # Track both fine-grained categories and high-level groupings
+    correct_by_category = {}  # Fine-grained (e.g., 'true-conj', 'underinf-quant')
+    total_by_category = {}
+    # High-level groupings: true, false, underinformative
+    correct_by_group = {'true': 0, 'false': 0, 'underinformative': 0}
+    total_by_group = {'true': 0, 'false': 0, 'underinformative': 0}
 
     print(f"\nRunning {len(test_cases)} scalar implicature test(s) with {args.model}...")
     if persona_prompt:
@@ -559,9 +604,29 @@ def main():
             results.append(result)
 
             category = result['category']
+            # Initialize category counters if not seen before
+            if category not in total_by_category:
+                total_by_category[category] = 0
+                correct_by_category[category] = 0
             total_by_category[category] += 1
             if result['correct']:
                 correct_by_category[category] += 1
+
+            # Map to high-level group (true, false, underinformative)
+            if category.startswith('true'):
+                group = 'true'
+            elif category.startswith('false'):
+                group = 'false'
+            elif category.startswith('underinf'):
+                group = 'underinformative'
+            else:
+                group = category  # Fallback for legacy categories
+                if group not in total_by_group:
+                    total_by_group[group] = 0
+                    correct_by_group[group] = 0
+            total_by_group[group] += 1
+            if result['correct']:
+                correct_by_group[group] += 1
 
             status = "✓" if result['correct'] else "✗"
 
@@ -582,8 +647,8 @@ def main():
         print()
 
     # Calculate statistics
-    total_correct = sum(correct_by_category.values())
-    total_tests = sum(total_by_category.values())
+    total_correct = sum(correct_by_group.values())
+    total_tests = sum(total_by_group.values())
 
     print("="*80)
     print("SCALAR IMPLICATURE EVALUATION RESULTS")
@@ -596,18 +661,32 @@ def main():
         print(f"Overall Accuracy: {total_correct/total_tests:.3f} ({total_correct}/{total_tests})")
         print()
 
-        for category in ['true', 'false', 'underinformative']:
-            if total_by_category[category] > 0:
-                accuracy = correct_by_category[category] / total_by_category[category]
-                print(f"{category.capitalize()} statements: {accuracy:.3f} "
-                      f"({correct_by_category[category]}/{total_by_category[category]})")
+        # High-level group results
+        print("--- High-Level Results ---")
+        for group in ['true', 'false', 'underinformative']:
+            if total_by_group.get(group, 0) > 0:
+                accuracy = correct_by_group[group] / total_by_group[group]
+                print(f"{group.capitalize()} statements: {accuracy:.3f} "
+                      f"({correct_by_group[group]}/{total_by_group[group]})")
 
-                # Show average confidence for this category if using logprobs
+                # Show average confidence for this group if using logprobs
                 if args.use_logprobs:
-                    category_results = [r for r in results if r['category'] == category and 'confidence' in r]
-                    if category_results:
-                        avg_confidence = sum(r['confidence'] for r in category_results) / len(category_results)
+                    group_results = [r for r in results
+                                    if (r['category'].startswith(group) or r['category'] == group)
+                                    and 'confidence' in r]
+                    if group_results:
+                        avg_confidence = sum(r['confidence'] for r in group_results) / len(group_results)
                         print(f"  Average confidence: {avg_confidence:.3f}")
+
+        # Fine-grained category results
+        if len(total_by_category) > 3:  # More than just true/false/underinformative
+            print()
+            print("--- Fine-Grained Results ---")
+            for category in sorted(total_by_category.keys()):
+                if total_by_category[category] > 0:
+                    accuracy = correct_by_category[category] / total_by_category[category]
+                    print(f"  {category}: {accuracy:.3f} "
+                          f"({correct_by_category[category]}/{total_by_category[category]})")
 
         # Overall average confidence
         if args.use_logprobs:
@@ -638,6 +717,12 @@ def main():
         'tracked_layers': layer_indices,
         'total_tests': total_tests,
         'total_accuracy': total_correct/total_tests if total_tests > 0 else 0,
+        # High-level group accuracy (true/false/underinformative)
+        'accuracy_by_group': {
+            grp: correct_by_group[grp]/total_by_group[grp]
+            for grp in correct_by_group if total_by_group.get(grp, 0) > 0
+        },
+        # Fine-grained category accuracy (e.g., true-conj, underinf-quant)
         'accuracy_by_category': {
             cat: correct_by_category[cat]/total_by_category[cat]
             for cat in correct_by_category if total_by_category[cat] > 0
@@ -647,13 +732,24 @@ def main():
 
     # Add confidence statistics if using logprobs
     if args.use_logprobs:
+        # High-level group confidence
+        confidence_by_group = {}
+        for group in ['true', 'false', 'underinformative']:
+            group_results = [r for r in results
+                           if (r['category'].startswith(group) or r['category'] == group)
+                           and 'confidence' in r]
+            if group_results:
+                avg_confidence = sum(r['confidence'] for r in group_results) / len(group_results)
+                confidence_by_group[group] = avg_confidence
+        output_data['confidence_by_group'] = confidence_by_group
+
+        # Fine-grained category confidence
         confidence_by_category = {}
-        for category in ['true', 'false', 'underinformative']:
+        for category in total_by_category.keys():
             category_results = [r for r in results if r['category'] == category and 'confidence' in r]
             if category_results:
                 avg_confidence = sum(r['confidence'] for r in category_results) / len(category_results)
                 confidence_by_category[category] = avg_confidence
-
         output_data['confidence_by_category'] = confidence_by_category
 
         confidence_results = [r for r in results if 'confidence' in r]

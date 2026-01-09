@@ -5,6 +5,27 @@ import sys
 import os
 from glob import glob
 
+
+def find_results_in_directory(results_dir):
+    """
+    Find all result files in a directory.
+    Returns tuple of (baseline_file, persona_files).
+    """
+    all_files = glob(os.path.join(results_dir, "*.json"))
+
+    baseline_file = None
+    persona_files = []
+
+    for f in all_files:
+        basename = os.path.basename(f)
+        if "_baseline_" in basename:
+            baseline_file = f
+        else:
+            persona_files.append(f)
+
+    return baseline_file, sorted(persona_files)
+
+
 def load_results(file_path):
     """Load results from JSON file"""
     try:
@@ -115,16 +136,39 @@ def find_baseline_file(persona_file, results_dir="results"):
 
 def main():
     parser = argparse.ArgumentParser(description='Compare persona evaluation results with baseline')
-    parser.add_argument('persona_files', nargs='+', help='Persona result JSON files to compare')
+    parser.add_argument('path', nargs='+',
+                       help='Results directory OR persona result JSON files to compare')
     parser.add_argument('--baseline', help='Baseline file (auto-detected if not specified)')
     parser.add_argument('--confidence-threshold', type=float, default=0.1,
                        help='Confidence difference threshold (default: 0.1 = 10%%)')
-    parser.add_argument('--results-dir', default='results', help='Results directory')
     parser.add_argument('--summary-only', action='store_true', help='Show only summary statistics')
-    
+
     args = parser.parse_args()
-    
-    for persona_file in args.persona_files:
+
+    # Determine if input is a directory or list of files
+    if len(args.path) == 1 and os.path.isdir(args.path[0]):
+        # Directory mode: find baseline and persona files in directory
+        results_dir = args.path[0]
+        baseline_file, persona_files = find_results_in_directory(results_dir)
+
+        if not baseline_file:
+            print(f"No baseline file found in {results_dir}")
+            print("Looking for files matching: *_baseline_*.json")
+            sys.exit(1)
+
+        if not persona_files:
+            print(f"No persona result files found in {results_dir}")
+            sys.exit(1)
+
+        print(f"Found baseline: {os.path.basename(baseline_file)}")
+        print(f"Found {len(persona_files)} persona files")
+        args.baseline = baseline_file
+    else:
+        # File mode: treat paths as persona files
+        persona_files = args.path
+        results_dir = os.path.dirname(persona_files[0]) if persona_files else 'results'
+
+    for persona_file in persona_files:
         print(f"\n{'='*80}")
         print(f"COMPARING: {os.path.basename(persona_file)}")
         print(f"{'='*80}")
@@ -138,7 +182,7 @@ def main():
         if args.baseline:
             baseline_file = args.baseline
         else:
-            baseline_file = find_baseline_file(persona_file, args.results_dir)
+            baseline_file = find_baseline_file(persona_file, results_dir)
             if not baseline_file:
                 print(f"Could not find baseline file for {persona_file}")
                 print(f"Looking for pattern: scalar_implicature_*_baseline_*.json")
@@ -193,17 +237,35 @@ def main():
         acc_diff = persona_acc - baseline_acc
         print(f"Accuracy: Baseline {baseline_acc:.3f} → Persona {persona_acc:.3f} (Δ{acc_diff:+.3f})")
         
-        # Category breakdown
+        # High-level group breakdown (true/false/underinformative)
+        # Try accuracy_by_group first (new format), fall back to accuracy_by_category (old format)
+        baseline_grp = baseline_data.get('accuracy_by_group', baseline_data.get('accuracy_by_category', {}))
+        persona_grp = persona_data.get('accuracy_by_group', persona_data.get('accuracy_by_category', {}))
+
+        print(f"\nBy Group (high-level):")
+        for group in ['true', 'false', 'underinformative']:
+            if group in baseline_grp and group in persona_grp:
+                base_acc = baseline_grp[group]
+                pers_acc = persona_grp[group]
+                diff = pers_acc - base_acc
+                print(f"  {group.capitalize()}: {base_acc:.3f} → {pers_acc:.3f} (Δ{diff:+.3f})")
+
+        # Fine-grained category breakdown (if available)
         baseline_cat = baseline_data.get('accuracy_by_category', {})
         persona_cat = persona_data.get('accuracy_by_category', {})
-        
-        print(f"\nBy Category:")
-        for category in ['true', 'false', 'underinformative']:
-            if category in baseline_cat and category in persona_cat:
-                base_acc = baseline_cat[category]
-                pers_acc = persona_cat[category]
-                diff = pers_acc - base_acc
-                print(f"  {category.capitalize()}: {base_acc:.3f} → {pers_acc:.3f} (Δ{diff:+.3f})")
+
+        # Check if we have fine-grained categories (more than just true/false/underinformative)
+        all_categories = set(baseline_cat.keys()) | set(persona_cat.keys())
+        fine_grained = [c for c in all_categories if '-' in c]  # e.g., 'true-conj', 'underinf-quant'
+
+        if fine_grained:
+            print(f"\nBy Category (fine-grained):")
+            for category in sorted(all_categories):
+                if category in baseline_cat and category in persona_cat:
+                    base_acc = baseline_cat[category]
+                    pers_acc = persona_cat[category]
+                    diff = pers_acc - base_acc
+                    print(f"  {category}: {base_acc:.3f} → {pers_acc:.3f} (Δ{diff:+.3f})")
         
         if not args.summary_only and all_differences:
             print(f"\nDETAILED DIFFERENCES:")
