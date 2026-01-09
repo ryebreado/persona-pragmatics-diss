@@ -4,6 +4,21 @@ Looking at how persona prompts affect comprehension of scalar implicature throug
 
 Created for my undergraduate dissertation at Cambridge.
 
+## Dataset
+
+The scalar implicature dataset (`data/scalar_implicature_250.json`) is adapted from Katsos & Bishop (2011), who developed a paradigm for testing pragmatic tolerance in children and adults. Our stimuli follow their design: participants (LLMs) see a scenario and must judge whether a given statement is a correct answer to a question about what happened.
+
+**Categories (250 total examples):**
+
+- `true-conj` (41): True conjunctive statements (e.g., "ate the apple and the banana" when both were eaten)
+- `true-quant` (41): True quantifier statements (e.g., "ate some of the apples" when some but not all were eaten)
+- `false-conj` (40): False conjunctive statements (factually incorrect)
+- `false-quant` (40): False quantifier statements (factually incorrect)
+- `underinf-conj` (44): Underinformative conjunctive (e.g., "ate the apple" when both apple and banana were eaten)
+- `underinf-quant` (44): Underinformative quantifier (e.g., "ate some" when all were eaten—the classic scalar implicature case)
+
+**Reference:** Katsos, N., & Bishop, D. V. M. (2011). Pragmatic tolerance: Implications for the acquisition of informativeness and implicature. *Cognition*, 120(1), 67–81. https://doi.org/10.1016/j.cognition.2011.02.015
+
 ## Running Experiments
 
 ### Quick Start
