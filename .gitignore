@@ -23,6 +23,7 @@ results/
 outputs/
 logs/
 *.log
+figures/
 
 # IDE
 .vscode/
