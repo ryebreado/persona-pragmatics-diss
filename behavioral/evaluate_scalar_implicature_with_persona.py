@@ -213,26 +213,50 @@ def main():
         sys.exit(1)
     
     results = []
-    correct_by_category = {'true': 0, 'false': 0, 'underinformative': 0}
-    total_by_category = {'true': 0, 'false': 0, 'underinformative': 0}
-    
+    # Track both fine-grained categories and high-level groupings
+    correct_by_category = {}  # Fine-grained (e.g., 'true-conj', 'underinf-quant')
+    total_by_category = {}
+    # High-level groupings: true, false, underinformative
+    correct_by_group = {'true': 0, 'false': 0, 'underinformative': 0}
+    total_by_group = {'true': 0, 'false': 0, 'underinformative': 0}
+
     print(f"Running {len(test_cases)} scalar implicature tests with {args.model}...")
     if persona_prompt:
         print(f"Using persona: {persona_prompt[:100]}{'...' if len(persona_prompt) > 100 else ''}")
     print("="*80)
-    
+
     for i, test_case in enumerate(test_cases):
         test_id = test_case.get('test_id', i+1)
         print(f"Test {test_id}: {test_case['category']}")
-        
+
         result = run_single_test(test_case, args.model, args.temperature, args.logprobs, persona_prompt)
         if result:
             results.append(result)
-            
+
             category = result['category']
+            # Initialize category counters if not seen before
+            if category not in total_by_category:
+                total_by_category[category] = 0
+                correct_by_category[category] = 0
             total_by_category[category] += 1
             if result['correct']:
                 correct_by_category[category] += 1
+
+            # Map to high-level group (true, false, underinformative)
+            if category.startswith('true'):
+                group = 'true'
+            elif category.startswith('false'):
+                group = 'false'
+            elif category.startswith('underinf'):
+                group = 'underinformative'
+            else:
+                group = category  # Fallback for legacy categories
+                if group not in total_by_group:
+                    total_by_group[group] = 0
+                    correct_by_group[group] = 0
+            total_by_group[group] += 1
+            if result['correct']:
+                correct_by_group[group] += 1
             
             status = "✓" if result['correct'] else "✗"
             confidence_str = ""
@@ -249,30 +273,44 @@ def main():
         print()
     
     # Calculate statistics
-    total_correct = sum(correct_by_category.values())
-    total_tests = sum(total_by_category.values())
-    
+    total_correct = sum(correct_by_group.values())
+    total_tests = sum(total_by_group.values())
+
     print("="*80)
     print("SCALAR IMPLICATURE EVALUATION RESULTS")
     if persona_prompt:
         print(f"Persona: {persona_prompt[:100]}{'...' if len(persona_prompt) > 100 else ''}")
     print("="*80)
     print(f"Total Tests: {total_tests}")
-    print(f"Overall Accuracy: {total_correct/total_tests:.3f} ({total_correct}/{total_tests})")
+    if total_tests > 0:
+        print(f"Overall Accuracy: {total_correct/total_tests:.3f} ({total_correct}/{total_tests})")
     print()
-    
-    for category in ['true', 'false', 'underinformative']:
-        if total_by_category[category] > 0:
-            accuracy = correct_by_category[category] / total_by_category[category]
-            print(f"{category.capitalize()} statements: {accuracy:.3f} ({correct_by_category[category]}/{total_by_category[category]})")
-            
+
+    # High-level group results
+    print("--- High-Level Results ---")
+    for group in ['true', 'false', 'underinformative']:
+        if total_by_group.get(group, 0) > 0:
+            accuracy = correct_by_group[group] / total_by_group[group]
+            print(f"{group.capitalize()} statements: {accuracy:.3f} ({correct_by_group[group]}/{total_by_group[group]})")
+
             if args.logprobs:
-                # Calculate average confidence for this category
-                category_results = [r for r in results if r['category'] == category and 'logprobs' in r and r['logprobs']]
-                if category_results:
-                    avg_confidence = sum(r['logprobs']['chosen_probability'] for r in category_results) / len(category_results)
+                # Calculate average confidence for this group
+                group_results = [r for r in results
+                                if (r['category'].startswith(group) or r['category'] == group)
+                                and 'logprobs' in r and r['logprobs']]
+                if group_results:
+                    avg_confidence = sum(r['logprobs']['chosen_probability'] for r in group_results) / len(group_results)
                     print(f"  Average confidence: {avg_confidence:.3f}")
-    
+
+    # Fine-grained category results
+    if len(total_by_category) > 3:  # More than just true/false/underinformative
+        print()
+        print("--- Fine-Grained Results ---")
+        for category in sorted(total_by_category.keys()):
+            if total_by_category[category] > 0:
+                accuracy = correct_by_category[category] / total_by_category[category]
+                print(f"  {category}: {accuracy:.3f} ({correct_by_category[category]}/{total_by_category[category]})")
+
     if args.logprobs:
         confidence_results = [r for r in results if 'logprobs' in r and r['logprobs']]
         if confidence_results:
@@ -292,15 +330,35 @@ def main():
         'temperature': args.temperature,
         'persona_prompt': persona_prompt,
         'persona_file': args.persona_file,
-        'total_accuracy': total_correct/total_tests,
-        'accuracy_by_category': {cat: correct_by_category[cat]/total_by_category[cat] 
-                               for cat in correct_by_category if total_by_category[cat] > 0},
+        'total_tests': total_tests,
+        'total_accuracy': total_correct/total_tests if total_tests > 0 else 0,
+        # High-level group accuracy (true/false/underinformative)
+        'accuracy_by_group': {
+            grp: correct_by_group[grp]/total_by_group[grp]
+            for grp in correct_by_group if total_by_group.get(grp, 0) > 0
+        },
+        # Fine-grained category accuracy (e.g., true-conj, underinf-quant)
+        'accuracy_by_category': {
+            cat: correct_by_category[cat]/total_by_category[cat]
+            for cat in correct_by_category if total_by_category[cat] > 0
+        },
+        'confidence_by_group': {},
         'confidence_by_category': {},
         'results': results
     }
-    
+
     if args.logprobs:
-        for category in ['true', 'false', 'underinformative']:
+        # High-level group confidence
+        for group in ['true', 'false', 'underinformative']:
+            group_results = [r for r in results
+                           if (r['category'].startswith(group) or r['category'] == group)
+                           and 'logprobs' in r and r['logprobs']]
+            if group_results:
+                avg_confidence = sum(r['logprobs']['chosen_probability'] for r in group_results) / len(group_results)
+                output_data['confidence_by_group'][group] = avg_confidence
+
+        # Fine-grained category confidence
+        for category in total_by_category.keys():
             category_results = [r for r in results if r['category'] == category and 'logprobs' in r and r['logprobs']]
             if category_results:
                 avg_confidence = sum(r['logprobs']['chosen_probability'] for r in category_results) / len(category_results)

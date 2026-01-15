@@ -76,8 +76,22 @@ def is_local_model(model):
 
 def check_logprobs_support(model):
     """Check if model supports logprobs"""
+    # Models that explicitly DON'T support logprobs
+    no_logprobs_models = [
+        'gpt-4o-mini',
+        'gpt-4o',
+        'o1',
+        'o1-mini',
+        'o1-preview',
+    ]
+
+    # Check if model is in the no-logprobs list
+    for no_lp_model in no_logprobs_models:
+        if model.startswith(no_lp_model):
+            return False
+
     # Based on the model routing logic in llm_client.py
-    if model.startswith('gpt-') or model.startswith('meta-') or '/' in model:
+    if model.startswith('gpt-3.5') or model.startswith('gpt-4-') or model.startswith('meta-') or '/' in model:
         return True
     elif model.startswith('claude-'):
         return False

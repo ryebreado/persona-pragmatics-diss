@@ -138,20 +138,33 @@ def _query_openai(query, model, api_key, return_usage, logprobs=False, temperatu
     """Query OpenAI API"""
     if api_key is None:
         api_key = os.getenv('OPENAI_API_KEY')
-        
+
     if not api_key:
         raise Exception("OPENAI_API_KEY environment variable not set")
-    
+
     client = OpenAI(api_key=api_key)
-    
+
+    # Newer models (gpt-5, o1, o3, o4, etc.) use max_completion_tokens instead of max_tokens
+    uses_new_param = any(model.startswith(prefix) for prefix in ['gpt-5', 'gpt-4.1', 'o1', 'o3', 'o4'])
+
+    # Reasoning models (o1, o3, o4, gpt-5) don't support temperature parameter
+    is_reasoning_model = any(model.startswith(prefix) for prefix in ['o1', 'o3', 'o4', 'gpt-5'])
+
     params = {
         "model": model,
-        "max_tokens": max_tokens,
-        "temperature": temperature,
         "messages": [
             {"role": "user", "content": query}
         ]
     }
+
+    # Only add temperature for models that support it
+    if not is_reasoning_model:
+        params["temperature"] = temperature
+
+    if uses_new_param:
+        params["max_completion_tokens"] = max_tokens
+    else:
+        params["max_tokens"] = max_tokens
     
     if logprobs:
         params["logprobs"] = True

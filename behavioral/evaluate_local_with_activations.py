@@ -282,6 +282,11 @@ class LocalModelWithActivations:
             result['activations'] = {
                 layer_name: acts.numpy() for layer_name, acts in self.activations.items()
             }
+            # Also extract last-token activations for efficient probing
+            # Shape of acts is (batch=1, seq_len, hidden_dim)
+            result['last_token_activations'] = {
+                layer_name: acts[0, -1, :].numpy() for layer_name, acts in self.activations.items()
+            }
             # Clean up
             self.remove_hooks()
 
@@ -453,6 +458,9 @@ def run_single_test(
             if save_activations and 'activations' in response_data:
                 # Save full activations (can be large!)
                 result['activations'] = response_data['activations']
+            if 'last_token_activations' in response_data:
+                # Always save last-token activations (compact, needed for probing)
+                result['last_token_activations'] = response_data['last_token_activations']
             elif 'activations' in response_data:
                 # Just save activation shapes for reference
                 result['activation_shapes'] = {
