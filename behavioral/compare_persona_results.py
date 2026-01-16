@@ -134,6 +134,27 @@ def find_baseline_file(persona_file, results_dir="results"):
     
     return None
 
+def get_persona_name(filepath):
+    """Extract persona name from filename."""
+    basename = os.path.basename(filepath)
+    # Format: scalar_implicature_MODEL_PERSONA_DATE_TIME.json
+    parts = basename.replace('.json', '').split('_')
+    # Find persona by looking for known names or position
+    known_personas = ['baseline', 'anti_gricean', 'helpful_teacher', 'literal_thinker', 'pragmaticist']
+    for i, part in enumerate(parts):
+        if part in known_personas:
+            return part
+        # Check for two-word personas
+        if i < len(parts) - 1:
+            two_word = f"{part}_{parts[i+1]}"
+            if two_word in known_personas:
+                return two_word
+    # Fallback: assume persona is after model name, before timestamp
+    if len(parts) >= 6:
+        return parts[-3]  # e.g., "pragmaticist" from ..._pragmaticist_20260115_...
+    return "unknown"
+
+
 def main():
     parser = argparse.ArgumentParser(description='Compare persona evaluation results with baseline')
     parser.add_argument('path', nargs='+',
@@ -141,7 +162,8 @@ def main():
     parser.add_argument('--baseline', help='Baseline file (auto-detected if not specified)')
     parser.add_argument('--confidence-threshold', type=float, default=0.1,
                        help='Confidence difference threshold (default: 0.1 = 10%%)')
-    parser.add_argument('--summary-only', action='store_true', help='Show only summary statistics')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                       help='Show detailed output with examples')
 
     args = parser.parse_args()
 
@@ -168,129 +190,156 @@ def main():
         persona_files = args.path
         results_dir = os.path.dirname(persona_files[0]) if persona_files else 'results'
 
+    # Load baseline once if in directory mode
+    baseline_data = None
+    if args.baseline:
+        baseline_data = load_results(args.baseline)
+
+    # Collect all results for concise summary
+    all_persona_results = []
+
     for persona_file in persona_files:
-        print(f"\n{'='*80}")
-        print(f"COMPARING: {os.path.basename(persona_file)}")
-        print(f"{'='*80}")
-        
         # Load persona results
         persona_data = load_results(persona_file)
         if not persona_data:
             continue
-        
+
         # Find or use specified baseline
         if args.baseline:
-            baseline_file = args.baseline
+            current_baseline_file = args.baseline
+            current_baseline_data = baseline_data
         else:
-            baseline_file = find_baseline_file(persona_file, results_dir)
-            if not baseline_file:
+            current_baseline_file = find_baseline_file(persona_file, results_dir)
+            if not current_baseline_file:
                 print(f"Could not find baseline file for {persona_file}")
-                print(f"Looking for pattern: scalar_implicature_*_baseline_*.json")
                 continue
-        
-        print(f"Baseline: {os.path.basename(baseline_file)}")
-        
-        # Load baseline results
-        baseline_data = load_results(baseline_file)
-        if not baseline_data:
+            current_baseline_data = load_results(current_baseline_file)
+
+        if not current_baseline_data:
             continue
-        
-        # Extract test results
-        baseline_tests = extract_test_results(baseline_data)
+
+        # Extract test results for detailed comparison
+        baseline_tests = extract_test_results(current_baseline_data)
         persona_tests = extract_test_results(persona_data)
-        
+
         # Compare results
         all_differences = {}
         answer_diffs = 0
-        confidence_diffs = 0
-        
+
         for test_id in baseline_tests:
             if test_id not in persona_tests:
-                print(f"Warning: Test {test_id} missing in persona results")
                 continue
-            
+
             differences = compare_responses(
-                baseline_tests[test_id], 
-                persona_tests[test_id], 
+                baseline_tests[test_id],
+                persona_tests[test_id],
                 args.confidence_threshold
             )
-            
+
             if differences:
                 all_differences[test_id] = differences
                 for diff in differences:
                     if diff['type'] == 'answer_difference':
                         answer_diffs += 1
-                    elif diff['type'] == 'confidence_difference':
-                        confidence_diffs += 1
-        
-        # Print summary
-        print(f"\nSUMMARY:")
-        print(f"Model: {persona_data.get('model', 'unknown')}")
-        print(f"Persona: {persona_data.get('persona_prompt', 'unknown')[:100]}...")
-        print(f"Total tests: {len(baseline_tests)}")
-        print(f"Answer differences: {answer_diffs}")
-        print(f"Confidence differences (≥{args.confidence_threshold:.0%}): {confidence_diffs}")
-        
-        # Print accuracy comparison
-        baseline_acc = baseline_data.get('total_accuracy', 0)
+
+        # Get accuracies
+        baseline_acc = current_baseline_data.get('total_accuracy', 0)
         persona_acc = persona_data.get('total_accuracy', 0)
-        acc_diff = persona_acc - baseline_acc
-        print(f"Accuracy: Baseline {baseline_acc:.3f} → Persona {persona_acc:.3f} (Δ{acc_diff:+.3f})")
-        
-        # High-level group breakdown (true/false/underinformative)
-        # Try accuracy_by_group first (new format), fall back to accuracy_by_category (old format)
-        baseline_grp = baseline_data.get('accuracy_by_group', baseline_data.get('accuracy_by_category', {}))
+
+        # Get group accuracies
+        baseline_grp = current_baseline_data.get('accuracy_by_group', current_baseline_data.get('accuracy_by_category', {}))
         persona_grp = persona_data.get('accuracy_by_group', persona_data.get('accuracy_by_category', {}))
 
-        print(f"\nBy Group (high-level):")
-        for group in ['true', 'false', 'underinformative']:
-            if group in baseline_grp and group in persona_grp:
-                base_acc = baseline_grp[group]
-                pers_acc = persona_grp[group]
-                diff = pers_acc - base_acc
-                print(f"  {group.capitalize()}: {base_acc:.3f} → {pers_acc:.3f} (Δ{diff:+.3f})")
+        # Store for summary
+        persona_name = get_persona_name(persona_file)
+        all_persona_results.append({
+            'name': persona_name,
+            'file': persona_file,
+            'baseline_acc': baseline_acc,
+            'persona_acc': persona_acc,
+            'baseline_grp': baseline_grp,
+            'persona_grp': persona_grp,
+            'baseline_cat': current_baseline_data.get('accuracy_by_category', {}),
+            'persona_cat': persona_data.get('accuracy_by_category', {}),
+            'answer_diffs': answer_diffs,
+            'all_differences': all_differences,
+            'baseline_tests': baseline_tests,
+            'persona_data': persona_data
+        })
 
-        # Fine-grained category breakdown (if available)
-        baseline_cat = baseline_data.get('accuracy_by_category', {})
-        persona_cat = persona_data.get('accuracy_by_category', {})
+    if not all_persona_results:
+        print("No results to compare.")
+        return
 
-        # Check if we have fine-grained categories (more than just true/false/underinformative)
-        all_categories = set(baseline_cat.keys()) | set(persona_cat.keys())
-        fine_grained = [c for c in all_categories if '-' in c]  # e.g., 'true-conj', 'underinf-quant'
+    # Print results
+    if args.verbose:
+        # Verbose mode: detailed output per persona
+        for result in all_persona_results:
+            print(f"\n{'='*80}")
+            print(f"COMPARING: {os.path.basename(result['file'])}")
+            print(f"{'='*80}")
 
-        if fine_grained:
-            print(f"\nBy Category (fine-grained):")
-            for category in sorted(all_categories):
-                if category in baseline_cat and category in persona_cat:
-                    base_acc = baseline_cat[category]
-                    pers_acc = persona_cat[category]
+            acc_diff = result['persona_acc'] - result['baseline_acc']
+            print(f"Accuracy: {result['baseline_acc']:.3f} -> {result['persona_acc']:.3f} (Δ{acc_diff:+.3f})")
+
+            print(f"\nBy Group:")
+            for group in ['true', 'false', 'underinformative']:
+                if group in result['baseline_grp'] and group in result['persona_grp']:
+                    base_acc = result['baseline_grp'][group]
+                    pers_acc = result['persona_grp'][group]
                     diff = pers_acc - base_acc
-                    print(f"  {category}: {base_acc:.3f} → {pers_acc:.3f} (Δ{diff:+.3f})")
-        
-        if not args.summary_only and all_differences:
-            print(f"\nDETAILED DIFFERENCES:")
-            
-            for test_id in sorted(all_differences.keys()):
-                differences = all_differences[test_id]
-                test_category = baseline_tests[test_id]['category']
-                
-                print(f"\nTest {test_id} ({test_category}):")
-                
-                for diff in differences:
-                    if diff['type'] == 'answer_difference':
-                        baseline_status = "✓" if diff['baseline_correct'] else "✗"
-                        persona_status = "✓" if diff['persona_correct'] else "✗"
-                        
-                        print(f"  ANSWER DIFFERENCE:")
-                        print(f"    Expected: {diff['expected']}")
-                        print(f"    Baseline: {baseline_status} \"{diff['baseline_response'][:50]}...\"")
-                        print(f"    Persona:  {persona_status} \"{diff['persona_response'][:50]}...\"")
-                    
-                    elif diff['type'] == 'confidence_difference':
-                        print(f"  CONFIDENCE DIFFERENCE:")
-                        print(f"    Baseline: {diff['baseline_confidence']:.3f}")
-                        print(f"    Persona:  {diff['persona_confidence']:.3f}")
-                        print(f"    Difference: {diff['difference']:.3f} ({diff['difference']:.1%})")
+                    print(f"  {group}: {base_acc:.3f} -> {pers_acc:.3f} (Δ{diff:+.3f})")
+
+            # Fine-grained categories
+            all_categories = set(result['baseline_cat'].keys()) | set(result['persona_cat'].keys())
+            fine_grained = [c for c in all_categories if '-' in c]
+
+            if fine_grained:
+                print(f"\nBy Category:")
+                for category in sorted(fine_grained):
+                    if category in result['baseline_cat'] and category in result['persona_cat']:
+                        base_acc = result['baseline_cat'][category]
+                        pers_acc = result['persona_cat'][category]
+                        diff = pers_acc - base_acc
+                        print(f"  {category}: {base_acc:.3f} -> {pers_acc:.3f} (Δ{diff:+.3f})")
+
+            # Detailed differences
+            if result['all_differences']:
+                print(f"\nDETAILED DIFFERENCES ({result['answer_diffs']} items):")
+
+                for test_id in sorted(result['all_differences'].keys()):
+                    differences = result['all_differences'][test_id]
+                    test_category = result['baseline_tests'][test_id]['category']
+
+                    print(f"\nTest {test_id} ({test_category}):")
+
+                    for diff in differences:
+                        if diff['type'] == 'answer_difference':
+                            baseline_status = "correct" if diff['baseline_correct'] else "wrong"
+                            persona_status = "correct" if diff['persona_correct'] else "wrong"
+                            print(f"  Baseline: {baseline_status}, Persona: {persona_status}")
+                            print(f"  Expected: {diff['expected']}")
+    else:
+        # Concise mode: table of deltas
+        model = all_persona_results[0]['persona_data'].get('model', 'unknown')
+        print(f"\nModel: {model}")
+        print(f"Baseline accuracy: {all_persona_results[0]['baseline_acc']:.3f}")
+
+        # Header
+        print(f"\n{'Persona':<20} {'Acc':>6} {'Δ':>7} | {'true':>6} {'false':>6} {'underinf':>8}")
+        print("-" * 65)
+
+        for result in all_persona_results:
+            name = result['name']
+            acc = result['persona_acc']
+            acc_diff = acc - result['baseline_acc']
+
+            # Group deltas
+            true_d = result['persona_grp'].get('true', 0) - result['baseline_grp'].get('true', 0)
+            false_d = result['persona_grp'].get('false', 0) - result['baseline_grp'].get('false', 0)
+            underinf_d = result['persona_grp'].get('underinformative', 0) - result['baseline_grp'].get('underinformative', 0)
+
+            print(f"{name:<20} {acc:>6.3f} {acc_diff:>+7.3f} | {true_d:>+6.3f} {false_d:>+6.3f} {underinf_d:>+8.3f}")
 
 if __name__ == "__main__":
     main()

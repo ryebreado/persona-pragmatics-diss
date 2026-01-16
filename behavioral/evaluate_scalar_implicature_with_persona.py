@@ -157,11 +157,70 @@ def run_single_test(test_case, model, temperature=0.0, use_logprobs=False, perso
         print(f"Error processing test case: {e}")
         return None
 
-def generate_output_filename(model, persona_file=None, persona_text=None):
+def get_next_run_number(model_clean, results_base="results"):
+    """Find the next available run number for a model."""
+    from glob import glob
+
+    # Look for existing directories like {model}_run_01, {model}_run_02, etc.
+    pattern = os.path.join(results_base, f"{model_clean}_run_*")
+    existing = glob(pattern)
+
+    if not existing:
+        return 1
+
+    # Extract run numbers and find max
+    run_numbers = []
+    for path in existing:
+        dirname = os.path.basename(path)
+        # Extract number after "_run_"
+        parts = dirname.split("_run_")
+        if len(parts) == 2:
+            try:
+                run_numbers.append(int(parts[1]))
+            except ValueError:
+                pass
+
+    return max(run_numbers) + 1 if run_numbers else 1
+
+
+def get_or_create_run_dir(model, results_base="results", new_run=False):
+    """
+    Get existing run directory or create new one.
+
+    Args:
+        model: Model name
+        results_base: Base directory for results
+        new_run: If True, always create a new run directory
+
+    Returns the run directory path.
+    """
+    from glob import glob
+
+    # Clean model name for directory
+    model_clean = model.replace('/', '_').replace('-', '_').replace('.', '_')
+
+    pattern = os.path.join(results_base, f"{model_clean}_run_*")
+    existing_dirs = sorted(glob(pattern))
+
+    # Reuse most recent directory unless explicitly starting a new run
+    if existing_dirs and not new_run:
+        return existing_dirs[-1]
+
+    # Create new run directory
+    run_num = get_next_run_number(model_clean, results_base)
+    run_dir = os.path.join(results_base, f"{model_clean}_run_{run_num:02d}")
+    os.makedirs(run_dir, exist_ok=True)
+    return run_dir
+
+
+def generate_output_filename(model, persona_file=None, persona_text=None, new_run=False):
     """Generate automatic filename based on model and persona"""
     # Clean model name for filename
     model_clean = model.replace('/', '_').replace('-', '_').replace('.', '_')
-    
+
+    # Get or create run directory
+    run_dir = get_or_create_run_dir(model, new_run=new_run)
+
     # Get persona identifier
     if persona_file:
         persona_name = os.path.splitext(os.path.basename(persona_file))[0]
@@ -171,13 +230,13 @@ def generate_output_filename(model, persona_file=None, persona_text=None):
         persona_name = '_'.join(w.lower().replace('.', '').replace(',', '') for w in words)
     else:
         persona_name = "baseline"
-    
+
     # Add timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    
-    # Create filename
+
+    # Create filename with scalar_implicature prefix to match existing convention
     filename = f"scalar_implicature_{model_clean}_{persona_name}_{timestamp}.json"
-    return os.path.join("results", filename)
+    return os.path.join(run_dir, filename)
 
 def main():
     parser = argparse.ArgumentParser(description='Evaluate scalar implicature understanding with persona prompts')
@@ -189,6 +248,7 @@ def main():
     parser.add_argument('--persona-file', type=str, help='File containing persona prompt')
     parser.add_argument('--output', help='Output file for results (auto-generated if not specified)')
     parser.add_argument('--verbose', action='store_true', help='Show full responses in output')
+    parser.add_argument('--new-run', action='store_true', help='Start a new run instead of continuing the most recent one')
     
     args = parser.parse_args()
     
@@ -319,7 +379,7 @@ def main():
     
     # Generate output filename if not specified
     if not args.output:
-        args.output = generate_output_filename(args.model, args.persona_file, args.persona)
+        args.output = generate_output_filename(args.model, args.persona_file, args.persona, args.new_run)
     
     # Ensure results directory exists
     os.makedirs(os.path.dirname(args.output) if os.path.dirname(args.output) else "results", exist_ok=True)

@@ -476,12 +476,68 @@ def run_single_test(
         return None
 
 
+def get_next_run_number(model_clean: str, results_base: str = "results") -> int:
+    """Find the next available run number for a model."""
+    from glob import glob
+
+    # Look for existing directories like {model}_run_01, {model}_run_02, etc.
+    pattern = os.path.join(results_base, f"{model_clean}_run_*")
+    existing = glob(pattern)
+
+    if not existing:
+        return 1
+
+    # Extract run numbers and find max
+    run_numbers = []
+    for path in existing:
+        dirname = os.path.basename(path)
+        # Extract number after "_run_"
+        parts = dirname.split("_run_")
+        if len(parts) == 2:
+            try:
+                run_numbers.append(int(parts[1]))
+            except ValueError:
+                pass
+
+    return max(run_numbers) + 1 if run_numbers else 1
+
+
+def get_or_create_run_dir(model_name: str, results_base: str = "results") -> str:
+    """
+    Get existing run directory (if baseline not yet created) or create new one.
+    Returns the run directory path.
+    """
+    from glob import glob
+
+    # Clean model name for directory (use last part after /)
+    model_clean = model_name.split('/')[-1].replace('-', '_').replace('.', '_')
+
+    # Check for existing run directory without a baseline (incomplete run)
+    pattern = os.path.join(results_base, f"{model_clean}_run_*")
+    existing_dirs = sorted(glob(pattern))
+
+    for run_dir in reversed(existing_dirs):  # Check most recent first
+        baseline_pattern = os.path.join(run_dir, "*_baseline_*.json")
+        if not glob(baseline_pattern):
+            # No baseline yet, reuse this directory
+            return run_dir
+
+    # Create new run directory
+    run_num = get_next_run_number(model_clean, results_base)
+    run_dir = os.path.join(results_base, f"{model_clean}_run_{run_num:02d}")
+    os.makedirs(run_dir, exist_ok=True)
+    return run_dir
+
+
 def generate_output_filename(model_name: str, persona_file: Optional[str] = None,
                             persona_text: Optional[str] = None,
                             track_activations: bool = False) -> str:
     """Generate automatic filename based on model and persona"""
-    # Clean model name
+    # Clean model name (use last part after /)
     model_clean = model_name.split('/')[-1].replace('-', '_').replace('.', '_')
+
+    # Get or create run directory
+    run_dir = get_or_create_run_dir(model_name)
 
     # Get persona identifier
     if persona_file:
@@ -498,8 +554,8 @@ def generate_output_filename(model_name: str, persona_file: Optional[str] = None
     # Add activation flag
     act_suffix = "_with_acts" if track_activations else ""
 
-    filename = f"scalar_implicature_{model_clean}_{persona_name}{act_suffix}_{timestamp}.json"
-    return os.path.join("results", filename)
+    filename = f"{model_clean}_{persona_name}{act_suffix}_{timestamp}.json"
+    return os.path.join(run_dir, filename)
 
 
 def main():
