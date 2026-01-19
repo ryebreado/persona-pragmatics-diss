@@ -4,7 +4,7 @@ import argparse
 import sys
 import os
 from datetime import datetime
-from llm_client import query_llm
+from llm_client import query_llm, _get_provider
 
 def create_prompt_with_persona(scenario, items, outcome, question, statement, persona_prompt=None):
     """
@@ -238,6 +238,31 @@ def generate_output_filename(model, persona_file=None, persona_text=None, new_ru
     filename = f"scalar_implicature_{model_clean}_{persona_name}_{timestamp}.json"
     return os.path.join(run_dir, filename)
 
+def validate_api_key(model):
+    """
+    Validate that the required API key is set before running tests.
+
+    Args:
+        model: Model name to check
+
+    Raises:
+        SystemExit: If required API key is not set
+    """
+    provider = _get_provider(model)
+
+    env_var_map = {
+        'anthropic': 'ANTHROPIC_API_KEY',
+        'openai': 'OPENAI_API_KEY',
+        'together': 'TOGETHERAI_API_KEY'
+    }
+
+    env_var = env_var_map.get(provider)
+    if env_var and not os.getenv(env_var):
+        print(f"Error: {env_var} environment variable not set", file=sys.stderr)
+        print(f"Please set {env_var} before running tests with {model}", file=sys.stderr)
+        sys.exit(1)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Evaluate scalar implicature understanding with persona prompts')
     parser.add_argument('test_file', help='JSON file with test cases')
@@ -249,8 +274,11 @@ def main():
     parser.add_argument('--output', help='Output file for results (auto-generated if not specified)')
     parser.add_argument('--verbose', action='store_true', help='Show full responses in output')
     parser.add_argument('--new-run', action='store_true', help='Start a new run instead of continuing the most recent one')
-    
+
     args = parser.parse_args()
+
+    # Validate API key before starting
+    validate_api_key(args.model)
     
     # Load persona prompt
     persona_prompt = None
@@ -285,11 +313,24 @@ def main():
         print(f"Using persona: {persona_prompt[:100]}{'...' if len(persona_prompt) > 100 else ''}")
     print("="*80)
 
+    consecutive_failures = 0
+    max_consecutive_failures = 3
+
     for i, test_case in enumerate(test_cases):
         test_id = test_case.get('test_id', i+1)
         print(f"Test {test_id}: {test_case['category']}")
 
         result = run_single_test(test_case, args.model, args.temperature, args.logprobs, persona_prompt)
+        if result is None:
+            consecutive_failures += 1
+            if consecutive_failures >= max_consecutive_failures:
+                print(f"\nError: {max_consecutive_failures} consecutive test failures. "
+                      "This usually indicates an API configuration issue.", file=sys.stderr)
+                print("Aborting to avoid creating empty results file.", file=sys.stderr)
+                sys.exit(1)
+            continue
+
+        consecutive_failures = 0  # Reset on success
         if result:
             results.append(result)
 
