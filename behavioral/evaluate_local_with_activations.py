@@ -457,10 +457,12 @@ def run_single_test(
         if track_activations:
             if save_activations and 'activations' in response_data:
                 # Save full activations (can be large!)
-                result['activations'] = response_data['activations']
+                # Convert numpy arrays to lists for JSON serialization
+                result['activations'] = {k: v.tolist() for k, v in response_data['activations'].items()}
             if 'last_token_activations' in response_data:
                 # Always save last-token activations (compact, needed for probing)
-                result['last_token_activations'] = response_data['last_token_activations']
+                # Convert numpy arrays to lists for JSON serialization
+                result['last_token_activations'] = {k: v.tolist() for k, v in response_data['last_token_activations'].items()}
             elif 'activations' in response_data:
                 # Just save activation shapes for reference
                 result['activation_shapes'] = {
