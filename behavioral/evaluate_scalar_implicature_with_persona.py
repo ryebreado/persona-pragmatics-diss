@@ -313,6 +313,9 @@ def main():
         print(f"Using persona: {persona_prompt[:100]}{'...' if len(persona_prompt) > 100 else ''}")
     print("="*80)
 
+    # Track timing
+    run_start_time = datetime.now()
+
     consecutive_failures = 0
     max_consecutive_failures = 3
 
@@ -373,6 +376,11 @@ def main():
         
         print()
     
+    # Calculate timing
+    run_end_time = datetime.now()
+    run_duration = run_end_time - run_start_time
+    run_duration_seconds = run_duration.total_seconds()
+
     # Calculate statistics
     total_correct = sum(correct_by_group.values())
     total_tests = sum(total_by_group.values())
@@ -431,6 +439,7 @@ def main():
         'temperature': args.temperature,
         'persona_prompt': persona_prompt,
         'persona_file': args.persona_file,
+        'run_duration_seconds': run_duration_seconds,
         'total_tests': total_tests,
         'total_accuracy': total_correct/total_tests if total_tests > 0 else 0,
         # High-level group accuracy (true/false/underinformative)
