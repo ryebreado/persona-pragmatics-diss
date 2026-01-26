@@ -90,7 +90,7 @@ class LocalModelWithActivations:
         For Qwen3 models, this disables thinking/reasoning mode.
         """
         # Use chat template if available
-        if hasattr(self.tokenizer, 'apply_chat_template'):
+        if hasattr(self.tokenizer, 'apply_chat_template') and self.tokenizer.chat_template:
             messages = [{"role": "user", "content": prompt}]
             try:
                 # For Qwen3, disable thinking mode
@@ -140,9 +140,17 @@ class LocalModelWithActivations:
 
         # Register new hooks
         for layer_idx in layer_indices:
-            layer = self.model.model.layers[layer_idx]
+            if hasattr(self.model, 'model') and hasattr(self.model.model, 'layers'):
+                # Llama, Qwen, Mistral...
+                layer = self.model.model.layers[layer_idx]
+            elif hasattr(self.model, 'transformer') and hasattr(self.model.transformer, 'h'):
+                # GPT-2, GPT-Neo
+                layer = self.model.transformer.h[layer_idx]
+            else:
+                raise ValueError(f"Unknown model architecture: {type(self.model)}")
+            
             hook = layer.register_forward_hook(create_hook(layer_idx))
-            self.hooks.append(hook)
+        self.hooks.append(hook)
 
     def remove_hooks(self):
         """Remove all registered hooks"""
@@ -383,9 +391,8 @@ def run_single_test(
     track_activations: bool = False,
     persona_prompt: Optional[str] = None,
     layer_indices: Optional[List[int]] = None,
-    save_activations: bool = False,
     use_logprobs: bool = False
-) -> Optional[Dict]:
+) -> Tuple[Optional[Dict], Optional[Dict]]:
     """
     Run a single test case.
 
@@ -454,28 +461,35 @@ def run_single_test(
             result['no_logprob'] = response_data['logprobs']['no']
 
         # Include activation info if tracked
+        activations_out = None
         if track_activations:
-            if save_activations and 'activations' in response_data:
-                # Save full activations (can be large!)
-                # Convert numpy arrays to lists for JSON serialization
-                result['activations'] = {k: v.tolist() for k, v in response_data['activations'].items()}
             if 'last_token_activations' in response_data:
-                # Always save last-token activations (compact, needed for probing)
-                # Convert numpy arrays to lists for JSON serialization
-                result['last_token_activations'] = {k: v.tolist() for k, v in response_data['last_token_activations'].items()}
-            elif 'activations' in response_data:
-                # Just save activation shapes for reference
-                result['activation_shapes'] = {
-                    layer: arr.shape for layer, arr in response_data['activations'].items()
+                # Save last token activations as float16s
+                activations_out = {
+                    'test id': test_case.get('test_id', 'unknown'),
+                    'category': test_case['category'],
+                    'last_token': torch.stack([
+                        torch.from_numpy(v) for k, v in
+                        sorted(response_data['last_token_activations'].items(),
+                           key=lambda x: int(x[0].split('_')[1]))
+                        ]).half(),
+                    
                 }
+            # Add mean-pooled activations
+            if 'activations' in response_data:
+                activations_out['mean_pooled'] = torch.stack([
+                    torch.from_numpy(v.mean(axis=1).squeeze()) for k, v in
+                    sorted(response_data['activations'].items(),
+                           key=lambda x: int(x[0].split('_')[1]))
+                ]).half()
 
-        return result
+        return result, activations_out
 
     except Exception as e:
         print(f"Error processing test case: {e}")
         import traceback
         traceback.print_exc()
-        return None
+        return None, None
 
 
 def get_next_run_number(model_clean: str, results_base: str = "results") -> int:
@@ -647,22 +661,24 @@ def main():
             print(f"  Tracking layers: {layer_indices}")
         else:
             print(f"  Tracking all {model_wrapper.n_layers} layers")
-        if args.save_activations:
-            print("  WARNING: Saving full activations (output will be large!)")
     print("="*80)
+
+    # Track timing
+    run_start_time = datetime.now()
+
+    all_activations = []
 
     for i, test_case in enumerate(test_cases):
         test_id = test_case.get('test_id', i+1)
         print(f"Test {test_id}: {test_case['category']}")
 
-        result = run_single_test(
+        result, activations = run_single_test(
             model_wrapper,
             test_case,
             args.temperature,
             args.track_activations,
             persona_prompt,
             layer_indices,
-            args.save_activations,
             args.use_logprobs
         )
 
@@ -709,8 +725,27 @@ def main():
             else:
                 response_preview = result['response'][:50].replace('\n', ' ')
                 print(f"  {status} Expected: {result['expected']}, Got: {response_preview}...{confidence_str}")
-
+        
+        if activations:
+            all_activations.append(activations)
+        
         print()
+    
+    # Save activations as .pt if tracked
+    if args.track_activations and all_activations:
+        activations_path = args.output.replace('.json', '_activations.pt')
+        torch.save(all_activations, activations_path)
+        print(f"Activations saved to {activations_path}")
+        
+        # Sanity check
+        print(f"  {len(all_activations)} examples")
+        print(f"  Shape: {all_activations[0]['last_token'].shape}")
+        print(f"  Dtype: {all_activations[0]['last_token'].dtype}")
+
+    # Calculate timing
+    run_end_time = datetime.now()
+    run_duration = run_end_time - run_start_time
+    run_duration_seconds = run_duration.total_seconds()
 
     # Calculate statistics
     total_correct = sum(correct_by_group.values())
@@ -781,6 +816,7 @@ def main():
         'use_logprobs': args.use_logprobs,
         'track_activations': args.track_activations,
         'tracked_layers': layer_indices,
+        'run_duration_seconds': run_duration_seconds,
         'total_tests': total_tests,
         'total_accuracy': total_correct/total_tests if total_tests > 0 else 0,
         # High-level group accuracy (true/false/underinformative)
