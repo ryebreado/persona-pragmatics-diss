@@ -159,6 +159,13 @@ class LocalModelWithActivations:
         self.hooks = []
         self.activations = {}
 
+    def clear_cache(self):
+        """Clear GPU/MPS memory cache to prevent slowdown over time"""
+        if self.device == "mps":
+            torch.mps.empty_cache()
+        elif self.device == "cuda":
+            torch.cuda.empty_cache()
+
     def get_yes_no_logprobs(self, prompt: str) -> Dict[str, float]:
         """
         Get log probabilities for "yes" and "no" tokens after the prompt.
@@ -728,9 +735,19 @@ def main():
         
         if activations:
             all_activations.append(activations)
-        
+
+        # Clear GPU cache periodically to prevent slowdown
+        if (i + 1) % 10 == 0:
+            model_wrapper.clear_cache()
+
         print()
-    
+
+    # Generate output filename if not specified (needed before saving activations)
+    if not args.output:
+        args.output = generate_output_filename(
+            args.model, args.persona_file, args.persona, args.track_activations
+        )
+
     # Save activations as .pt if tracked
     if args.track_activations and all_activations:
         activations_path = args.output.replace('.json', '_activations.pt')
@@ -795,12 +812,6 @@ def main():
             if confidence_results:
                 overall_confidence = sum(r['confidence'] for r in confidence_results) / len(confidence_results)
                 print(f"\nOverall average confidence: {overall_confidence:.3f}")
-
-    # Generate output filename if not specified
-    if not args.output:
-        args.output = generate_output_filename(
-            args.model, args.persona_file, args.persona, args.track_activations
-        )
 
     # Ensure results directory exists
     output_path = Path(args.output)
