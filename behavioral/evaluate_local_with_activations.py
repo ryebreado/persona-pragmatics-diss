@@ -150,7 +150,7 @@ class LocalModelWithActivations:
                 raise ValueError(f"Unknown model architecture: {type(self.model)}")
             
             hook = layer.register_forward_hook(create_hook(layer_idx))
-        self.hooks.append(hook)
+            self.hooks.append(hook)
 
     def remove_hooks(self):
         """Remove all registered hooks"""
