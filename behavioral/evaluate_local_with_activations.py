@@ -546,7 +546,7 @@ def run_single_test(
     try:
         response_data = model_wrapper.generate(
             prompt,
-            max_new_tokens=50,
+            max_new_tokens=200,
             temperature=temperature,
             track_activations=track_activations,
             layer_indices=layer_indices,
