@@ -148,7 +148,7 @@ class LocalModelWithActivations:
                 layer = self.model.transformer.h[layer_idx]
             else:
                 raise ValueError(f"Unknown model architecture: {type(self.model)}")
-            
+
             hook = layer.register_forward_hook(create_hook(layer_idx))
             self.hooks.append(hook)
 
@@ -333,28 +333,56 @@ def evaluate_response(response_text: str, expected_answer: str) -> bool:
     """
     Check if the response matches expected answer.
     Uses word boundaries to avoid false positives like "no" in "Note".
+    Handles common patterns like "Answer (yes/no): **yes**"
     """
     import re
 
     response_lower = response_text.lower().strip()
     expected_lower = expected_answer.lower().strip()
 
-    # First, check for word-boundary matches of yes/no in the first 50 chars
-    # This avoids matching "no" in "Note" or "yes" in "yesterday"
-    first_part = response_lower[:50]
+    # Remove common formatting patterns that contain yes/no but aren't the answer
+    # e.g., "(yes/no)", "yes/no:", "[yes/no]"
+    cleaned = re.sub(r'\(yes/no\)', '', response_lower)
+    cleaned = re.sub(r'\[yes/no\]', '', cleaned)
+    cleaned = re.sub(r'yes/no', '', cleaned)
 
+    # Look for answer after colon or at start (common patterns)
+    # e.g., "Answer: **yes**" or "**no**" or just "yes"
+
+    # Try to find the actual answer token
+    # Priority 1: Look for pattern like ": **yes**" or ": yes" after removing yes/no template
+    colon_match = re.search(r':\s*\**\s*(yes|no)\b', cleaned)
+    if colon_match:
+        answer = colon_match.group(1)
+        return answer == expected_lower
+
+    # Priority 2: Look for standalone yes/no at the start
+    start_match = re.match(r'\s*\**\s*(yes|no)\b', cleaned)
+    if start_match:
+        answer = start_match.group(1)
+        return answer == expected_lower
+
+    # Priority 3: Look for first yes/no word in first 50 chars of cleaned text
+    first_part = cleaned[:50]
+    yes_match = re.search(r'\byes\b', first_part)
+    no_match = re.search(r'\bno\b', first_part)
+
+    if yes_match and no_match:
+        # Both found - use whichever comes first
+        if yes_match.start() < no_match.start():
+            return expected_lower == "yes"
+        else:
+            return expected_lower == "no"
+    elif yes_match:
+        return expected_lower == "yes"
+    elif no_match:
+        return expected_lower == "no"
+
+    # Priority 4: Check for affirmative/negative variations anywhere
     if expected_lower == "yes":
-        # Look for "yes" as a complete word
-        if re.search(r'\byes\b', first_part):
-            return True
-        # Also check for affirmative variations
         if re.search(r'\b(correct|true|right)\b', response_lower):
             return True
     elif expected_lower == "no":
-        # Look for "no" as a complete word (not in "note", "know", etc.)
-        if re.search(r'\bno\b', first_part):
-            return True
-        # Also check for negative variations
         if re.search(r'\b(incorrect|false|wrong)\b', response_lower):
             return True
 
