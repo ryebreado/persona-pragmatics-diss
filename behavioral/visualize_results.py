@@ -25,10 +25,29 @@ COLORS = {
     'underinf-quant': '#93C5FD', # light blue
 }
 
+# Extended colors for subcategories
+COLORS_SUBCATEGORY = {
+    'true-conj': '#228B22',           # dark green
+    'true-quant-all': '#32CD32',      # lime green
+    'true-quant-some': '#90EE90',     # light green (pragmatically ambiguous)
+    'false-conj': '#B22222',          # dark red
+    'false-quant-all': '#DC143C',     # crimson
+    'false-quant-some': '#F08080',    # light red
+    'underinf-conj': '#1E3A8A',       # dark blue
+    'underinf-quant': '#93C5FD',      # light blue
+}
+
 # Display order for categories (grouped by answer type)
 CATEGORY_ORDER = [
     'true-conj', 'true-quant',
     'false-conj', 'false-quant',
+    'underinf-conj', 'underinf-quant'
+]
+
+# Display order for subcategories
+SUBCATEGORY_ORDER = [
+    'true-conj', 'true-quant-all', 'true-quant-some',
+    'false-conj', 'false-quant-all', 'false-quant-some',
     'underinf-conj', 'underinf-quant'
 ]
 
@@ -38,6 +57,17 @@ CATEGORY_LABELS = {
     'true-quant': 'T-quant',
     'false-conj': 'F-conj',
     'false-quant': 'F-quant',
+    'underinf-conj': 'U-conj',
+    'underinf-quant': 'U-quant',
+}
+
+SUBCATEGORY_LABELS = {
+    'true-conj': 'T-conj',
+    'true-quant-all': 'T-q-all',
+    'true-quant-some': 'T-q-some',
+    'false-conj': 'F-conj',
+    'false-quant-all': 'F-q-all',
+    'false-quant-some': 'F-q-some',
     'underinf-conj': 'U-conj',
     'underinf-quant': 'U-quant',
 }
@@ -73,7 +103,32 @@ def load_results_from_directory(results_dir):
     return results
 
 
-def create_subplot(ax, persona_name, accuracy_by_category, title_fontsize=12):
+def compute_subcategory_accuracy(data):
+    """
+    Compute accuracy by subcategory from individual results.
+    Falls back to category if subcategory not present.
+    """
+    from collections import defaultdict
+
+    correct_by_subcat = defaultdict(int)
+    total_by_subcat = defaultdict(int)
+
+    for result in data.get('results', []):
+        # Use subcategory if available, otherwise fall back to category
+        subcat = result.get('subcategory', result.get('category', 'unknown'))
+        total_by_subcat[subcat] += 1
+        if result.get('correct'):
+            correct_by_subcat[subcat] += 1
+
+    accuracy_by_subcat = {}
+    for subcat in total_by_subcat:
+        if total_by_subcat[subcat] > 0:
+            accuracy_by_subcat[subcat] = correct_by_subcat[subcat] / total_by_subcat[subcat]
+
+    return accuracy_by_subcat
+
+
+def create_subplot(ax, persona_name, accuracy_by_category, title_fontsize=12, use_subcategories=False):
     """
     Create a single bar chart subplot for one persona.
     """
@@ -82,11 +137,20 @@ def create_subplot(ax, persona_name, accuracy_by_category, title_fontsize=12):
     accuracies = []
     colors = []
 
-    for cat in CATEGORY_ORDER:
+    if use_subcategories:
+        order = SUBCATEGORY_ORDER
+        labels = SUBCATEGORY_LABELS
+        color_map = COLORS_SUBCATEGORY
+    else:
+        order = CATEGORY_ORDER
+        labels = CATEGORY_LABELS
+        color_map = COLORS
+
+    for cat in order:
         if cat in accuracy_by_category:
-            categories.append(CATEGORY_LABELS.get(cat, cat))
+            categories.append(labels.get(cat, cat))
             accuracies.append(accuracy_by_category[cat])
-            colors.append(COLORS.get(cat, '#888888'))
+            colors.append(color_map.get(cat, '#888888'))
 
     x = np.arange(len(categories))
     bars = ax.bar(x, accuracies, color=colors, edgecolor='white', linewidth=0.5)
@@ -115,7 +179,7 @@ def create_subplot(ax, persona_name, accuracy_by_category, title_fontsize=12):
     return bars
 
 
-def create_visualization(results_dir, output_path=None, figsize=(15, 4)):
+def create_visualization(results_dir, output_path=None, figsize=(15, 4), use_subcategories=False):
     """
     Create small multiples visualization for all personas in a results directory.
     """
@@ -138,23 +202,39 @@ def create_visualization(results_dir, output_path=None, figsize=(15, 4)):
 
     for ax, persona_name in zip(axes, persona_names):
         data = results[persona_name]
-        accuracy_by_category = data.get('accuracy_by_category', {})
-        create_subplot(ax, persona_name, accuracy_by_category)
+        if use_subcategories:
+            accuracy_by_category = compute_subcategory_accuracy(data)
+        else:
+            accuracy_by_category = data.get('accuracy_by_category', {})
+        create_subplot(ax, persona_name, accuracy_by_category, use_subcategories=use_subcategories)
 
     # Add overall title
     model_name = results[persona_names[0]].get('model', 'Unknown Model')
-    fig.suptitle(f'Scalar Implicature Performance by Persona\n{model_name}',
+    subtitle = ' (Subcategories)' if use_subcategories else ''
+    fig.suptitle(f'Scalar Implicature Performance by Persona{subtitle}\n{model_name}',
                  fontsize=14, fontweight='bold', y=1.02)
 
     # Add legend
-    legend_elements = [
-        plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['true-conj'], label='True (conj)'),
-        plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['true-quant'], label='True (quant)'),
-        plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['false-conj'], label='False (conj)'),
-        plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['false-quant'], label='False (quant)'),
-        plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['underinf-conj'], label='Underinf (conj)'),
-        plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['underinf-quant'], label='Underinf (quant)'),
-    ]
+    if use_subcategories:
+        legend_elements = [
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['true-conj'], label='True (conj)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['true-quant-all'], label='True (q-all)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['true-quant-some'], label='True (q-some)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['false-conj'], label='False (conj)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['false-quant-all'], label='False (q-all)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['false-quant-some'], label='False (q-some)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['underinf-conj'], label='Underinf (conj)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS_SUBCATEGORY['underinf-quant'], label='Underinf (quant)'),
+        ]
+    else:
+        legend_elements = [
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['true-conj'], label='True (conj)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['true-quant'], label='True (quant)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['false-conj'], label='False (conj)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['false-quant'], label='False (quant)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['underinf-conj'], label='Underinf (conj)'),
+            plt.Rectangle((0, 0), 1, 1, facecolor=COLORS['underinf-quant'], label='Underinf (quant)'),
+        ]
     fig.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.12, 0.95),
                fontsize=8, title='Category', title_fontsize=9)
 
@@ -183,6 +263,8 @@ def main():
     parser.add_argument('--output', '-o', help='Output file path (PNG). If not specified, displays interactively.')
     parser.add_argument('--width', type=float, default=15, help='Figure width in inches')
     parser.add_argument('--height', type=float, default=4, help='Figure height in inches')
+    parser.add_argument('--subcategories', '-s', action='store_true',
+                       help='Use subcategories (e.g., true-quant-some vs true-quant-all)')
 
     args = parser.parse_args()
 
@@ -193,7 +275,8 @@ def main():
     create_visualization(
         args.results_dir,
         output_path=args.output,
-        figsize=(args.width, args.height)
+        figsize=(args.width, args.height),
+        use_subcategories=args.subcategories
     )
 
     return 0
