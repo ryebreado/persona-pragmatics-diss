@@ -218,11 +218,42 @@ class LocalModelWithActivations:
             'no_token_id': no_token_id
         }
 
+    def find_token_positions(
+        self,
+        formatted_prompt: str,
+        keywords: List[str]
+    ) -> Dict[str, List[int]]:
+        """
+        Find token positions of keywords in the prompt.
+
+        Args:
+            formatted_prompt: The tokenized prompt string
+            keywords: List of keywords to find (e.g., ["some", "all", "and"])
+
+        Returns:
+            Dict mapping keyword to list of token positions where it appears
+        """
+        # Tokenize
+        tokens = self.tokenizer.encode(formatted_prompt, add_special_tokens=False)
+        token_strings = [self.tokenizer.decode([t]).lower() for t in tokens]
+
+        positions = {kw: [] for kw in keywords}
+
+        for idx, tok_str in enumerate(token_strings):
+            tok_clean = tok_str.strip()
+            for kw in keywords:
+                # Match if token is exactly the keyword or contains it with space prefix
+                if tok_clean == kw or tok_clean == f" {kw}":
+                    positions[kw].append(idx)
+
+        return positions
+
     def get_prompt_activations(
         self,
         formatted_prompt: str,
-        layer_indices: Optional[List[int]] = None
-    ) -> Dict[str, torch.Tensor]:
+        layer_indices: Optional[List[int]] = None,
+        track_keywords: Optional[List[str]] = None
+    ) -> Tuple[Dict[str, torch.Tensor], Dict[str, List[int]]]:
         """
         Get activations from processing the prompt (before any generation).
 
@@ -233,10 +264,19 @@ class LocalModelWithActivations:
         Args:
             formatted_prompt: The formatted prompt string
             layer_indices: Which layers to capture (None = all)
+            track_keywords: Optional list of keywords to find positions for
+                           (e.g., ["some", "all", "and"] for quantifier/conjunction probing)
 
         Returns:
-            Dict mapping layer names to activation tensors of shape (1, seq_len, hidden_dim)
+            Tuple of:
+                - Dict mapping layer names to activation tensors of shape (1, seq_len, hidden_dim)
+                - Dict mapping keywords to their token positions (empty if track_keywords is None)
         """
+        # Find keyword positions before running forward pass
+        keyword_positions = {}
+        if track_keywords:
+            keyword_positions = self.find_token_positions(formatted_prompt, track_keywords)
+
         # Register hooks
         self.register_hooks(layer_indices)
 
@@ -253,7 +293,7 @@ class LocalModelWithActivations:
         # Clean up
         self.remove_hooks()
 
-        return prompt_activations
+        return prompt_activations, keyword_positions
 
     def generate(
         self,
@@ -262,7 +302,8 @@ class LocalModelWithActivations:
         temperature: float = 0.0,
         track_activations: bool = False,
         layer_indices: Optional[List[int]] = None,
-        get_logprobs: bool = False
+        get_logprobs: bool = False,
+        track_keywords: Optional[List[str]] = None
     ) -> Dict:
         """
         Generate response from the model.
@@ -275,9 +316,11 @@ class LocalModelWithActivations:
                               (before generation, at the decision point)
             layer_indices: Which layers to track (None = all)
             get_logprobs: Whether to get yes/no logprobs
+            track_keywords: Optional list of keywords to find positions for
+                           (e.g., ["some", "all", "and"] for probing)
 
         Returns:
-            dict with 'text', and optionally 'activations' and 'logprobs'
+            dict with 'text', and optionally 'activations', 'logprobs', 'keyword_positions'
         """
         # Format prompt using chat template
         formatted_prompt = self.format_prompt(prompt)
@@ -294,8 +337,11 @@ class LocalModelWithActivations:
         # We do a separate forward pass on just the prompt to capture
         # activations at the decision point, not during generation
         prompt_activations = None
+        keyword_positions = {}
         if track_activations:
-            prompt_activations = self.get_prompt_activations(formatted_prompt, layer_indices)
+            prompt_activations, keyword_positions = self.get_prompt_activations(
+                formatted_prompt, layer_indices, track_keywords
+            )
 
         # Tokenize input
         inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to(self.device)
@@ -343,6 +389,9 @@ class LocalModelWithActivations:
             result['last_token_activations'] = {
                 layer_name: acts[0, -1, :].numpy() for layer_name, acts in prompt_activations.items()
             }
+            # Include keyword positions if tracked
+            if keyword_positions:
+                result['keyword_positions'] = keyword_positions
 
         return result
 
@@ -465,7 +514,8 @@ def run_single_test(
     track_activations: bool = False,
     persona_prompt: Optional[str] = None,
     layer_indices: Optional[List[int]] = None,
-    use_logprobs: bool = False
+    use_logprobs: bool = False,
+    track_keywords: Optional[List[str]] = None
 ) -> Tuple[Optional[Dict], Optional[Dict]]:
     """
     Run a single test case.
@@ -477,11 +527,12 @@ def run_single_test(
         track_activations: Whether to track activations
         persona_prompt: Optional persona prompt
         layer_indices: Which layers to track
-        save_activations: Whether to save full activations in result
         use_logprobs: Whether to use logprobs for evaluation
+        track_keywords: Keywords to find and save activations for
+                       (e.g., ["some", "all", "and"])
 
     Returns:
-        Dictionary with test results
+        Tuple of (result dict, activations dict)
     """
     prompt = create_prompt_with_persona(
         test_case['scenario'],
@@ -499,7 +550,8 @@ def run_single_test(
             temperature=temperature,
             track_activations=track_activations,
             layer_indices=layer_indices,
-            get_logprobs=use_logprobs
+            get_logprobs=use_logprobs,
+            track_keywords=track_keywords
         )
 
         response = response_data['text']
@@ -547,7 +599,7 @@ def run_single_test(
                         sorted(response_data['last_token_activations'].items(),
                            key=lambda x: int(x[0].split('_')[1]))
                         ]).half(),
-                    
+
                 }
             # Add mean-pooled activations
             if 'activations' in response_data:
@@ -556,6 +608,22 @@ def run_single_test(
                     sorted(response_data['activations'].items(),
                            key=lambda x: int(x[0].split('_')[1]))
                 ]).half()
+
+            # Add keyword position activations if tracked
+            if 'keyword_positions' in response_data and 'activations' in response_data:
+                keyword_positions = response_data['keyword_positions']
+                activations_out['keyword_positions'] = keyword_positions
+
+                # Extract activations at each keyword position
+                # For each keyword, store activations at its first occurrence
+                for keyword, positions in keyword_positions.items():
+                    if positions:  # If keyword was found
+                        pos = positions[0]  # Use first occurrence
+                        activations_out[f'keyword_{keyword}'] = torch.stack([
+                            torch.from_numpy(v[0, pos, :]) for k, v in
+                            sorted(response_data['activations'].items(),
+                                   key=lambda x: int(x[0].split('_')[1]))
+                        ]).half()
 
         return result, activations_out
 
@@ -670,6 +738,9 @@ def main():
                        help='Use logprobs of yes/no tokens for evaluation (more robust for small models)')
     parser.add_argument('--layers', type=str,
                        help='Comma-separated layer indices to track (e.g., "0,5,10")')
+    parser.add_argument('--track-keywords', type=str,
+                       help='Comma-separated keywords to track activations for '
+                            '(e.g., "some,all,and" for quantifier/conjunction probing)')
     parser.add_argument('--num-examples', type=int, default=None,
                        help='Number of examples to run (default: all)')
     parser.add_argument('--output', help='Output file for results (auto-generated if not specified)')
@@ -707,6 +778,11 @@ def main():
     if args.layers:
         layer_indices = [int(x.strip()) for x in args.layers.split(',')]
 
+    # Parse keywords to track
+    track_keywords = None
+    if args.track_keywords:
+        track_keywords = [kw.strip() for kw in args.track_keywords.split(',')]
+
     # Initialize model
     print("="*80)
     model_wrapper = LocalModelWithActivations(args.model, device=args.device)
@@ -735,6 +811,8 @@ def main():
             print(f"  Tracking layers: {layer_indices}")
         else:
             print(f"  Tracking all {model_wrapper.n_layers} layers")
+        if track_keywords:
+            print(f"  Tracking keywords: {track_keywords}")
     print("="*80)
 
     # Track timing
@@ -753,7 +831,8 @@ def main():
             args.track_activations,
             persona_prompt,
             layer_indices,
-            args.use_logprobs
+            args.use_logprobs,
+            track_keywords
         )
 
         if result:
