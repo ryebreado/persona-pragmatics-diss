@@ -218,6 +218,43 @@ class LocalModelWithActivations:
             'no_token_id': no_token_id
         }
 
+    def get_prompt_activations(
+        self,
+        formatted_prompt: str,
+        layer_indices: Optional[List[int]] = None
+    ) -> Dict[str, torch.Tensor]:
+        """
+        Get activations from processing the prompt (before any generation).
+
+        This runs a single forward pass on the prompt and captures activations
+        at all token positions. This is the correct way to get activations for
+        probing, as it captures the model's state at the decision point.
+
+        Args:
+            formatted_prompt: The formatted prompt string
+            layer_indices: Which layers to capture (None = all)
+
+        Returns:
+            Dict mapping layer names to activation tensors of shape (1, seq_len, hidden_dim)
+        """
+        # Register hooks
+        self.register_hooks(layer_indices)
+
+        # Tokenize
+        inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to(self.device)
+
+        # Single forward pass (no generation)
+        with torch.no_grad():
+            self.model(**inputs)
+
+        # Copy activations before removing hooks
+        prompt_activations = {k: v.clone() for k, v in self.activations.items()}
+
+        # Clean up
+        self.remove_hooks()
+
+        return prompt_activations
+
     def generate(
         self,
         prompt: str,
@@ -234,13 +271,17 @@ class LocalModelWithActivations:
             prompt: Input prompt
             max_new_tokens: Maximum tokens to generate
             temperature: Sampling temperature (0.0 = greedy)
-            track_activations: Whether to capture activations
+            track_activations: Whether to capture activations from the PROMPT
+                              (before generation, at the decision point)
             layer_indices: Which layers to track (None = all)
             get_logprobs: Whether to get yes/no logprobs
 
         Returns:
             dict with 'text', and optionally 'activations' and 'logprobs'
         """
+        # Format prompt using chat template
+        formatted_prompt = self.format_prompt(prompt)
+
         # Get logprobs if requested (before generation)
         logprobs_data = None
         if get_logprobs:
@@ -249,18 +290,18 @@ class LocalModelWithActivations:
             except Exception as e:
                 print(f"Warning: Could not get logprobs: {e}")
 
-        # Register hooks if tracking activations
+        # Get PROMPT activations BEFORE generation (this is the key fix!)
+        # We do a separate forward pass on just the prompt to capture
+        # activations at the decision point, not during generation
+        prompt_activations = None
         if track_activations:
-            self.register_hooks(layer_indices)
-
-        # Format prompt using chat template
-        formatted_prompt = self.format_prompt(prompt)
+            prompt_activations = self.get_prompt_activations(formatted_prompt, layer_indices)
 
         # Tokenize input
         inputs = self.tokenizer(formatted_prompt, return_tensors="pt").to(self.device)
         prompt_length = inputs.input_ids.shape[1]
 
-        # Generate
+        # Generate (without hooks - we already captured prompt activations)
         with torch.no_grad():
             if temperature == 0.0:
                 outputs = self.model.generate(
@@ -291,19 +332,17 @@ class LocalModelWithActivations:
         if logprobs_data:
             result['logprobs'] = logprobs_data
 
-        # Include activations if tracked
-        if track_activations and self.activations:
-            # Store activations as numpy arrays
+        # Include PROMPT activations if tracked
+        if track_activations and prompt_activations:
+            # Store full prompt activations as numpy arrays
+            # Shape is (batch=1, prompt_seq_len, hidden_dim)
             result['activations'] = {
-                layer_name: acts.numpy() for layer_name, acts in self.activations.items()
+                layer_name: acts.numpy() for layer_name, acts in prompt_activations.items()
             }
-            # Also extract last-token activations for efficient probing
-            # Shape of acts is (batch=1, seq_len, hidden_dim)
+            # Extract last token of PROMPT (the decision point, before generation)
             result['last_token_activations'] = {
-                layer_name: acts[0, -1, :].numpy() for layer_name, acts in self.activations.items()
+                layer_name: acts[0, -1, :].numpy() for layer_name, acts in prompt_activations.items()
             }
-            # Clean up
-            self.remove_hooks()
 
         return result
 
