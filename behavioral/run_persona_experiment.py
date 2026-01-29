@@ -151,6 +151,8 @@ def main():
                        help='Track model activations (local models only)')
     parser.add_argument('--layers', type=str,
                        help='Comma-separated layer indices to track (local models only)')
+    parser.add_argument('--track-keywords', type=str,
+                       help='Comma-separated keywords to track (e.g., "some,all,and")')
 
     args = parser.parse_args()
     
@@ -209,6 +211,8 @@ def main():
                 cmd.append('--track-activations')
                 if args.layers:
                     cmd.extend(['--layers', args.layers])
+                if args.track_keywords:
+                    cmd.extend(['--track-keywords', args.track_keywords])
         else:
             # API-specific options
             if use_logprobs:
@@ -262,6 +266,8 @@ def main():
                         cmd.append('--track-activations')
                         if args.layers:
                             cmd.extend(['--layers', args.layers])
+                        if args.track_keywords:
+                            cmd.extend(['--track-keywords', args.track_keywords])
                 else:
                     # API-specific options
                     if use_logprobs:
