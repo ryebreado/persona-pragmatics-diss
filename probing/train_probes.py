@@ -454,8 +454,20 @@ def main():
     print(f"  Loaded {len(activations)} examples")
     print(f"  Token positions available: {list(activations[0].keys())}")
 
-    n_layers = activations[0][args.token_position].shape[0]
-    hidden_dim = activations[0][args.token_position].shape[1]
+    # For keyword positions, find first example that has it
+    if args.token_position.startswith('keyword_'):
+        examples_with_pos = [ex for ex in activations if args.token_position in ex]
+        if not examples_with_pos:
+            print(f"  Error: No examples have '{args.token_position}'")
+            print(f"  Available keyword positions: {[k for k in activations[0].keys() if k.startswith('keyword_')]}")
+            return
+        first_ex = examples_with_pos[0]
+        print(f"  {len(examples_with_pos)}/{len(activations)} examples have '{args.token_position}'")
+    else:
+        first_ex = activations[0]
+
+    n_layers = first_ex[args.token_position].shape[0]
+    hidden_dim = first_ex[args.token_position].shape[1]
     print(f"  {n_layers} layers, {hidden_dim} hidden dim")
 
     results = []
