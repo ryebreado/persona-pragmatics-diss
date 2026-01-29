@@ -7,7 +7,8 @@
     "statement": "The rabbit collected the coin",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 27
+    "test_id": 27,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The penguin likes sliding on ice.",
@@ -17,7 +18,8 @@
     "statement": "The penguin slid down some of the hills",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 28
+    "test_id": 28,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The baker wants to decorate cakes.",
@@ -27,7 +29,8 @@
     "statement": "The baker decorated the chocolate cake and the lemon cake",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 29
+    "test_id": 29,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The kangaroo likes jumping over obstacles.",
@@ -37,7 +40,8 @@
     "statement": "The kangaroo jumped over some of the logs",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 30
+    "test_id": 30,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The chef likes chopping vegetables.",
@@ -47,7 +51,8 @@
     "statement": "The chef chopped the onion",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 31
+    "test_id": 31,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The fox likes hiding toys.",
@@ -57,7 +62,8 @@
     "statement": "The fox hid some of the blocks",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 32
+    "test_id": 32,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The librarian enjoys stacking books.",
@@ -67,7 +73,8 @@
     "statement": "The librarian stacked the blue book",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 33
+    "test_id": 33,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The bear likes catching fish.",
@@ -77,7 +84,8 @@
     "statement": "The bear caught some of the salmon",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 34
+    "test_id": 34,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The pirate wants to bury treasure.",
@@ -87,7 +95,8 @@
     "statement": "The pirate buried the chest and the bag",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 35
+    "test_id": 35,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The owl likes reading stories.",
@@ -97,7 +106,8 @@
     "statement": "The owl read some of the fairy tales",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 36
+    "test_id": 36,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The nurse likes folding towels.",
@@ -107,7 +117,8 @@
     "statement": "The nurse folded the blue towel and the gray towel",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 37
+    "test_id": 37,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The lion likes chasing butterflies.",
@@ -117,7 +128,8 @@
     "statement": "The lion chased all the yellow butterflies",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 38
+    "test_id": 38,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The wizard loves mixing potions.",
@@ -127,7 +139,8 @@
     "statement": "The wizard mixed the green potion",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 39
+    "test_id": 39,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The tiger likes knocking down towers.",
@@ -137,7 +150,8 @@
     "statement": "The tiger knocked down some of the block towers",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 40
+    "test_id": 40,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The farmer wants to pick apples.",
@@ -147,7 +161,8 @@
     "statement": "The farmer picked the red apple and the yellow apple",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 41
+    "test_id": 41,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The zebra likes kicking balls.",
@@ -157,7 +172,8 @@
     "statement": "The zebra kicked all the footballs",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 42
+    "test_id": 42,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The clown likes juggling fruits.",
@@ -167,7 +183,8 @@
     "statement": "The clown juggled the orange and the pear",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 43
+    "test_id": 43,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The hippo likes splashing in puddles.",
@@ -177,7 +194,8 @@
     "statement": "The hippo splashed in some of the small puddles",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 44
+    "test_id": 44,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The parrot enjoys opening boxes.",
@@ -187,7 +205,8 @@
     "statement": "The parrot opened the wooden box",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 45
+    "test_id": 45,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The duck likes collecting acorns.",
@@ -197,7 +216,8 @@
     "statement": "The duck collected some of the big acorns",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 46
+    "test_id": 46,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The knight wants to polish his armor.",
@@ -207,7 +227,8 @@
     "statement": "The knight polished the helmet and the shield",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 47
+    "test_id": 47,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The frog likes catching flies.",
@@ -217,7 +238,8 @@
     "statement": "The frog caught some of the houseflies",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 48
+    "test_id": 48,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The pilot likes flying kites.",
@@ -227,7 +249,8 @@
     "statement": "The pilot flew the green kite",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 49
+    "test_id": 49,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The hedgehog likes rolling apples.",
@@ -237,7 +260,8 @@
     "statement": "The hedgehog rolled some of the red apples",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 50
+    "test_id": 50,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The dentist enjoys arranging tools.",
@@ -247,7 +271,8 @@
     "statement": "The dentist arranged the mirror",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 51
+    "test_id": 51,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The seal likes balancing balls.",
@@ -257,7 +282,8 @@
     "statement": "The seal balanced some of the striped balls",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 52
+    "test_id": 52,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The princess wants to try on shoes.",
@@ -267,7 +293,8 @@
     "statement": "The princess tried on the glass slipper and the gold boot",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 53
+    "test_id": 53,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The badger likes digging holes.",
@@ -277,7 +304,8 @@
     "statement": "The badger dug all the deep holes",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 54
+    "test_id": 54,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The sailor likes tying knots.",
@@ -287,7 +315,8 @@
     "statement": "The sailor tied knots in the white rope and the black rope",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 55
+    "test_id": 55,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The otter likes stacking stones.",
@@ -297,7 +326,8 @@
     "statement": "The otter stacked all the flat stones",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 56
+    "test_id": 56,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The magician loves pulling things from his hat.",
@@ -307,7 +337,8 @@
     "statement": "The magician pulled out the rabbit",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 57
+    "test_id": 57,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The whale likes blowing bubbles.",
@@ -317,7 +348,8 @@
     "statement": "The whale blew some of the big bubbles",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 58
+    "test_id": 58,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The gardener wants to plant seeds.",
@@ -327,7 +359,8 @@
     "statement": "The gardener planted the sunflower seed and the rose seed",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 59
+    "test_id": 59,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The panda likes munching bamboo.",
@@ -337,7 +370,8 @@
     "statement": "The panda munched some of the tall bamboo stalks",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 60
+    "test_id": 60,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The firefighter likes climbing ladders.",
@@ -347,7 +381,8 @@
     "statement": "The firefighter climbed the metal ladder",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 61
+    "test_id": 61,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The koala likes hugging trees.",
@@ -357,7 +392,8 @@
     "statement": "The koala hugged some of the oak trees",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 62
+    "test_id": 62,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The teacher enjoys sharpening pencils.",
@@ -367,7 +403,8 @@
     "statement": "The teacher sharpened the yellow pencil",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 63
+    "test_id": 63,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The dolphin likes jumping through hoops.",
@@ -377,7 +414,8 @@
     "statement": "The dolphin jumped through some of the red hoops",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 64
+    "test_id": 64,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The artist wants to sketch animals.",
@@ -387,7 +425,8 @@
     "statement": "The artist sketched the cat and the bird",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 65
+    "test_id": 65,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The sloth likes hanging from branches.",
@@ -397,7 +436,8 @@
     "statement": "The sloth hung from all the thick branches",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 66
+    "test_id": 66,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The beaver likes chewing logs.",
@@ -407,7 +447,8 @@
     "statement": "The beaver chewed the pine log and the maple log",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 67
+    "test_id": 67,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The raccoon likes washing berries.",
@@ -417,7 +458,8 @@
     "statement": "The raccoon washed all the raspberries",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 68
+    "test_id": 68,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The musician enjoys tuning instruments.",
@@ -427,7 +469,8 @@
     "statement": "The musician tuned the guitar",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 69
+    "test_id": 69,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The octopus likes grabbing shells.",
@@ -437,7 +480,8 @@
     "statement": "The octopus grabbed some of the spiral shells",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 70
+    "test_id": 70,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The cowboy wants to lasso animals.",
@@ -447,7 +491,8 @@
     "statement": "The cowboy lassoed the horse and the cow",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 71
+    "test_id": 71,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The deer likes nibbling leaves.",
@@ -457,7 +502,8 @@
     "statement": "The deer nibbled some of the oak leaves",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 72
+    "test_id": 72,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The detective likes examining clues.",
@@ -467,7 +513,8 @@
     "statement": "The detective examined the fingerprint",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 73
+    "test_id": 73,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The wolf likes howling at moons.",
@@ -477,7 +524,8 @@
     "statement": "The wolf howled at some of the half moons",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 74
+    "test_id": 74,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The queen loves wearing crowns.",
@@ -487,7 +535,8 @@
     "statement": "The queen wore the diamond crown",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 75
+    "test_id": 75,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The moose likes stomping on ice.",
@@ -497,7 +546,8 @@
     "statement": "The moose stomped on some of the thick ice patches",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 76
+    "test_id": 76,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The prince likes polishing gems.",
@@ -507,7 +557,8 @@
     "statement": "The prince polished the ruby and the emerald",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 77
+    "test_id": 77,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The chipmunk likes stuffing nuts in his cheeks.",
@@ -517,7 +568,8 @@
     "statement": "The chipmunk stuffed all the walnuts in his cheeks",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 78
+    "test_id": 78,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The skunk likes spraying perfume.",
@@ -527,7 +579,8 @@
     "statement": "The skunk sprayed the lily perfume",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 79
+    "test_id": 79,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The crab likes pinching balloons.",
@@ -537,7 +590,8 @@
     "statement": "The crab pinched some of the round balloons",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 80
+    "test_id": 80,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The astronaut likes pressing buttons.",
@@ -547,7 +601,8 @@
     "statement": "The astronaut pressed the green button",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 81
+    "test_id": 81,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The snail likes crossing bridges.",
@@ -557,7 +612,8 @@
     "statement": "The snail crossed all the stone bridges",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 82
+    "test_id": 82,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The plumber enjoys fixing pipes.",
@@ -567,7 +623,8 @@
     "statement": "The plumber fixed the copper pipe and the steel pipe",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 83
+    "test_id": 83,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The pelican likes swallowing fish.",
@@ -577,7 +634,8 @@
     "statement": "The pelican swallowed some of the goldfish",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 84
+    "test_id": 84,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The king loves signing documents.",
@@ -587,7 +645,8 @@
     "statement": "The king signed the treaty",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 85
+    "test_id": 85,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The toucan likes pecking at fruit.",
@@ -597,7 +656,8 @@
     "statement": "The toucan pecked at some of the mangoes",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 86
+    "test_id": 86,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The sculptor likes carving statues.",
@@ -607,7 +667,8 @@
     "statement": "The sculptor carved the lion statue and the bear statue",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 87
+    "test_id": 87,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The cricket likes jumping on leaves.",
@@ -617,7 +678,8 @@
     "statement": "The cricket jumped on some of the brown leaves",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 88
+    "test_id": 88,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The mailman enjoys delivering packages.",
@@ -627,7 +689,8 @@
     "statement": "The mailman delivered the small package and the large package",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 89
+    "test_id": 89,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The ant likes carrying crumbs.",
@@ -637,7 +700,8 @@
     "statement": "The ant carried all the bread crumbs",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 90
+    "test_id": 90,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The ballerina loves spinning tops.",
@@ -647,7 +711,8 @@
     "statement": "The ballerina spun the metal top",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 91
+    "test_id": 91,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The bee likes visiting flowers.",
@@ -657,7 +722,8 @@
     "statement": "The bee visited some of the sunflowers",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 92
+    "test_id": 92,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The jester likes throwing pies.",
@@ -667,7 +733,8 @@
     "statement": "The jester threw the pumpkin pie",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 93
+    "test_id": 93,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The caterpillar likes eating leaves.",
@@ -677,7 +744,8 @@
     "statement": "The caterpillar ate all the cabbage leaves",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 94
+    "test_id": 94,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The locksmith enjoys opening locks.",
@@ -687,7 +755,8 @@
     "statement": "The locksmith opened the brass lock and the iron lock",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 95
+    "test_id": 95,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The grasshopper likes landing on flowers.",
@@ -697,7 +766,8 @@
     "statement": "The grasshopper landed on some of the roses",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 96
+    "test_id": 96,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The photographer loves taking pictures.",
@@ -707,7 +777,8 @@
     "statement": "The photographer took a picture of the bird",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 97
+    "test_id": 97,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The spider likes weaving webs.",
@@ -717,7 +788,8 @@
     "statement": "The spider wove webs in some of the corners",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 98
+    "test_id": 98,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The butcher likes cutting meat.",
@@ -727,7 +799,8 @@
     "statement": "The butcher cut the sausage and the bacon",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 99
+    "test_id": 99,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The ladybug likes resting on petals.",
@@ -737,7 +810,8 @@
     "statement": "The ladybug rested on some of the white petals",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 100
+    "test_id": 100,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The zookeeper enjoys feeding animals.",
@@ -747,7 +821,8 @@
     "statement": "The zookeeper fed the tiger and the giraffe",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 101
+    "test_id": 101,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The butterfly likes sipping nectar.",
@@ -757,7 +832,8 @@
     "statement": "The butterfly sipped nectar from all the lilies",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 102
+    "test_id": 102,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The inventor loves building machines.",
@@ -767,7 +843,8 @@
     "statement": "The inventor built the submarine",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 103
+    "test_id": 103,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The flamingo likes standing on rocks.",
@@ -777,7 +854,8 @@
     "statement": "The flamingo stood on some of the gray rocks",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 104
+    "test_id": 104,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The carpenter likes sawing wood.",
@@ -787,7 +865,8 @@
     "statement": "The carpenter sawed the oak board",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 105
+    "test_id": 105,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The seagull likes stealing chips.",
@@ -797,7 +876,8 @@
     "statement": "The seagull stole all the corn chips",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 106
+    "test_id": 106,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The tailor enjoys sewing buttons.",
@@ -807,7 +887,8 @@
     "statement": "The tailor sewed the gold button and the pearl button",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 107
+    "test_id": 107,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The sparrow likes picking up seeds.",
@@ -817,7 +898,8 @@
     "statement": "The sparrow picked up some of the sunflower seeds",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 108
+    "test_id": 108,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The gnome loves polishing mushrooms.",
@@ -827,7 +909,8 @@
     "statement": "The gnome polished the red mushroom",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 109
+    "test_id": 109,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The peacock likes showing off feathers.",
@@ -837,7 +920,8 @@
     "statement": "The peacock showed off some of the blue feathers",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 110
+    "test_id": 110,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The mechanic likes testing engines.",
@@ -847,7 +931,8 @@
     "statement": "The mechanic tested the plane engine and the train engine",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 111
+    "test_id": 111,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The crow likes collecting shiny objects.",
@@ -857,7 +942,8 @@
     "statement": "The crow collected some of the bottle caps",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 112
+    "test_id": 112,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The elf enjoys wrapping presents.",
@@ -867,7 +953,8 @@
     "statement": "The elf wrapped the toy car and the teddy bear",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 113
+    "test_id": 113,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The robin likes pulling worms.",
@@ -877,7 +964,8 @@
     "statement": "The robin pulled all the pink worms",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 114
+    "test_id": 114,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The giant loves stomping on castles.",
@@ -887,7 +975,8 @@
     "statement": "The giant stomped on the snow castle",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 115
+    "test_id": 115,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The swan likes gliding across ponds.",
@@ -897,7 +986,8 @@
     "statement": "The swan glided across some of the lily ponds",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 116
+    "test_id": 116,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The florist likes arranging bouquets.",
@@ -907,7 +997,8 @@
     "statement": "The florist arranged the daisy bouquet",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 117
+    "test_id": 117,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The heron likes catching frogs.",
@@ -917,7 +1008,8 @@
     "statement": "The heron caught all the brown frogs",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 118
+    "test_id": 118,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The shepherd enjoys counting sheep.",
@@ -927,7 +1019,8 @@
     "statement": "The shepherd counted the white sheep and the black sheep",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 119
+    "test_id": 119,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The woodpecker likes tapping trees.",
@@ -937,7 +1030,8 @@
     "statement": "The woodpecker tapped some of the pine trees",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 120
+    "test_id": 120,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The dwarf loves mining gems.",
@@ -947,7 +1041,8 @@
     "statement": "The dwarf mined the topaz",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 121
+    "test_id": 121,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The stork likes delivering babies.",
@@ -957,7 +1052,8 @@
     "statement": "The stork delivered some of the baby boys",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 122
+    "test_id": 122,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The chef likes grilling vegetables.",
@@ -967,7 +1063,8 @@
     "statement": "The chef grilled the eggplant and the mushroom",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 123
+    "test_id": 123,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The hawk likes swooping at mice.",
@@ -977,7 +1074,8 @@
     "statement": "The hawk swooped at some of the house mice",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 124
+    "test_id": 124,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The mermaid enjoys combing her hair.",
@@ -987,7 +1085,8 @@
     "statement": "The mermaid used the golden comb and the shell comb",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 125
+    "test_id": 125,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The finch likes cracking seeds.",
@@ -997,7 +1096,8 @@
     "statement": "The finch cracked all the small seeds",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 126
+    "test_id": 126,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The dragon loves collecting treasure.",
@@ -1007,7 +1107,8 @@
     "statement": "The dragon collected the gold coin",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 127
+    "test_id": 127,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The penguin likes sliding down slopes.",
@@ -1017,7 +1118,8 @@
     "statement": "The penguin slid down some of the icy slopes",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 128
+    "test_id": 128,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The postman enjoys stamping letters.",
@@ -1027,7 +1129,8 @@
     "statement": "The postman stamped the white envelope and the blue envelope",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 129
+    "test_id": 129,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The goose likes honking at cars.",
@@ -1037,7 +1140,8 @@
     "statement": "The goose honked at some of the red cars",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 130
+    "test_id": 130,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The witch likes brewing potions.",
@@ -1047,7 +1151,8 @@
     "statement": "The witch brewed the shrinking potion and the flying potion",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 131
+    "test_id": 131,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The pigeon likes pecking at breadcrumbs.",
@@ -1057,7 +1162,8 @@
     "statement": "The pigeon pecked at all the brown breadcrumbs",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 132
+    "test_id": 132,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The unicorn loves collecting rainbows.",
@@ -1067,7 +1173,8 @@
     "statement": "The unicorn collected the purple rainbow",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 133
+    "test_id": 133,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The hamster likes running on wheels.",
@@ -1077,7 +1184,8 @@
     "statement": "The hamster ran on some of the plastic wheels",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 134
+    "test_id": 134,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The lumberjack enjoys chopping trees.",
@@ -1087,7 +1195,8 @@
     "statement": "The lumberjack chopped the elm tree and the willow tree",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 135
+    "test_id": 135,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The mole likes digging tunnels.",
@@ -1097,7 +1206,8 @@
     "statement": "The mole dug all the long tunnels",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 136
+    "test_id": 136,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The troll likes guarding bridges.",
@@ -1107,7 +1217,8 @@
     "statement": "The troll guarded the rope bridge",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 137
+    "test_id": 137,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The moth likes flying around lamps.",
@@ -1117,7 +1228,8 @@
     "statement": "The moth flew around some of the floor lamps",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 138
+    "test_id": 138,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The fairy loves granting wishes.",
@@ -1127,7 +1239,8 @@
     "statement": "The fairy granted the birthday wish",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 139
+    "test_id": 139,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The worm likes crawling through apples.",
@@ -1137,7 +1250,8 @@
     "statement": "The worm crawled through some of the red apples",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 140
+    "test_id": 140,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The sailor enjoys tying ropes.",
@@ -1147,7 +1261,8 @@
     "statement": "The sailor tied the thick rope and the long rope",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 141
+    "test_id": 141,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The squirrel likes burying nuts.",
@@ -1157,7 +1272,8 @@
     "statement": "The squirrel buried some of the chestnuts",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 142
+    "test_id": 142,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The ogre likes smashing pumpkins.",
@@ -1167,7 +1283,8 @@
     "statement": "The ogre smashed the green pumpkin and the yellow pumpkin",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 143
+    "test_id": 143,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The firefly likes lighting up meadows.",
@@ -1177,7 +1294,8 @@
     "statement": "The firefly lit up all the clover meadows",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 144
+    "test_id": 144,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The leprechaun loves hiding gold.",
@@ -1187,7 +1305,8 @@
     "statement": "The leprechaun hid the gold chain",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 145
+    "test_id": 145,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The beaver likes building dams.",
@@ -1197,7 +1316,8 @@
     "statement": "The beaver built dams on some of the small streams",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 146
+    "test_id": 146,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The wizard enjoys casting spells.",
@@ -1207,7 +1327,8 @@
     "statement": "The wizard cast the fire spell and the ice spell",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 147
+    "test_id": 147,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The fly likes buzzing around food.",
@@ -1217,7 +1338,8 @@
     "statement": "The fly buzzed around all the sandwiches",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 148
+    "test_id": 148,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The vampire likes visiting castles.",
@@ -1227,7 +1349,8 @@
     "statement": "The vampire visited the forest castle",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 149
+    "test_id": 149,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The dragonfly likes landing on lily pads.",
@@ -1237,7 +1360,8 @@
     "statement": "The dragonfly landed on some of the small lily pads",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 150
+    "test_id": 150,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The goblin loves stealing socks.",
@@ -1247,7 +1371,8 @@
     "statement": "The goblin stole the red sock",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 151
+    "test_id": 151,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The mouse likes nibbling cheese.",
@@ -1257,7 +1382,8 @@
     "statement": "The mouse nibbled some of the cheddar pieces",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 152
+    "test_id": 152,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The gnome enjoys watering plants.",
@@ -1267,7 +1393,8 @@
     "statement": "The gnome watered the fern and the palm",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 153
+    "test_id": 153,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The catfish likes hiding under rocks.",
@@ -1277,7 +1404,8 @@
     "statement": "The catfish hid under some of the gray rocks",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 154
+    "test_id": 154,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The yeti likes throwing snowballs.",
@@ -1287,7 +1415,8 @@
     "statement": "The yeti threw the small snowball and the tiny snowball",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 155
+    "test_id": 155,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The beetle likes crawling on logs.",
@@ -1297,7 +1426,8 @@
     "statement": "The beetle crawled on all the fresh logs",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 156
+    "test_id": 156,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The pixie loves sprinkling dust.",
@@ -1307,7 +1437,8 @@
     "statement": "The pixie sprinkled the star dust",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 157
+    "test_id": 157,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The parrot likes repeating words.",
@@ -1317,7 +1448,8 @@
     "statement": "The parrot repeated some of the silly words",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 158
+    "test_id": 158,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The fisherman enjoys catching fish.",
@@ -1327,7 +1459,8 @@
     "statement": "The fisherman caught the salmon and the cod",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 159
+    "test_id": 159,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The rooster likes crowing at sunrises.",
@@ -1337,7 +1470,8 @@
     "statement": "The rooster crowed at all the cloudy sunrises",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 160
+    "test_id": 160,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The phoenix likes flying over mountains.",
@@ -1347,7 +1481,8 @@
     "statement": "The phoenix flew over the misty mountain",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 161
+    "test_id": 161,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The gecko likes climbing walls.",
@@ -1357,7 +1492,8 @@
     "statement": "The gecko climbed some of the glass walls",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 162
+    "test_id": 162,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The nymph loves dancing on flowers.",
@@ -1367,7 +1503,8 @@
     "statement": "The nymph danced on the rose",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 163
+    "test_id": 163,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The owl likes hooting at stars.",
@@ -1377,7 +1514,8 @@
     "statement": "The owl hooted at some of the bright stars",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 164
+    "test_id": 164,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The astronaut enjoys exploring planets.",
@@ -1387,7 +1525,8 @@
     "statement": "The astronaut explored the red planet and the blue planet",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 165
+    "test_id": 165,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The hen likes sitting on eggs.",
@@ -1397,7 +1536,8 @@
     "statement": "The hen sat on some of the white eggs",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 166
+    "test_id": 166,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The centaur likes racing horses.",
@@ -1407,7 +1547,8 @@
     "statement": "The centaur raced the brown horse and the spotted horse",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 167
+    "test_id": 167,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The vulture likes circling mountains.",
@@ -1417,7 +1558,8 @@
     "statement": "The vulture circled all the short mountains",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 168
+    "test_id": 168,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The imp loves playing pranks.",
@@ -1427,7 +1569,8 @@
     "statement": "The imp played the water balloon prank",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 169
+    "test_id": 169,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The turkey likes gobbling at visitors.",
@@ -1437,7 +1580,8 @@
     "statement": "The turkey gobbled at some of the tall visitors",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 170
+    "test_id": 170,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The ninja enjoys throwing stars.",
@@ -1447,7 +1591,8 @@
     "statement": "The ninja threw the gold star and the bronze star",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 171
+    "test_id": 171,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The bat likes hanging from branches.",
@@ -1457,7 +1602,8 @@
     "statement": "The bat hung from all the oak branches",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 172
+    "test_id": 172,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The sphinx likes guarding temples.",
@@ -1467,7 +1613,8 @@
     "statement": "The sphinx guarded the marble temple",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 173
+    "test_id": 173,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The jay likes stealing berries.",
@@ -1477,7 +1624,8 @@
     "statement": "The jay stole some of the mulberries",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 174
+    "test_id": 174,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The sprite loves painting rainbows.",
@@ -1487,7 +1635,8 @@
     "statement": "The sprite painted the morning rainbow",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 175
+    "test_id": 175,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The crane likes standing in ponds.",
@@ -1497,7 +1646,8 @@
     "statement": "The crane stood in some of the shallow ponds",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 176
+    "test_id": 176,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The baker enjoys frosting cupcakes.",
@@ -1507,7 +1657,8 @@
     "statement": "The baker frosted the chocolate cupcake and the vanilla cupcake",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 177
+    "test_id": 177,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The starfish likes clinging to rocks.",
@@ -1517,7 +1668,8 @@
     "statement": "The starfish clung to some of the purple rocks",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 178
+    "test_id": 178,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The griffin loves guarding treasures.",
@@ -1527,7 +1679,8 @@
     "statement": "The griffin guarded the crown",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 179
+    "test_id": 179,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The puffin likes diving for fish.",
@@ -1537,7 +1690,8 @@
     "statement": "The puffin dove for some of the herring",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 180
+    "test_id": 180,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The samurai likes polishing swords.",
@@ -1547,7 +1701,8 @@
     "statement": "The samurai polished the curved sword",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 181
+    "test_id": 181,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The minnow likes swimming through weeds.",
@@ -1557,7 +1712,8 @@
     "statement": "The minnow swam through all the short weeds",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 182
+    "test_id": 182,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The acrobat enjoys swinging on trapezes.",
@@ -1567,7 +1723,8 @@
     "statement": "The acrobat swung on the red trapeze and the green trapeze",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 183
+    "test_id": 183,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The jellyfish likes floating past boats.",
@@ -1577,7 +1734,8 @@
     "statement": "The jellyfish floated past all the sailboats",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 184
+    "test_id": 184,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The viking loves raiding villages.",
@@ -1587,7 +1745,8 @@
     "statement": "The viking raided the fishing village",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 185
+    "test_id": 185,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The albatross likes soaring over waves.",
@@ -1597,7 +1756,8 @@
     "statement": "The albatross soared over some of the big waves",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 186
+    "test_id": 186,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The gladiator likes fighting animals.",
@@ -1607,7 +1767,8 @@
     "statement": "The gladiator fought the bear and the wolf",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 187
+    "test_id": 187,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The shrimp likes hiding in coral.",
@@ -1617,7 +1778,8 @@
     "statement": "The shrimp hid in some of the blue coral",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 188
+    "test_id": 188,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The jockey enjoys riding horses.",
@@ -1627,7 +1789,8 @@
     "statement": "The jockey rode the gray horse",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 189
+    "test_id": 189,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The clam likes filtering water.",
@@ -1637,7 +1800,8 @@
     "statement": "The clam filtered some of the salty waters",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 190
+    "test_id": 190,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The archer enjoys hitting targets.",
@@ -1647,7 +1811,8 @@
     "statement": "The archer hit the round target and the star target",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 191
+    "test_id": 191,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The perch likes swimming near plants.",
@@ -1657,7 +1822,8 @@
     "statement": "The perch swam near some of the lily plants",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 192
+    "test_id": 192,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The pharaoh likes building pyramids.",
@@ -1667,7 +1833,8 @@
     "statement": "The pharaoh built the giant pyramid",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 193
+    "test_id": 193,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The eel likes slithering through caves.",
@@ -1677,7 +1844,8 @@
     "statement": "The eel slithered through all the bright caves",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 194
+    "test_id": 194,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The sorceress loves reading scrolls.",
@@ -1687,7 +1855,8 @@
     "statement": "The sorceress read the ancient scroll",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 195
+    "test_id": 195,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The mackerel likes jumping out of water.",
@@ -1697,7 +1866,8 @@
     "statement": "The mackerel jumped out of some of the calm waters",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 196
+    "test_id": 196,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The sultan enjoys collecting carpets.",
@@ -1707,7 +1877,8 @@
     "statement": "The sultan collected the silk carpet and the velvet carpet",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 197
+    "test_id": 197,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The carp likes eating algae.",
@@ -1717,7 +1888,8 @@
     "statement": "The carp ate all the green algae",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 198
+    "test_id": 198,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The empress likes wearing necklaces.",
@@ -1727,7 +1899,8 @@
     "statement": "The empress wore the sapphire necklace and the diamond necklace",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 199
+    "test_id": 199,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The pike likes chasing minnows.",
@@ -1737,7 +1910,8 @@
     "statement": "The pike chased some of the gold minnows",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 200
+    "test_id": 200,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The monk loves lighting candles.",
@@ -1747,7 +1921,8 @@
     "statement": "The monk lit the white candle",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 201
+    "test_id": 201,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The bass likes hiding under logs.",
@@ -1757,7 +1932,8 @@
     "statement": "The bass hid under some of the sunken logs",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 202
+    "test_id": 202,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The duchess enjoys hosting parties.",
@@ -1767,7 +1943,8 @@
     "statement": "The duchess hosted the garden party and the ball",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 203
+    "test_id": 203,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The crayfish likes pinching fingers.",
@@ -1777,7 +1954,8 @@
     "statement": "The crayfish pinched some of the big fingers",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 204
+    "test_id": 204,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The duke likes hunting animals.",
@@ -1787,7 +1965,8 @@
     "statement": "The duke hunted the boar",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 205
+    "test_id": 205,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The tadpole likes swimming in circles.",
@@ -1797,7 +1976,8 @@
     "statement": "The tadpole swam in all the small circles",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 206
+    "test_id": 206,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The earl loves collecting stamps.",
@@ -1807,7 +1987,8 @@
     "statement": "The earl collected the rare stamp",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 207
+    "test_id": 207,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The newt likes crawling on stones.",
@@ -1817,7 +1998,8 @@
     "statement": "The newt crawled on some of the wet stones",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 208
+    "test_id": 208,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The baron enjoys riding carriages.",
@@ -1827,7 +2009,8 @@
     "statement": "The baron rode the gold carriage and the black carriage",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 209
+    "test_id": 209,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The trout likes jumping over rapids.",
@@ -1837,7 +2020,8 @@
     "statement": "The trout jumped over all the small rapids",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 210
+    "test_id": 210,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The countess likes arranging flowers.",
@@ -1847,7 +2031,8 @@
     "statement": "The countess arranged the carnation and the lily",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 211
+    "test_id": 211,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The guppy likes blowing bubbles.",
@@ -1857,7 +2042,8 @@
     "statement": "The guppy blew some of the medium bubbles",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 212
+    "test_id": 212,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The viscount loves playing instruments.",
@@ -1867,7 +2053,8 @@
     "statement": "The viscount played the harp",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 213
+    "test_id": 213,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The sardine likes swimming in schools.",
@@ -1877,7 +2064,8 @@
     "statement": "The sardine swam in some of the big schools",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 214
+    "test_id": 214,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The marquis enjoys tasting wines.",
@@ -1887,7 +2075,8 @@
     "statement": "The marquis tasted the red wine and the sparkling wine",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 215
+    "test_id": 215,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The flounder likes resting on sand.",
@@ -1897,7 +2086,8 @@
     "statement": "The flounder rested on some of the white sand patches",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 216
+    "test_id": 216,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The lady likes picking berries.",
@@ -1907,7 +2097,8 @@
     "statement": "The lady picked from the blackberry bush",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 217
+    "test_id": 217,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The anchovy likes darting through kelp.",
@@ -1917,7 +2108,8 @@
     "statement": "The anchovy darted through all the short kelp",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 218
+    "test_id": 218,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The lord loves signing decrees.",
@@ -1927,7 +2119,8 @@
     "statement": "The lord signed the trade decree",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 219
+    "test_id": 219,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The herring likes swimming in currents.",
@@ -1937,7 +2130,8 @@
     "statement": "The herring swam in some of the warm currents",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 220
+    "test_id": 220,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The noble enjoys collecting art.",
@@ -1947,7 +2141,8 @@
     "statement": "The noble collected the painting and the sculpture",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 221
+    "test_id": 221,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The swordfish likes leaping over waves.",
@@ -1957,7 +2152,8 @@
     "statement": "The swordfish leaped over all the high waves",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 222
+    "test_id": 222,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The captain likes steering ships.",
@@ -1967,7 +2163,8 @@
     "statement": "The captain steered the pirate ship and the fishing boat",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 223
+    "test_id": 223,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The tuna likes racing other fish.",
@@ -1977,7 +2174,8 @@
     "statement": "The tuna raced some of the slow fish",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 224
+    "test_id": 224,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The admiral loves commanding fleets.",
@@ -1987,7 +2185,8 @@
     "statement": "The admiral commanded the battle fleet",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 225
+    "test_id": 225,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The salmon likes swimming upstream.",
@@ -1997,7 +2196,8 @@
     "statement": "The salmon swam up some of the rocky streams",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 226
+    "test_id": 226,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The general enjoys planning battles.",
@@ -2007,7 +2207,8 @@
     "statement": "The general planned the land battle and the siege",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 227
+    "test_id": 227,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The cod likes swimming near reefs.",
@@ -2017,7 +2218,8 @@
     "statement": "The cod swam near some of the coral reefs",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 228
+    "test_id": 228,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The commander loves awarding medals.",
@@ -2027,7 +2229,8 @@
     "statement": "The commander awarded the bronze medal",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 229
+    "test_id": 229,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The haddock likes hiding in seaweed.",
@@ -2037,7 +2240,8 @@
     "statement": "The haddock hid in some of the green seaweed",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 230
+    "test_id": 230,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The colonel likes inspecting troops.",
@@ -2047,7 +2251,8 @@
     "statement": "The colonel inspected the cavalry troop",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 231
+    "test_id": 231,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The sole likes burying in sand.",
@@ -2057,7 +2262,8 @@
     "statement": "The sole buried in all the coarse sand patches",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 232
+    "test_id": 232,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The major enjoys reading maps.",
@@ -2067,7 +2273,8 @@
     "statement": "The major read the terrain map and the troop map",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 233
+    "test_id": 233,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The plaice likes flipping on shores.",
@@ -2077,7 +2284,8 @@
     "statement": "The plaice flipped on all the sandy shores",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 234
+    "test_id": 234,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The sergeant loves training soldiers.",
@@ -2087,7 +2295,8 @@
     "statement": "The sergeant trained the strong soldier",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 235
+    "test_id": 235,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The mullet likes jumping near docks.",
@@ -2097,7 +2306,8 @@
     "statement": "The mullet jumped near some of the wooden docks",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 236
+    "test_id": 236,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The corporal likes carrying flags.",
@@ -2107,7 +2317,8 @@
     "statement": "The corporal carried the green flag and the white flag",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 237
+    "test_id": 237,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The bream likes nibbling at worms.",
@@ -2117,7 +2328,8 @@
     "statement": "The bream nibbled at some of the brown worms",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 238
+    "test_id": 238,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The scout enjoys climbing hills.",
@@ -2127,7 +2339,8 @@
     "statement": "The scout climbed the grassy hill",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 239
+    "test_id": 239,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The dab likes resting on mud.",
@@ -2137,7 +2350,8 @@
     "statement": "The dab rested on some of the soft mud patches",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 240
+    "test_id": 240,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The private enjoys cleaning weapons.",
@@ -2147,7 +2361,8 @@
     "statement": "The private cleaned the rifle and the sword",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 241
+    "test_id": 241,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The turbot likes circling around buoys.",
@@ -2157,7 +2372,8 @@
     "statement": "The turbot circled around some of the red buoys",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 242
+    "test_id": 242,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The recruit likes doing exercises.",
@@ -2167,7 +2383,8 @@
     "statement": "The recruit did the running exercise",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 243
+    "test_id": 243,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The grouper likes lurking in caves.",
@@ -2177,7 +2394,8 @@
     "statement": "The grouper lurked in all the shore caves",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 244
+    "test_id": 244,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The cadet loves polishing boots.",
@@ -2187,7 +2405,8 @@
     "statement": "The cadet polished the brown boot",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 245
+    "test_id": 245,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The snapper likes patrolling territories.",
@@ -2197,7 +2416,8 @@
     "statement": "The snapper patrolled some of the shallow territories",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 246
+    "test_id": 246,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The drummer enjoys beating drums.",
@@ -2207,7 +2427,8 @@
     "statement": "The drummer beat the snare drum and the bass drum",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 247
+    "test_id": 247,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The ray likes gliding over floors.",
@@ -2217,7 +2438,8 @@
     "statement": "The ray glided over all the sandy floors",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 248
+    "test_id": 248,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The trumpeter likes blowing notes.",
@@ -2227,7 +2449,8 @@
     "statement": "The trumpeter blew the long note and the short note",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 249
+    "test_id": 249,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The wrasse likes cleaning other fish.",
@@ -2237,7 +2460,8 @@
     "statement": "The wrasse cleaned some of the small fish",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 250
+    "test_id": 250,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The piper loves playing tunes.",
@@ -2247,7 +2471,8 @@
     "statement": "The piper played the march tune",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 251
+    "test_id": 251,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The barracuda likes hunting prey.",
@@ -2257,7 +2482,8 @@
     "statement": "The barracuda hunted some of the fast prey",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 252
+    "test_id": 252,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The fiddler enjoys playing songs.",
@@ -2267,7 +2493,8 @@
     "statement": "The fiddler played the folk song and the country song",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 253
+    "test_id": 253,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The goby likes perching on rocks.",
@@ -2277,7 +2504,8 @@
     "statement": "The goby perched on some of the smooth rocks",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 254
+    "test_id": 254,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The harpist likes strumming strings.",
@@ -2287,7 +2515,8 @@
     "statement": "The harpist strummed the copper string",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 255
+    "test_id": 255,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The blenny likes poking out of holes.",
@@ -2297,7 +2526,8 @@
     "statement": "The blenny poked out of all the rocky holes",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 256
+    "test_id": 256,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The cellist loves bowing strings.",
@@ -2307,7 +2537,8 @@
     "statement": "The cellist bowed the thick string",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 257
+    "test_id": 257,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The blowfish likes puffing up near predators.",
@@ -2317,7 +2548,8 @@
     "statement": "The blowfish puffed up near some of the big predators",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 258
+    "test_id": 258,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The violist enjoys playing melodies.",
@@ -2327,7 +2559,8 @@
     "statement": "The violist played the sad melody and the fast melody",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 259
+    "test_id": 259,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The moray likes slithering through crevices.",
@@ -2337,7 +2570,8 @@
     "statement": "The moray slithered through all the narrow crevices",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 260
+    "test_id": 260,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The flutist likes performing pieces.",
@@ -2347,7 +2581,8 @@
     "statement": "The flutist performed the concerto piece and the symphony piece",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 261
+    "test_id": 261,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The angelfish likes swimming near anemones.",
@@ -2357,7 +2592,8 @@
     "statement": "The angelfish swam near some of the pink anemones",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 262
+    "test_id": 262,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The oboist loves practicing scales.",
@@ -2367,7 +2603,8 @@
     "statement": "The oboist practiced the major scale",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 263
+    "test_id": 263,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The damselfish likes defending territories.",
@@ -2377,7 +2614,8 @@
     "statement": "The damselfish defended some of the reef territories",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 264
+    "test_id": 264,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The clarinetist enjoys learning pieces.",
@@ -2387,7 +2625,8 @@
     "statement": "The clarinetist learned the jazz piece and the classical piece",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 265
+    "test_id": 265,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The butterflyfish likes feeding on polyps.",
@@ -2397,7 +2636,8 @@
     "statement": "The butterflyfish fed on some of the hard polyps",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 266
+    "test_id": 266,
+    "subcategory": "true-quant-some"
   },
   {
     "scenario": "The saxophonist likes improvising solos.",
@@ -2407,7 +2647,8 @@
     "statement": "The saxophonist improvised the funk solo",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 267
+    "test_id": 267,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The parrotfish likes munching coral.",
@@ -2417,7 +2658,8 @@
     "statement": "The parrotfish munched all the soft coral",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 268
+    "test_id": 268,
+    "subcategory": "false-quant-all"
   },
   {
     "scenario": "The bassoonist loves rehearsing passages.",
@@ -2427,7 +2669,8 @@
     "statement": "The bassoonist rehearsed the fast passage",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 269
+    "test_id": 269,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The triggerfish likes moving rocks.",
@@ -2437,7 +2680,8 @@
     "statement": "The triggerfish moved some of the small rocks",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 270
+    "test_id": 270,
+    "subcategory": "underinf-quant"
   },
   {
     "scenario": "The pianist enjoys memorizing concertos.",
@@ -2447,7 +2691,8 @@
     "statement": "The pianist memorized the Mozart concerto and the Beethoven concerto",
     "expected": "yes",
     "category": "true-conj",
-    "test_id": 271
+    "test_id": 271,
+    "subcategory": "true-conj"
   },
   {
     "scenario": "The surgeonfish likes grazing on algae.",
@@ -2457,7 +2702,8 @@
     "statement": "The surgeonfish grazed on all the turf algae",
     "expected": "yes",
     "category": "true-quant",
-    "test_id": 272
+    "test_id": 272,
+    "subcategory": "true-quant-all"
   },
   {
     "scenario": "The guitarist likes strumming chords.",
@@ -2467,7 +2713,8 @@
     "statement": "The guitarist strummed the seventh chord and the suspended chord",
     "expected": "no",
     "category": "false-conj",
-    "test_id": 273
+    "test_id": 273,
+    "subcategory": "false-conj"
   },
   {
     "scenario": "The boxfish likes floating near sponges.",
@@ -2477,7 +2724,8 @@
     "statement": "The boxfish floated near some of the barrel sponges",
     "expected": "no",
     "category": "false-quant",
-    "test_id": 274
+    "test_id": 274,
+    "subcategory": "false-quant-some"
   },
   {
     "scenario": "The percussionist loves hitting cymbals.",
@@ -2487,7 +2735,8 @@
     "statement": "The percussionist hit the crash cymbal",
     "expected": "no",
     "category": "underinf-conj",
-    "test_id": 275
+    "test_id": 275,
+    "subcategory": "underinf-conj"
   },
   {
     "scenario": "The lionfish likes displaying spines.",
@@ -2497,6 +2746,7 @@
     "statement": "The lionfish displayed some of the dorsal spines",
     "expected": "no",
     "category": "underinf-quant",
-    "test_id": 276
+    "test_id": 276,
+    "subcategory": "underinf-quant"
   }
 ]
