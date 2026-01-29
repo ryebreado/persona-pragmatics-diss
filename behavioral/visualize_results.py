@@ -103,10 +103,21 @@ def load_results_from_directory(results_dir):
     return results
 
 
-def compute_subcategory_accuracy(data):
+def load_dataset_subcategories(dataset_path='data/scalar_implicature_250.json'):
+    """Load subcategory mapping from dataset by test_id."""
+    try:
+        with open(dataset_path, 'r') as f:
+            dataset = json.load(f)
+        return {item['test_id']: item.get('subcategory', item['category']) for item in dataset}
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def compute_subcategory_accuracy(data, subcategory_map=None):
     """
     Compute accuracy by subcategory from individual results.
-    Falls back to category if subcategory not present.
+    Uses subcategory_map to look up subcategories by test_id.
+    Falls back to category if subcategory not available.
     """
     from collections import defaultdict
 
@@ -114,8 +125,12 @@ def compute_subcategory_accuracy(data):
     total_by_subcat = defaultdict(int)
 
     for result in data.get('results', []):
-        # Use subcategory if available, otherwise fall back to category
-        subcat = result.get('subcategory', result.get('category', 'unknown'))
+        test_id = result.get('test_id')
+        # Try to get subcategory from map, then from result, then fall back to category
+        if subcategory_map and test_id in subcategory_map:
+            subcat = subcategory_map[test_id]
+        else:
+            subcat = result.get('subcategory', result.get('category', 'unknown'))
         total_by_subcat[subcat] += 1
         if result.get('correct'):
             correct_by_subcat[subcat] += 1
@@ -200,10 +215,13 @@ def create_visualization(results_dir, output_path=None, figsize=(15, 4), use_sub
     if n_personas == 1:
         axes = [axes]
 
+    # Load subcategory map if needed
+    subcategory_map = load_dataset_subcategories() if use_subcategories else None
+
     for ax, persona_name in zip(axes, persona_names):
         data = results[persona_name]
         if use_subcategories:
-            accuracy_by_category = compute_subcategory_accuracy(data)
+            accuracy_by_category = compute_subcategory_accuracy(data, subcategory_map)
         else:
             accuracy_by_category = data.get('accuracy_by_category', {})
         create_subplot(ax, persona_name, accuracy_by_category, use_subcategories=use_subcategories)
