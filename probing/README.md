@@ -49,29 +49,29 @@ Each test case has these regions identified:
 ### Attention Metrics
 
 #### `last_to_outcome` / `last_to_statement`
-**What it measures:** How much the decision token attends to a region.
+**What it measures:** How much the decision token attends to a region (per token).
 
-**Calculation:** For multi-token regions, we **sum** attention weights to all tokens in the region.
+**Calculation:** For multi-token regions, we take the **mean** attention across all tokens in the region.
 
 ```
-last_to_statement[layer, head] = Σ attention[last_token → token_i]
+last_to_statement[layer, head] = mean(attention[last_token → token_i])
                                   for token_i in statement_span
 ```
 
-**Interpretation:** Higher values mean the decision point is gathering more information from that region. Summing (rather than averaging) preserves the total attention budget allocated to the region.
+**Interpretation:** Higher values mean stronger per-token attention to that region. Using mean (not sum) makes regions of different lengths comparable.
 
 #### `statement_to_outcome`
 **What it measures:** How much the statement representation attends to the factual outcome.
 
-**Calculation:** For region-to-region attention, we take the **mean** over source positions and **sum** over target positions.
+**Calculation:** For region-to-region attention, we take the **mean** over both source and target positions.
 
 ```
 statement_to_outcome[layer, head] = mean over src_i in statement:
-                                      Σ attention[src_i → tgt_j]
+                                      mean(attention[src_i → tgt_j])
                                       for tgt_j in outcome_span
 ```
 
-**Interpretation:** Shows whether tokens in the statement are "looking at" the outcome to verify correctness.
+**Interpretation:** Shows whether tokens in the statement are "looking at" the outcome to verify correctness. Length-normalized for fair comparison.
 
 #### `last_to_some` (scalar term attention)
 **What it measures:** Attention from decision point to a single token (the scalar term).

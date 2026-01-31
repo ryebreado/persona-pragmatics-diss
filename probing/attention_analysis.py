@@ -189,12 +189,12 @@ class AttentionExtractor:
         # 4. Statement -> Outcome (does answer representation attend to facts?)
 
         def get_attention_to_region(from_pos: int, to_span: Tuple[int, int]) -> np.ndarray:
-            """Get attention from one position to a region, per layer and head."""
+            """Get mean attention from one position to a region, per layer and head."""
             start, end = to_span
             if start >= end or start < 0 or end > seq_len:
                 return np.zeros((n_layers, n_heads))
-            # Sum attention to all tokens in region
-            attn = attentions[:, :, from_pos, start:end].sum(dim=-1).numpy()
+            # Mean attention across tokens in region (length-normalized)
+            attn = attentions[:, :, from_pos, start:end].mean(dim=-1).numpy()
             return attn
 
         def get_region_to_region_attention(from_span: Tuple[int, int], to_span: Tuple[int, int]) -> np.ndarray:
@@ -203,9 +203,9 @@ class AttentionExtractor:
             to_start, to_end = to_span
             if from_start >= from_end or to_start >= to_end:
                 return np.zeros((n_layers, n_heads))
-            # Mean over source positions, sum over target positions
+            # Mean over both source and target positions (length-normalized)
             attn = attentions[:, :, from_start:from_end, to_start:to_end]
-            attn = attn.sum(dim=-1).mean(dim=-1).numpy()
+            attn = attn.mean(dim=-1).mean(dim=-1).numpy()
             return attn
 
         # Last token attention patterns
