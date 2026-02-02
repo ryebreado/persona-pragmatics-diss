@@ -24,6 +24,7 @@ outputs/
 logs/
 *.log
 figures/
+probing/results/
 
 # IDE
 .vscode/
