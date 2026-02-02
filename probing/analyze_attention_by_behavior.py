@@ -116,7 +116,7 @@ def main():
     behavioral_dir = Path(args.behavioral_dir)
 
     # Personas to analyze
-    personas = ['anti_gricean', 'literal_thinker', 'pragmaticist', 'baseline']
+    personas = ['anti_gricean', 'soft_literalist', 'helpful_teacher', 'pragmaticist', 'baseline']
 
     results = {}
 
@@ -174,10 +174,10 @@ def main():
 
     # Create visualization
     if args.output and results:
-        fig, axes = plt.subplots(2, 2, figsize=(12, 10), sharex=True, sharey=True)
+        fig, axes = plt.subplots(2, 3, figsize=(15, 10), sharex=True, sharey=True)
         axes = axes.flatten()
 
-        for ax, persona in zip(axes, personas):
+        for ax, persona in zip(axes, personas + ['_empty']):
             if persona not in results:
                 ax.set_visible(False)
                 continue
