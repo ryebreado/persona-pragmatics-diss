@@ -21,7 +21,7 @@ def load_persona_results(analysis_dir: str) -> dict:
     analysis_path = Path(analysis_dir)
 
     results = {}
-    personas = ['pragmaticist', 'anti_gricean', 'literal_thinker', 'helpful_teacher']
+    personas = ['pragmaticist', 'anti_gricean', 'soft_literalist', 'helpful_teacher']
 
     for persona in personas:
         filepath = analysis_path / f"persona_attention_{persona}.json"
@@ -216,7 +216,7 @@ def plot_attention_by_category(results: dict, persona: str, output_path: str):
 
 def plot_underinf_vs_true_comparison(results: dict, output_path: str):
     """Compare persona attention between underinformative and true categories."""
-    personas = ['pragmaticist', 'anti_gricean', 'literal_thinker', 'helpful_teacher']
+    personas = ['pragmaticist', 'anti_gricean', 'soft_literalist', 'helpful_teacher']
 
     fig, ax = plt.subplots(figsize=(12, 6))
 
@@ -413,7 +413,7 @@ def main(analysis_dir: str, output_dir: str):
     plot_underinf_vs_true_comparison(results, str(output_path / "category_comparison.png"))
 
     # Per-persona plots
-    for persona in ['pragmaticist', 'anti_gricean', 'literal_thinker', 'helpful_teacher']:
+    for persona in ['pragmaticist', 'anti_gricean', 'soft_literalist', 'helpful_teacher']:
         if persona in results:
             plot_attention_by_category(results, persona,
                                        str(output_path / f"attention_by_category_{persona}.png"))
