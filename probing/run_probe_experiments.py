@@ -47,7 +47,7 @@ def find_activation_files(run_dir: Path) -> Dict[str, Path]:
         # e.g., qwen3_8b_baseline -> baseline
         # e.g., qwen3_8b_anti_gricean -> anti_gricean
         for i, part in enumerate(parts):
-            if part in ['baseline', 'anti', 'helpful', 'literal', 'pragmaticist', 'soft']:
+            if part in ['baseline', 'anti', 'helpful', 'literal', 'pragmaticist']:
                 persona = "_".join(parts[i:])
                 break
         else:

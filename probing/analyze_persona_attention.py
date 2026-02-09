@@ -36,7 +36,7 @@ PERSONA_KEYWORDS = {
         'teacher', 'children', 'complete', 'whole', 'story', 'important',
         'information', 'evaluating', 'answers'
     ],
-    'soft_literalist': [
+    'literal_thinker': [
         'evaluating', 'focus', 'factually', 'accurate', 'worry', 'detail',
         'true', 'good', 'enough'
     ],
@@ -64,7 +64,7 @@ PERSONA_SEMANTIC_REGIONS = {
         'criterion': ['complete', 'whole', 'story'],
         'focus': ['important', 'information', 'evaluating'],
     },
-    'soft_literalist': {
+    'literal_thinker': {
         'criterion': ['factually', 'accurate', 'true'],
         'dismissal': ['worry', 'detail', 'every'],
         'acceptance': ['good', 'enough'],
@@ -317,7 +317,7 @@ def run_persona_attention_analysis(
     extractor = AttentionExtractor(model_name, device)
 
     personas_path = Path(personas_dir)
-    persona_files = ['pragmaticist', 'anti_gricean', 'soft_literalist', 'helpful_teacher']
+    persona_files = ['pragmaticist', 'anti_gricean', 'literal_thinker', 'helpful_teacher']
 
     all_results = {}
 

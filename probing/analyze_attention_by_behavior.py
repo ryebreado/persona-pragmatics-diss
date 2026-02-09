@@ -116,7 +116,7 @@ def main():
     behavioral_dir = Path(args.behavioral_dir)
 
     # Personas to analyze
-    personas = ['anti_gricean', 'soft_literalist', 'helpful_teacher', 'pragmaticist', 'baseline']
+    personas = ['anti_gricean', 'literal_thinker', 'helpful_teacher', 'pragmaticist', 'baseline']
 
     results = {}
 
