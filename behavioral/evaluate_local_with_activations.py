@@ -221,14 +221,20 @@ class LocalModelWithActivations:
     def find_token_positions(
         self,
         formatted_prompt: str,
-        keywords: List[str]
+        keywords: List[str],
+        persona_prompt: Optional[str] = None
     ) -> Dict[str, List[int]]:
         """
         Find token positions of keywords in the prompt.
 
+        Only searches within the stimulus portion of the prompt (after the
+        persona text) to avoid matching keywords in the persona itself.
+
         Args:
-            formatted_prompt: The tokenized prompt string
+            formatted_prompt: The full formatted prompt string
             keywords: List of keywords to find (e.g., ["some", "all", "and"])
+            persona_prompt: Optional persona prompt text. If provided, keyword
+                           search starts after the persona tokens.
 
         Returns:
             Dict mapping keyword to list of token positions where it appears
@@ -237,9 +243,17 @@ class LocalModelWithActivations:
         tokens = self.tokenizer.encode(formatted_prompt, add_special_tokens=False)
         token_strings = [self.tokenizer.decode([t]).lower() for t in tokens]
 
+        # Compute offset to skip persona tokens
+        start_idx = 0
+        if persona_prompt:
+            persona_tokens = self.tokenizer.encode(persona_prompt, add_special_tokens=False)
+            start_idx = len(persona_tokens)
+
         positions = {kw: [] for kw in keywords}
 
         for idx, tok_str in enumerate(token_strings):
+            if idx < start_idx:
+                continue
             tok_clean = tok_str.strip()
             for kw in keywords:
                 # Match if token is exactly the keyword or contains it with space prefix
@@ -252,7 +266,8 @@ class LocalModelWithActivations:
         self,
         formatted_prompt: str,
         layer_indices: Optional[List[int]] = None,
-        track_keywords: Optional[List[str]] = None
+        track_keywords: Optional[List[str]] = None,
+        persona_prompt: Optional[str] = None
     ) -> Tuple[Dict[str, torch.Tensor], Dict[str, List[int]]]:
         """
         Get activations from processing the prompt (before any generation).
@@ -266,6 +281,8 @@ class LocalModelWithActivations:
             layer_indices: Which layers to capture (None = all)
             track_keywords: Optional list of keywords to find positions for
                            (e.g., ["some", "all", "and"] for quantifier/conjunction probing)
+            persona_prompt: Optional persona prompt text, used to skip persona
+                           tokens when searching for keywords
 
         Returns:
             Tuple of:
@@ -275,7 +292,7 @@ class LocalModelWithActivations:
         # Find keyword positions before running forward pass
         keyword_positions = {}
         if track_keywords:
-            keyword_positions = self.find_token_positions(formatted_prompt, track_keywords)
+            keyword_positions = self.find_token_positions(formatted_prompt, track_keywords, persona_prompt)
 
         # Register hooks
         self.register_hooks(layer_indices)
@@ -303,7 +320,8 @@ class LocalModelWithActivations:
         track_activations: bool = False,
         layer_indices: Optional[List[int]] = None,
         get_logprobs: bool = False,
-        track_keywords: Optional[List[str]] = None
+        track_keywords: Optional[List[str]] = None,
+        persona_prompt: Optional[str] = None
     ) -> Dict:
         """
         Generate response from the model.
@@ -318,6 +336,8 @@ class LocalModelWithActivations:
             get_logprobs: Whether to get yes/no logprobs
             track_keywords: Optional list of keywords to find positions for
                            (e.g., ["some", "all", "and"] for probing)
+            persona_prompt: Optional persona prompt text, used to skip persona
+                           tokens when searching for keywords
 
         Returns:
             dict with 'text', and optionally 'activations', 'logprobs', 'keyword_positions'
@@ -340,7 +360,7 @@ class LocalModelWithActivations:
         keyword_positions = {}
         if track_activations:
             prompt_activations, keyword_positions = self.get_prompt_activations(
-                formatted_prompt, layer_indices, track_keywords
+                formatted_prompt, layer_indices, track_keywords, persona_prompt
             )
 
         # Tokenize input
@@ -551,7 +571,8 @@ def run_single_test(
             track_activations=track_activations,
             layer_indices=layer_indices,
             get_logprobs=use_logprobs,
-            track_keywords=track_keywords
+            track_keywords=track_keywords,
+            persona_prompt=persona_prompt
         )
 
         response = response_data['text']
