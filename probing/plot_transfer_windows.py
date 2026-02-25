@@ -78,24 +78,30 @@ def plot_single_window(results, lo, hi, output_path):
     ordered = [by_name[k] for k in CONDITION_ORDER if k in by_name]
 
     names = [DISPLAY_NAMES.get(r["name"], r["name"]) for r in ordered]
-    means = [mean_acc_in_window(r, lo, hi) for r in ordered]
+    # Use fold-level window means for both the bar height and error bars
+    fold_data = [fold_window_means(r, lo, hi) for r in ordered]
+    means = [np.mean(f) if f is not None else mean_acc_in_window(r, lo, hi)
+             for f, r in zip(fold_data, ordered)]
+    sds = [np.std(f, ddof=1) if f is not None else 0.0 for f in fold_data]
     colors = [CONDITION_COLORS.get(r["name"], "#999999") for r in ordered]
 
     fig, ax = plt.subplots(figsize=(7, 5))
     x = np.arange(len(names))
-    bars = ax.bar(x, means, color=colors, width=0.6)
+    bars = ax.bar(x, means, yerr=sds, color=colors, width=0.6,
+                  capsize=4, error_kw={"linewidth": 1.2}, zorder=3)
 
     ax.set_ylabel("Mean Transfer Accuracy")
     ax.set_title(f"Layers {lo}\u2013{hi}")
     ax.set_xticks(x)
     ax.set_xticklabels(names, rotation=20, ha="right")
     ax.set_ylim(0, 1.08)
-    ax.axhline(y=0.5, color="gray", linestyle="--", alpha=0.5, label="Chance")
+    ax.axhline(y=0.5, color="gray", linestyle="--", alpha=0.5, label="Chance", zorder=4)
     ax.legend(loc="lower right")
     ax.grid(True, alpha=0.3, axis="y")
 
-    for bar in bars:
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.01,
+    for bar, sd in zip(bars, sds):
+        label_y = bar.get_height() + sd + 0.01
+        ax.text(bar.get_x() + bar.get_width() / 2, label_y,
                 f"{bar.get_height():.2f}", ha="center", va="bottom", fontsize=9)
 
     plt.tight_layout()
