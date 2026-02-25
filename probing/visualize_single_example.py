@@ -65,6 +65,45 @@ def select_top_heads(
     return top
 
 
+def select_top_heads_last_token(
+    attn: np.ndarray,
+    meta: Dict,
+    target_region: str,
+    n_heads: int = 3,
+    max_layer: Optional[int] = None,
+) -> List[Tuple[int, int]]:
+    """
+    Auto-select top heads by last_token→region attention mass.
+
+    Args:
+        max_layer: If set, only consider layers <= this value (actual layer number,
+                   not array index).
+
+    Returns list of (layer_array_idx, head_idx) tuples.
+    """
+    tgt_start, tgt_end = meta['regions'][target_region]
+    last_tok = meta['regions']['last_token']
+
+    # attn shape: (n_layers, n_heads, seq, seq)
+    last_to_tgt = attn[:, :, last_tok, tgt_start:tgt_end]
+    mass = last_to_tgt.mean(axis=2)  # (n_layers, n_heads)
+
+    # Mask out layers beyond max_layer
+    if max_layer is not None:
+        for li, actual_layer in enumerate(meta['layers']):
+            if actual_layer > max_layer:
+                mass[li, :] = 0
+
+    flat_indices = np.argsort(mass.ravel())[::-1][:n_heads]
+    top = []
+    for idx in flat_indices:
+        layer_idx = idx // mass.shape[1]
+        head_idx = idx % mass.shape[1]
+        top.append((int(layer_idx), int(head_idx)))
+
+    return top
+
+
 def _clean_token(token: str) -> str:
     """Clean sentencepiece/BPE token for display."""
     t = token.replace('▁', ' ').replace('\u0120', ' ')
@@ -283,15 +322,29 @@ def plot_attention_web(
 
     line_color = '#4682B4'
 
+    is_single_source = (source_region == 'last_token')
+
     for row, (layer_idx, head_idx) in enumerate(heads):
         # First pass: find shared max weight for normalization across conditions
         weight_max = 0
         submatrices = []
+        src_token_lists = []
+        tgt_token_lists = []
         for label, attn, meta in conditions:
-            src_start, src_end = meta['regions'][source_region]
             tgt_start, tgt_end = meta['regions'][target_region]
-            sub = attn[layer_idx, head_idx, src_start:src_end, tgt_start:tgt_end]
+            if is_single_source:
+                last_tok = meta['regions']['last_token']
+                sub = attn[layer_idx, head_idx, last_tok, tgt_start:tgt_end]
+                sub = sub[np.newaxis, :]  # (1, n_tgt)
+                src_toks = [meta['tokens'][last_tok]]
+            else:
+                src_start, src_end = meta['regions'][source_region]
+                sub = attn[layer_idx, head_idx, src_start:src_end, tgt_start:tgt_end]
+                src_toks, _ = get_region_tokens(meta, source_region)
+            tgt_toks, _ = get_region_tokens(meta, target_region)
             submatrices.append(sub)
+            src_token_lists.append(src_toks)
+            tgt_token_lists.append(tgt_toks)
             weight_max = max(weight_max, sub.max())
 
         if weight_max == 0:
@@ -302,8 +355,8 @@ def plot_attention_web(
             ax = axes[row, col]
             sub = submatrices[col]
 
-            src_tokens, _ = get_region_tokens(meta, source_region)
-            tgt_tokens, _ = get_region_tokens(meta, target_region)
+            src_tokens = src_token_lists[col]
+            tgt_tokens = tgt_token_lists[col]
             n_src = len(src_tokens)
             n_tgt = len(tgt_tokens)
 
@@ -314,6 +367,7 @@ def plot_attention_web(
             x_left = 0.2
             x_right = 0.8
 
+            # Target (earlier in sequence) on left, source (later) on right
             # Build line segments and properties
             segments = []
             alphas = []
@@ -322,7 +376,7 @@ def plot_attention_web(
                 for j in range(n_tgt):
                     w = sub[i, j]
                     norm_w = w / weight_max
-                    segments.append([(x_left, src_y[i]), (x_right, tgt_y[j])])
+                    segments.append([(x_left, tgt_y[j]), (x_right, src_y[i])])
                     alphas.append(float(np.clip(norm_w, 0.02, 1.0)))
                     widths.append(0.5 + 3.5 * float(norm_w))
 
@@ -331,17 +385,22 @@ def plot_attention_web(
             lc = LineCollection(segments, colors=colors, linewidths=widths)
             ax.add_collection(lc)
 
-            # Token labels
-            for i, tok in enumerate(src_tokens):
-                color = _color_token_label(tok)
-                ax.text(x_left - 0.02, src_y[i], _clean_token(tok),
-                        ha='right', va='center', fontsize=9, color=color,
-                        fontfamily='monospace')
+            # Token labels: target (attended-to) on left, source (attending-from) on right
             for j, tok in enumerate(tgt_tokens):
                 color = _color_token_label(tok)
-                ax.text(x_right + 0.02, tgt_y[j], _clean_token(tok),
-                        ha='left', va='center', fontsize=9, color=color,
+                ax.text(x_left - 0.02, tgt_y[j], _clean_token(tok),
+                        ha='right', va='center', fontsize=9, color=color,
                         fontfamily='monospace')
+            for i, tok in enumerate(src_tokens):
+                color = _color_token_label(tok)
+                if is_single_source:
+                    ax.text(x_right + 0.02, src_y[i], '<last>',
+                            ha='left', va='center', fontsize=9, color='#666666',
+                            fontstyle='italic')
+                else:
+                    ax.text(x_right + 0.02, src_y[i], _clean_token(tok),
+                            ha='left', va='center', fontsize=9, color=color,
+                            fontfamily='monospace')
 
             # Axis setup
             ax.set_xlim(-0.05, 1.05)
@@ -355,10 +414,10 @@ def plot_attention_web(
             else:
                 ax.set_title(f"L{layer_label}H{head_idx}", fontsize=11)
 
-    src_display = source_region.capitalize()
+    src_display = "Last Token" if is_single_source else source_region.capitalize()
     tgt_display = target_region.capitalize()
     fig.suptitle(
-        f"{src_display} → {tgt_display} Attention Web (Test {baseline_meta['test_id']})",
+        f"{tgt_display} ← {src_display} Attention Web (Test {baseline_meta['test_id']})",
         fontsize=14, y=1.01,
     )
     plt.tight_layout()
@@ -380,7 +439,8 @@ def main():
                         help='Heads as L#H# (layer_array_idx, head). Auto-selects top 3 if omitted.')
     parser.add_argument('--n-heads', type=int, default=3, help='Number of auto-selected heads')
     parser.add_argument('--plot', nargs='+', default=['all'],
-                        choices=['all', 'heatmap', 'last_outcome', 'last_statement', 'web'],
+                        choices=['all', 'heatmap', 'last_outcome', 'last_statement',
+                                 'web', 'web_last_outcome', 'web_last_statement'],
                         help='Which plots to generate')
     parser.add_argument('--output-dir', '-o', help='Output directory (default: same as baseline)')
 
@@ -416,7 +476,8 @@ def main():
     test_id = baseline_meta['test_id']
     plots = args.plot
     if 'all' in plots:
-        plots = ['heatmap', 'last_outcome', 'last_statement', 'web']
+        plots = ['heatmap', 'last_outcome', 'last_statement',
+                 'web', 'web_last_outcome', 'web_last_statement']
 
     if 'heatmap' in plots:
         plot_statement_outcome_heatmaps(
@@ -455,6 +516,33 @@ def main():
             target_region='outcome',
             persona_name=args.persona_name,
         )
+
+    if 'web_last_outcome' in plots or 'web_last_statement' in plots:
+        # Auto-select heads by last→region mass in early layers
+        for region, plot_key in [('outcome', 'web_last_outcome'),
+                                 ('statement', 'web_last_statement')]:
+            if plot_key not in plots:
+                continue
+            if args.heads:
+                last_heads = heads
+            else:
+                last_heads = select_top_heads_last_token(
+                    baseline_attn, baseline_meta, region,
+                    n_heads=args.n_heads, max_layer=7,
+                )
+                layer_labels = [f"L{baseline_meta['layers'][li]}H{hi}"
+                                for li, hi in last_heads]
+                print(f"Auto-selected top {args.n_heads} heads "
+                      f"(last→{region}, layers ≤7): {layer_labels}")
+            plot_attention_web(
+                baseline_attn, persona_attn,
+                baseline_meta, persona_meta,
+                last_heads,
+                str(out_dir / f"test{test_id}_last_{region}_web.png"),
+                source_region='last_token',
+                target_region=region,
+                persona_name=args.persona_name,
+            )
 
 
 if __name__ == "__main__":
