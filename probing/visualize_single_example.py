@@ -12,6 +12,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from matplotlib.collections import LineCollection
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
@@ -254,6 +255,118 @@ def plot_last_to_region_bars(
     print(f"Saved: {output_path}")
 
 
+def plot_attention_web(
+    baseline_attn: np.ndarray,
+    persona_attn: np.ndarray,
+    baseline_meta: Dict,
+    persona_meta: Dict,
+    heads: List[Tuple[int, int]],
+    output_path: str,
+    source_region: str = "statement",
+    target_region: str = "outcome",
+    persona_name: str = "Anti-Gricean",
+):
+    """
+    BertViz-style attention web: lines connect source→target tokens,
+    thickness/opacity ∝ attention weight.
+
+    Grid: rows = heads, cols = [Baseline, Persona]
+    """
+    n_heads = len(heads)
+    fig, axes = plt.subplots(n_heads, 2, figsize=(10, 4 * n_heads),
+                             squeeze=False)
+
+    conditions = [
+        ('Baseline', baseline_attn, baseline_meta),
+        (persona_name, persona_attn, persona_meta),
+    ]
+
+    line_color = '#4682B4'
+
+    for row, (layer_idx, head_idx) in enumerate(heads):
+        # First pass: find shared max weight for normalization across conditions
+        weight_max = 0
+        submatrices = []
+        for label, attn, meta in conditions:
+            src_start, src_end = meta['regions'][source_region]
+            tgt_start, tgt_end = meta['regions'][target_region]
+            sub = attn[layer_idx, head_idx, src_start:src_end, tgt_start:tgt_end]
+            submatrices.append(sub)
+            weight_max = max(weight_max, sub.max())
+
+        if weight_max == 0:
+            weight_max = 1.0  # avoid division by zero
+
+        # Second pass: draw
+        for col, (label, attn, meta) in enumerate(conditions):
+            ax = axes[row, col]
+            sub = submatrices[col]
+
+            src_tokens, _ = get_region_tokens(meta, source_region)
+            tgt_tokens, _ = get_region_tokens(meta, target_region)
+            n_src = len(src_tokens)
+            n_tgt = len(tgt_tokens)
+
+            # Vertical positions: evenly spaced, 0 at top, 1 at bottom
+            src_y = np.linspace(0, 1, n_src) if n_src > 1 else [0.5]
+            tgt_y = np.linspace(0, 1, n_tgt) if n_tgt > 1 else [0.5]
+
+            x_left = 0.2
+            x_right = 0.8
+
+            # Build line segments and properties
+            segments = []
+            alphas = []
+            widths = []
+            for i in range(n_src):
+                for j in range(n_tgt):
+                    w = sub[i, j]
+                    norm_w = w / weight_max
+                    segments.append([(x_left, src_y[i]), (x_right, tgt_y[j])])
+                    alphas.append(float(np.clip(norm_w, 0.02, 1.0)))
+                    widths.append(0.5 + 3.5 * float(norm_w))
+
+            # Draw lines with LineCollection
+            colors = [mcolors.to_rgba(line_color, alpha=a) for a in alphas]
+            lc = LineCollection(segments, colors=colors, linewidths=widths)
+            ax.add_collection(lc)
+
+            # Token labels
+            for i, tok in enumerate(src_tokens):
+                color = _color_token_label(tok)
+                ax.text(x_left - 0.02, src_y[i], _clean_token(tok),
+                        ha='right', va='center', fontsize=9, color=color,
+                        fontfamily='monospace')
+            for j, tok in enumerate(tgt_tokens):
+                color = _color_token_label(tok)
+                ax.text(x_right + 0.02, tgt_y[j], _clean_token(tok),
+                        ha='left', va='center', fontsize=9, color=color,
+                        fontfamily='monospace')
+
+            # Axis setup
+            ax.set_xlim(-0.05, 1.05)
+            ax.set_ylim(-0.08, 1.08)
+            ax.invert_yaxis()
+            ax.set_axis_off()
+
+            layer_label = baseline_meta['layers'][layer_idx]
+            if row == 0:
+                ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
+            else:
+                ax.set_title(f"L{layer_label}H{head_idx}", fontsize=11)
+
+    src_display = source_region.capitalize()
+    tgt_display = target_region.capitalize()
+    fig.suptitle(
+        f"{src_display} → {tgt_display} Attention Web (Test {baseline_meta['test_id']})",
+        fontsize=14, y=1.01,
+    )
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=150, bbox_inches='tight', facecolor='white')
+    plt.close()
+    print(f"Saved: {output_path}")
+
+
 def main():
     import argparse
 
@@ -267,7 +380,7 @@ def main():
                         help='Heads as L#H# (layer_array_idx, head). Auto-selects top 3 if omitted.')
     parser.add_argument('--n-heads', type=int, default=3, help='Number of auto-selected heads')
     parser.add_argument('--plot', nargs='+', default=['all'],
-                        choices=['all', 'heatmap', 'last_outcome', 'last_statement'],
+                        choices=['all', 'heatmap', 'last_outcome', 'last_statement', 'web'],
                         help='Which plots to generate')
     parser.add_argument('--output-dir', '-o', help='Output directory (default: same as baseline)')
 
@@ -303,7 +416,7 @@ def main():
     test_id = baseline_meta['test_id']
     plots = args.plot
     if 'all' in plots:
-        plots = ['heatmap', 'last_outcome', 'last_statement']
+        plots = ['heatmap', 'last_outcome', 'last_statement', 'web']
 
     if 'heatmap' in plots:
         plot_statement_outcome_heatmaps(
@@ -329,6 +442,17 @@ def main():
             baseline_meta, persona_meta,
             heads, 'statement',
             str(out_dir / f"test{test_id}_last_statement_bars.png"),
+            persona_name=args.persona_name,
+        )
+
+    if 'web' in plots:
+        plot_attention_web(
+            baseline_attn, persona_attn,
+            baseline_meta, persona_meta,
+            heads,
+            str(out_dir / f"test{test_id}_stmt_outcome_web.png"),
+            source_region='statement',
+            target_region='outcome',
             persona_name=args.persona_name,
         )
 
