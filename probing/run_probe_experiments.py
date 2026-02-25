@@ -26,6 +26,8 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import matplotlib.pyplot as plt
 
+import matplotlib
+
 from train_probes import (
     load_activations,
     run_layer_curve,
@@ -34,6 +36,24 @@ from train_probes import (
     save_results,
     ExperimentResult
 )
+
+# Fixed colors matching persona_comparison plot (tab10 cycle):
+# baseline=C0, literal_thinker=C1, helpful_teacher=C2, anti_gricean=C3, pragmaticist=C4
+_TAB10 = matplotlib.colormaps["tab10"]
+PERSONA_COLORS = {
+    "baseline": _TAB10(0),
+    "literal_thinker": _TAB10(1),
+    "helpful_teacher": _TAB10(2),
+    "anti_gricean": _TAB10(3),
+    "pragmaticist": _TAB10(4),
+}
+TRANSFER_COLORS = {
+    "baseline_cv": _TAB10(0),
+    "baseline→literal_thinker": _TAB10(1),
+    "baseline→helpful_teacher": _TAB10(2),
+    "baseline→anti_gricean": _TAB10(3),
+    "baseline→pragmaticist": _TAB10(4),
+}
 
 
 def find_activation_files(run_dir: Path) -> Dict[str, Path]:
@@ -156,7 +176,8 @@ def run_persona_comparison(
         plot_layer_curve(
             pairwise_results,
             f"Baseline vs {persona.replace('_', ' ').title()} ({token_position})",
-            str(output_dir / f"{exp_name}.png")
+            str(output_dir / f"{exp_name}.png"),
+            colors=PERSONA_COLORS
         )
 
     # Save combined results JSON and also generate all-in-one plot
@@ -166,7 +187,8 @@ def run_persona_comparison(
         plot_layer_curve(
             all_results,
             f"All Personas ({token_position})",
-            str(output_dir / f"{exp_name}_all.png")
+            str(output_dir / f"{exp_name}_all.png"),
+            colors=PERSONA_COLORS
         )
 
     return all_results
@@ -230,7 +252,8 @@ def run_transfer_experiments(
         plot_layer_curve(
             results,
             f"Transfer: Baseline → Personas ({token_position})",
-            str(output_dir / f"{exp_name}.png")
+            str(output_dir / f"{exp_name}.png"),
+            colors=TRANSFER_COLORS
         )
 
     return results

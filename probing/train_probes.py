@@ -33,6 +33,7 @@ class ProbeResult:
     std: float
     n_samples: int
     labels: List[str]
+    fold_scores: Optional[List[float]] = None
 
 
 @dataclass
@@ -155,12 +156,12 @@ def train_probe(
     y: np.ndarray,
     n_folds: int = 5,
     max_iter: int = 1000
-) -> Tuple[float, float, LogisticRegression]:
+) -> Tuple[float, float, List[float], LogisticRegression]:
     """
     Train logistic regression probe with cross-validation.
 
     Returns:
-        Tuple of (mean accuracy, std, fitted model on all data)
+        Tuple of (mean accuracy, std, fold_scores, fitted model on all data)
     """
     # Standardize features
     scaler = StandardScaler()
@@ -174,7 +175,7 @@ def train_probe(
     # Fit on all data for later use
     clf.fit(X_scaled, y)
 
-    return scores.mean(), scores.std(), clf
+    return scores.mean(), scores.std(), scores.tolist(), clf
 
 
 def train_and_test_probe(
@@ -204,6 +205,41 @@ def train_and_test_probe(
     accuracy = accuracy_score(y_test, y_pred)
 
     return accuracy, clf
+
+
+def train_and_test_probe_cv(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    n_folds: int = 5,
+    max_iter: int = 1000
+) -> Tuple[float, float, List[float]]:
+    """
+    CV-based transfer: split training data into folds, train on k-1 folds,
+    test on fixed held-out test set. Gives fold-level variance for statistics.
+
+    Returns:
+        Tuple of (mean accuracy, std, fold_scores)
+    """
+    cv = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=42)
+    fold_scores = []
+
+    for train_idx, _ in cv.split(X_train, y_train):
+        X_fold = X_train[train_idx]
+        y_fold = y_train[train_idx]
+
+        scaler = StandardScaler()
+        X_fold_scaled = scaler.fit_transform(X_fold)
+        X_test_scaled = scaler.transform(X_test)
+
+        clf = LogisticRegression(max_iter=max_iter, solver='lbfgs')
+        clf.fit(X_fold_scaled, y_fold)
+
+        acc = accuracy_score(y_test, clf.predict(X_test_scaled))
+        fold_scores.append(acc)
+
+    return np.mean(fold_scores), np.std(fold_scores), fold_scores
 
 
 def run_layer_curve(
@@ -251,13 +287,14 @@ def run_layer_curve(
     results = []
     for layer in layers:
         X = get_activation_matrix(activations, layer, token_position)
-        acc, std, _ = train_probe(X, y, n_folds=n_folds)
+        acc, std, fold_scores, _ = train_probe(X, y, n_folds=n_folds)
         results.append(ProbeResult(
             layer=layer,
             accuracy=acc,
             std=std,
             n_samples=len(y),
-            labels=label_names
+            labels=label_names,
+            fold_scores=fold_scores
         ))
         print(f"  Layer {layer:2d}: {acc:.3f} (+/- {std:.3f})")
 
@@ -274,10 +311,14 @@ def run_transfer_experiment(
     test_activations: List[Dict],
     task: str,
     token_position: str = "last_token",
-    layers: Optional[List[int]] = None
+    layers: Optional[List[int]] = None,
+    n_folds: int = 5
 ) -> ExperimentResult:
     """
-    Train probes on one condition, test on another.
+    Train probes on one condition, test on another, with CV over training data.
+
+    Splits training data into k folds; for each fold, trains on k-1 folds and
+    tests on all of the test set. This gives fold-level variance for statistics.
 
     Args:
         train_activations: Training condition activations
@@ -285,6 +326,7 @@ def run_transfer_experiment(
         task: Classification task
         token_position: Token position to use
         layers: Specific layers to probe (None = all)
+        n_folds: Number of CV folds over training data
 
     Returns:
         ExperimentResult with transfer accuracy at each layer
@@ -303,15 +345,18 @@ def run_transfer_experiment(
         X_train = get_activation_matrix(train_activations, layer, token_position)
         X_test = get_activation_matrix(test_activations, layer, token_position)
 
-        acc, _ = train_and_test_probe(X_train, y_train, X_test, y_test)
+        acc, std, fold_scores = train_and_test_probe_cv(
+            X_train, y_train, X_test, y_test, n_folds=n_folds
+        )
         results.append(ProbeResult(
             layer=layer,
             accuracy=acc,
-            std=0.0,  # No CV for transfer
+            std=std,
             n_samples=len(y_test),
-            labels=label_names
+            labels=label_names,
+            fold_scores=fold_scores
         ))
-        print(f"  Layer {layer:2d}: {acc:.3f}")
+        print(f"  Layer {layer:2d}: {acc:.3f} (+/- {std:.3f})")
 
     return ExperimentResult(
         name=f"{task}_{token_position}_transfer",
@@ -326,9 +371,15 @@ def plot_layer_curve(
     results: List[ExperimentResult],
     title: str,
     output_path: Optional[str] = None,
-    figsize: Tuple[int, int] = (10, 6)
+    figsize: Tuple[int, int] = (10, 6),
+    colors: Optional[Dict[str, str]] = None
 ):
-    """Plot layer-wise accuracy curves for one or more experiments."""
+    """Plot layer-wise accuracy curves for one or more experiments.
+
+    Args:
+        colors: Optional dict mapping result.name to a color. If not provided,
+                uses the default matplotlib color cycle.
+    """
     fig, ax = plt.subplots(figsize=figsize)
 
     for result in results:
@@ -340,13 +391,15 @@ def plot_layer_curve(
         if result.test_condition:
             label = f"{result.name} (train→test)"
 
-        ax.plot(layers, accs, marker='o', label=label, linewidth=2, markersize=4)
+        color = colors.get(result.name) if colors else None
+        ax.plot(layers, accs, marker='o', label=label, linewidth=2, markersize=4, color=color)
         if any(s > 0 for s in stds):
             ax.fill_between(
                 layers,
                 [a - s for a, s in zip(accs, stds)],
                 [a + s for a, s in zip(accs, stds)],
-                alpha=0.2
+                alpha=0.2,
+                color=color
             )
 
     # Add chance level
@@ -385,7 +438,8 @@ def save_results(results: List[ExperimentResult], output_path: str):
                     'accuracy': r.accuracy,
                     'std': r.std,
                     'n_samples': r.n_samples,
-                    'labels': r.labels
+                    'labels': r.labels,
+                    'fold_scores': r.fold_scores
                 }
                 for r in result.layer_results
             ]
