@@ -16,6 +16,8 @@ from matplotlib.collections import LineCollection
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
+from visualize_attention import MEASURED_CONTENT_FRACTIONS_BY_LAYER
+
 
 def load_npz_with_meta(npz_path: str) -> Tuple[np.ndarray, Dict]:
     """Load attention array and metadata sidecar."""
@@ -27,6 +29,20 @@ def load_npz_with_meta(npz_path: str) -> Tuple[np.ndarray, Dict]:
         meta = json.load(f)
 
     return attn, meta
+
+
+def _content_fraction(meta: Dict, actual_layer: int) -> float:
+    """Get per-layer content fraction for this condition."""
+    persona_field = meta.get('persona')
+    if persona_field is None:
+        key = 'baseline'
+    else:
+        # "personas/anti_gricean" -> "anti_gricean"
+        key = persona_field.split('/')[-1]
+    fracs = MEASURED_CONTENT_FRACTIONS_BY_LAYER.get(key, [1.0] * 36)
+    if actual_layer < len(fracs):
+        return fracs[actual_layer]
+    return 1.0
 
 
 def get_region_tokens(meta: Dict, region: str) -> Tuple[List[str], Tuple[int, int]]:
@@ -86,6 +102,7 @@ def select_top_heads_last_token(
 
     # attn shape: (n_layers, n_heads, seq, seq)
     last_to_tgt = attn[:, :, last_tok, tgt_start:tgt_end]
+    n_tgt = tgt_end - tgt_start
     mass = last_to_tgt.mean(axis=2)  # (n_layers, n_heads)
 
     # Mask out layers beyond max_layer
@@ -93,6 +110,13 @@ def select_top_heads_last_token(
         for li, actual_layer in enumerate(meta['layers']):
             if actual_layer > max_layer:
                 mass[li, :] = 0
+
+    # Filter out single-token-dominated heads (>80% mass on one token)
+    if n_tgt > 1:
+        tgt_sum = last_to_tgt.sum(axis=2)
+        tgt_sum[tgt_sum == 0] = 1.0
+        max_frac = last_to_tgt.max(axis=2) / tgt_sum
+        mass[max_frac > 0.8] = 0
 
     flat_indices = np.argsort(mass.ravel())[::-1][:n_heads]
     top = []
@@ -188,7 +212,7 @@ def plot_statement_outcome_heatmaps(
                 color = _color_token_label(t)
                 ax.get_yticklabels()[tick_idx].set_color(color)
 
-            layer_label = baseline_meta['layers'][layer_idx]
+            layer_label = ref_meta['layers'][layer_idx]
             if row == 0:
                 ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
             else:
@@ -274,7 +298,7 @@ def plot_last_to_region_bars(
             ax.set_ylim(0, ymax * 1.15)
             ax.grid(True, alpha=0.3, axis='y')
 
-            layer_label = baseline_meta['layers'][layer_idx]
+            layer_label = ref_meta['layers'][layer_idx]
             if row == 0:
                 ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
             else:
@@ -294,35 +318,48 @@ def plot_last_to_region_bars(
     print(f"Saved: {output_path}")
 
 
+SINK_WORDS = {'the', 'a', 'an'}
+
+
+def _is_sink_token(token: str) -> bool:
+    """Check if token is an attention-sink article."""
+    return _clean_token(token).lower() in SINK_WORDS
+
+
 def plot_attention_web(
-    baseline_attn: np.ndarray,
-    persona_attn: np.ndarray,
-    baseline_meta: Dict,
-    persona_meta: Dict,
+    conditions: List[Tuple[str, np.ndarray, Dict]],
     heads: List[Tuple[int, int]],
     output_path: str,
     source_region: str = "statement",
     target_region: str = "outcome",
-    persona_name: str = "Anti-Gricean",
+    content_normalize: bool = False,
+    skip_sink: bool = False,
 ):
     """
     BertViz-style attention web: lines connect source→target tokens,
     thickness/opacity ∝ attention weight.
 
-    Grid: rows = heads, cols = [Baseline, Persona]
+    Args:
+        conditions: list of (label, attn_array, meta_dict) tuples.
+                    First entry is used as reference for head labels/title.
+        skip_sink: if True, remove article tokens (the/a/an) from target region
+                   and renormalize attention over remaining tokens.
+
+    Grid: rows = heads, cols = conditions
+    If content_normalize, divides each condition's weights by its per-layer
+    content fraction to compensate for attention "lost" to persona tokens.
     """
     n_heads = len(heads)
-    fig, axes = plt.subplots(n_heads, 2, figsize=(10, 4 * n_heads),
+    n_conditions = len(conditions)
+    fig, axes = plt.subplots(n_heads, n_conditions,
+                             figsize=(5 * n_conditions, 4 * n_heads),
                              squeeze=False)
-
-    conditions = [
-        ('Baseline', baseline_attn, baseline_meta),
-        (persona_name, persona_attn, persona_meta),
-    ]
 
     line_color = '#4682B4'
 
     is_single_source = (source_region == 'last_token')
+
+    ref_meta = conditions[0][2]  # first condition used as reference
 
     for row, (layer_idx, head_idx) in enumerate(heads):
         # First pass: find shared max weight for normalization across conditions
@@ -342,6 +379,16 @@ def plot_attention_web(
                 sub = attn[layer_idx, head_idx, src_start:src_end, tgt_start:tgt_end]
                 src_toks, _ = get_region_tokens(meta, source_region)
             tgt_toks, _ = get_region_tokens(meta, target_region)
+            if content_normalize:
+                actual_layer = meta['layers'][layer_idx]
+                frac = _content_fraction(meta, actual_layer)
+                sub = sub / frac
+            # Filter out sink tokens from target
+            if skip_sink:
+                keep = [j for j, t in enumerate(tgt_toks) if not _is_sink_token(t)]
+                if keep:
+                    sub = sub[:, keep]
+                    tgt_toks = [tgt_toks[j] for j in keep]
             submatrices.append(sub)
             src_token_lists.append(src_toks)
             tgt_token_lists.append(tgt_toks)
@@ -408,7 +455,7 @@ def plot_attention_web(
             ax.invert_yaxis()
             ax.set_axis_off()
 
-            layer_label = baseline_meta['layers'][layer_idx]
+            layer_label = ref_meta['layers'][layer_idx]
             if row == 0:
                 ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
             else:
@@ -416,14 +463,40 @@ def plot_attention_web(
 
     src_display = "Last Token" if is_single_source else source_region.capitalize()
     tgt_display = target_region.capitalize()
+    suffixes = []
+    if content_normalize:
+        suffixes.append("content-normalized")
+    if skip_sink:
+        suffixes.append("no sink")
+    norm_suffix = f" [{', '.join(suffixes)}]" if suffixes else ""
     fig.suptitle(
-        f"{tgt_display} ← {src_display} Attention Web (Test {baseline_meta['test_id']})",
+        f"{tgt_display} ← {src_display} Attention Web (Test {ref_meta['test_id']}){norm_suffix}",
         fontsize=14, y=1.01,
     )
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches='tight', facecolor='white')
     plt.close()
     print(f"Saved: {output_path}")
+
+
+PERSONA_DISPLAY_NAMES = {
+    'anti_gricean': 'Anti-Gricean',
+    'literal_thinker': 'Literal Thinker',
+    'helpful_teacher': 'Helpful Teacher',
+    'pragmaticist': 'Pragmaticist',
+}
+
+
+def _label_from_npz_path(npz_path: str) -> str:
+    """Derive display label from npz filename (e.g. test39_anti_gricean.npz -> Anti-Gricean)."""
+    stem = Path(npz_path).stem  # e.g. "test39_anti_gricean"
+    # Strip test ID prefix
+    parts = stem.split('_', 1)
+    if len(parts) > 1:
+        key = parts[1]
+    else:
+        key = parts[0]
+    return PERSONA_DISPLAY_NAMES.get(key, key.replace('_', ' ').title())
 
 
 def main():
@@ -433,8 +506,10 @@ def main():
         description='Visualize attention for a single test case across conditions'
     )
     parser.add_argument('--baseline', required=True, help='Baseline .npz file')
-    parser.add_argument('--persona', required=True, help='Persona .npz file')
-    parser.add_argument('--persona-name', default='Anti-Gricean', help='Display name for persona')
+    parser.add_argument('--persona', nargs='+', required=True,
+                        help='One or more persona .npz files')
+    parser.add_argument('--persona-name', default=None,
+                        help='Display name for persona (only used with single persona)')
     parser.add_argument('--heads', nargs='+',
                         help='Heads as L#H# (layer_array_idx, head). Auto-selects top 3 if omitted.')
     parser.add_argument('--n-heads', type=int, default=3, help='Number of auto-selected heads')
@@ -443,19 +518,36 @@ def main():
                                  'web', 'web_last_outcome', 'web_last_statement'],
                         help='Which plots to generate')
     parser.add_argument('--output-dir', '-o', help='Output directory (default: same as baseline)')
+    parser.add_argument('--content-normalize', action='store_true',
+                        help='Apply per-layer content-conditional normalization to web plots')
+    parser.add_argument('--skip-sink', action='store_true',
+                        help='Remove article tokens (the/a/an) from target region in web plots')
 
     args = parser.parse_args()
 
     # Load data
     baseline_attn, baseline_meta = load_npz_with_meta(args.baseline)
-    persona_attn, persona_meta = load_npz_with_meta(args.persona)
-
     print(f"Baseline: {baseline_attn.shape} ({baseline_meta['category']}, "
           f"test {baseline_meta['test_id']})")
-    print(f"Persona:  {persona_attn.shape} ({persona_meta['category']}, "
-          f"test {persona_meta['test_id']})")
 
-    # Determine heads
+    # Build conditions list: baseline first, then personas in given order
+    all_conditions = [('Baseline', baseline_attn, baseline_meta)]
+    for persona_path in args.persona:
+        p_attn, p_meta = load_npz_with_meta(persona_path)
+        if args.persona_name and len(args.persona) == 1:
+            label = args.persona_name
+        else:
+            label = _label_from_npz_path(persona_path)
+        all_conditions.append((label, p_attn, p_meta))
+        print(f"{label}: {p_attn.shape} ({p_meta['category']}, "
+              f"test {p_meta['test_id']})")
+
+    # For backward compat: extract first persona for heatmap/bar plots
+    persona_name = all_conditions[1][0]
+    persona_attn = all_conditions[1][1]
+    persona_meta = all_conditions[1][2]
+
+    # Determine heads (from baseline)
     if args.heads:
         heads = []
         for h in args.heads:
@@ -485,7 +577,7 @@ def main():
             baseline_meta, persona_meta,
             heads,
             str(out_dir / f"test{test_id}_stmt_outcome_heatmap.png"),
-            persona_name=args.persona_name,
+            persona_name=persona_name,
         )
 
     if 'last_outcome' in plots:
@@ -494,7 +586,7 @@ def main():
             baseline_meta, persona_meta,
             heads, 'outcome',
             str(out_dir / f"test{test_id}_last_outcome_bars.png"),
-            persona_name=args.persona_name,
+            persona_name=persona_name,
         )
 
     if 'last_statement' in plots:
@@ -503,18 +595,20 @@ def main():
             baseline_meta, persona_meta,
             heads, 'statement',
             str(out_dir / f"test{test_id}_last_statement_bars.png"),
-            persona_name=args.persona_name,
+            persona_name=persona_name,
         )
+
+    sink_suffix = "_nosink" if args.skip_sink else ""
 
     if 'web' in plots:
         plot_attention_web(
-            baseline_attn, persona_attn,
-            baseline_meta, persona_meta,
+            all_conditions,
             heads,
-            str(out_dir / f"test{test_id}_stmt_outcome_web.png"),
+            str(out_dir / f"test{test_id}_stmt_outcome_web{sink_suffix}.png"),
             source_region='statement',
             target_region='outcome',
-            persona_name=args.persona_name,
+            content_normalize=args.content_normalize,
+            skip_sink=args.skip_sink,
         )
 
     if 'web_last_outcome' in plots or 'web_last_statement' in plots:
@@ -528,20 +622,20 @@ def main():
             else:
                 last_heads = select_top_heads_last_token(
                     baseline_attn, baseline_meta, region,
-                    n_heads=args.n_heads, max_layer=7,
+                    n_heads=args.n_heads, max_layer=10,
                 )
                 layer_labels = [f"L{baseline_meta['layers'][li]}H{hi}"
                                 for li, hi in last_heads]
                 print(f"Auto-selected top {args.n_heads} heads "
-                      f"(last→{region}, layers ≤7): {layer_labels}")
+                      f"(last→{region}, layers ≤10): {layer_labels}")
             plot_attention_web(
-                baseline_attn, persona_attn,
-                baseline_meta, persona_meta,
+                all_conditions,
                 last_heads,
-                str(out_dir / f"test{test_id}_last_{region}_web.png"),
+                str(out_dir / f"test{test_id}_last_{region}_web{sink_suffix}.png"),
                 source_region='last_token',
                 target_region=region,
-                persona_name=args.persona_name,
+                content_normalize=args.content_normalize,
+                skip_sink=args.skip_sink,
             )
 
 

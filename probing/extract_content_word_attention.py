@@ -29,8 +29,10 @@ from scipy import stats
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 from attention_analysis import create_prompt_with_persona, find_token_regions
-from content_words import extract_content_words, find_content_token_positions
+from content_words import extract_content_words, find_content_token_positions, _clean_bpe
 
+
+SINK_WORDS = {"the", "a", "an"}
 
 DEFAULT_LAYERS = [0, 3, 5, 7, 10, 15, 17, 19, 25]
 
@@ -56,6 +58,42 @@ CATEGORY_ORDER = [
 ]
 
 
+def _find_sink_positions(tokens: List[str], region_span: Tuple[int, int]) -> List[int]:
+    """Find token indices within a region that are attention-sink articles."""
+    start, end = region_span
+    sinks = []
+    for idx in range(start, end):
+        if _clean_bpe(tokens[idx]) in SINK_WORDS:
+            sinks.append(idx)
+    return sinks
+
+
+def _ratio_excluding(
+    attn_to_region: torch.Tensor,
+    content_rel: List[int],
+    sink_rel: List[int],
+) -> float:
+    """
+    Compute content ratio after excluding sink tokens from denominator.
+
+    Args:
+        attn_to_region: (n_heads, n_region) attention from source to target region
+        content_rel: relative indices of content tokens within region
+        sink_rel: relative indices of sink tokens within region
+    """
+    # Total attention minus sinks
+    total = attn_to_region.sum(dim=-1).mean().item()
+    if sink_rel:
+        sink_attn = attn_to_region[:, sink_rel].sum(dim=-1).mean().item()
+    else:
+        sink_attn = 0.0
+    denom = total - sink_attn
+    if denom <= 0 or not content_rel:
+        return 0.0
+    content_attn = attn_to_region[:, content_rel].sum(dim=-1).mean().item()
+    return content_attn / denom
+
+
 def compute_content_ratios(
     attn: torch.Tensor,
     tokens: List[str],
@@ -66,6 +104,9 @@ def compute_content_ratios(
 ) -> Dict:
     """
     Compute content-word attention ratios for all three directions.
+
+    For each direction, computes both raw ratio and sink-excluded ratio
+    (articles "the"/"a"/"an" removed from denominator).
 
     Args:
         attn: (n_selected_layers, n_heads, seq, seq) attention tensor
@@ -91,10 +132,16 @@ def compute_content_ratios(
         tokens, all_content, regions.statement_span
     )
 
+    # Find sink (article) positions
+    outcome_sink_pos = _find_sink_positions(tokens, regions.outcome_span)
+    statement_sink_pos = _find_sink_positions(tokens, regions.statement_span)
+
     out_start, out_end = regions.outcome_span
     stmt_start, stmt_end = regions.statement_span
     n_outcome = out_end - out_start
     n_statement = stmt_end - stmt_start
+    n_outcome_nosink = n_outcome - len(outcome_sink_pos)
+    n_statement_nosink = n_statement - len(statement_sink_pos)
 
     result = {
         "content_words_outcome": [tokens[i] for i in outcome_content_pos],
@@ -103,60 +150,72 @@ def compute_content_ratios(
         "n_content_statement": len(statement_content_pos),
         "n_total_outcome": n_outcome,
         "n_total_statement": n_statement,
+        "n_sink_outcome": len(outcome_sink_pos),
+        "n_sink_statement": len(statement_sink_pos),
         "chance_outcome": len(outcome_content_pos) / max(n_outcome, 1),
         "chance_statement": len(statement_content_pos) / max(n_statement, 1),
-        "s2o": {},  # statement → outcome
-        "l2o": {},  # last → outcome
-        "l2s": {},  # last → statement
+        "chance_outcome_nosink": len(outcome_content_pos) / max(n_outcome_nosink, 1),
+        "chance_statement_nosink": len(statement_content_pos) / max(n_statement_nosink, 1),
+        "s2o": {},  "l2o": {},  "l2s": {},
+        "s2o_nosink": {},  "l2o_nosink": {},  "l2s_nosink": {},
     }
+
+    # Precompute relative indices for sink-excluded computation
+    out_content_rel = [p - out_start for p in outcome_content_pos]
+    out_sink_rel = [p - out_start for p in outcome_sink_pos]
+    stmt_content_rel = [p - stmt_start for p in statement_content_pos]
+    stmt_sink_rel = [p - stmt_start for p in statement_sink_pos]
 
     for li, actual_layer in zip(selected_layer_indices, layers):
         layer_key = f"L{actual_layer}"
-        # Average across all heads at this layer
-        # attn shape: (n_layers, n_heads, seq, seq)
         attn_layer = attn[li]  # (n_heads, seq, seq)
 
         # S→O: statement tokens attending to outcome tokens
         if n_outcome > 0 and n_statement > 0:
             s2o_all = attn_layer[:, stmt_start:stmt_end, out_start:out_end]
-            # Total attention from statement to outcome
-            s2o_total = s2o_all.sum(dim=-1).mean().item()  # mean over heads and src tokens
-            if s2o_total > 0 and outcome_content_pos:
-                # Attention to content tokens only (relative indices within outcome)
-                content_rel = [p - out_start for p in outcome_content_pos]
-                s2o_content = attn_layer[:, stmt_start:stmt_end, :][:, :, [p for p in outcome_content_pos]]
-                s2o_content_sum = s2o_content.sum(dim=-1).mean().item()
-                result["s2o"][layer_key] = s2o_content_sum / s2o_total if s2o_total > 0 else 0.0
+            # Mean across source tokens first, then compute ratio
+            s2o_mean = s2o_all.mean(dim=1)  # (n_heads, n_outcome)
+            s2o_total = s2o_mean.sum(dim=-1).mean().item()
+            if s2o_total > 0 and out_content_rel:
+                s2o_content = s2o_mean[:, out_content_rel].sum(dim=-1).mean().item()
+                result["s2o"][layer_key] = s2o_content / s2o_total
             else:
                 result["s2o"][layer_key] = 0.0
+            result["s2o_nosink"][layer_key] = _ratio_excluding(
+                s2o_mean, out_content_rel, out_sink_rel)
         else:
             result["s2o"][layer_key] = 0.0
+            result["s2o_nosink"][layer_key] = 0.0
 
         # L→O: last token attending to outcome tokens
         if n_outcome > 0:
-            l2o_all = attn_layer[:, regions.last_token, out_start:out_end]  # (n_heads, n_out)
+            l2o_all = attn_layer[:, regions.last_token, out_start:out_end]
             l2o_total = l2o_all.sum(dim=-1).mean().item()
-            if l2o_total > 0 and outcome_content_pos:
-                content_rel = [p - out_start for p in outcome_content_pos]
-                l2o_content = l2o_all[:, content_rel].sum(dim=-1).mean().item()
-                result["l2o"][layer_key] = l2o_content / l2o_total if l2o_total > 0 else 0.0
+            if l2o_total > 0 and out_content_rel:
+                l2o_content = l2o_all[:, out_content_rel].sum(dim=-1).mean().item()
+                result["l2o"][layer_key] = l2o_content / l2o_total
             else:
                 result["l2o"][layer_key] = 0.0
+            result["l2o_nosink"][layer_key] = _ratio_excluding(
+                l2o_all, out_content_rel, out_sink_rel)
         else:
             result["l2o"][layer_key] = 0.0
+            result["l2o_nosink"][layer_key] = 0.0
 
         # L→S: last token attending to statement tokens
         if n_statement > 0:
-            l2s_all = attn_layer[:, regions.last_token, stmt_start:stmt_end]  # (n_heads, n_stmt)
+            l2s_all = attn_layer[:, regions.last_token, stmt_start:stmt_end]
             l2s_total = l2s_all.sum(dim=-1).mean().item()
-            if l2s_total > 0 and statement_content_pos:
-                content_rel = [p - stmt_start for p in statement_content_pos]
-                l2s_content = l2s_all[:, content_rel].sum(dim=-1).mean().item()
-                result["l2s"][layer_key] = l2s_content / l2s_total if l2s_total > 0 else 0.0
+            if l2s_total > 0 and stmt_content_rel:
+                l2s_content = l2s_all[:, stmt_content_rel].sum(dim=-1).mean().item()
+                result["l2s"][layer_key] = l2s_content / l2s_total
             else:
                 result["l2s"][layer_key] = 0.0
+            result["l2s_nosink"][layer_key] = _ratio_excluding(
+                l2s_all, stmt_content_rel, stmt_sink_rel)
         else:
             result["l2s"][layer_key] = 0.0
+            result["l2s_nosink"][layer_key] = 0.0
 
     return result
 
@@ -249,16 +308,23 @@ def extract_all(
                 "s2o": ratios["s2o"],
                 "l2o": ratios["l2o"],
                 "l2s": ratios["l2s"],
+                "s2o_nosink": ratios["s2o_nosink"],
+                "l2o_nosink": ratios["l2o_nosink"],
+                "l2s_nosink": ratios["l2s_nosink"],
             }
 
             # Store per-condition token counts (may differ due to persona length)
             if "chance_outcome" not in example_result:
                 example_result["chance_outcome"] = ratios["chance_outcome"]
                 example_result["chance_statement"] = ratios["chance_statement"]
+                example_result["chance_outcome_nosink"] = ratios["chance_outcome_nosink"]
+                example_result["chance_statement_nosink"] = ratios["chance_statement_nosink"]
                 example_result["n_content_outcome"] = ratios["n_content_outcome"]
                 example_result["n_content_statement"] = ratios["n_content_statement"]
                 example_result["n_total_outcome"] = ratios["n_total_outcome"]
                 example_result["n_total_statement"] = ratios["n_total_statement"]
+                example_result["n_sink_outcome"] = ratios["n_sink_outcome"]
+                example_result["n_sink_statement"] = ratios["n_sink_statement"]
 
             del attn
             done += 1
@@ -301,7 +367,12 @@ DIRECTION_LABELS = {
     "s2o": "Statement → Outcome",
     "l2o": "Last Token → Outcome",
     "l2s": "Last Token → Statement",
+    "s2o_nosink": "Statement → Outcome (no sink)",
+    "l2o_nosink": "Last Token → Outcome (no sink)",
+    "l2s_nosink": "Last Token → Statement (no sink)",
 }
+
+ALL_DIRECTIONS = ["s2o", "l2o", "l2s", "s2o_nosink", "l2o_nosink", "l2s_nosink"]
 
 CONDITION_COLORS = {
     "baseline": "#2196F3",
@@ -328,6 +399,13 @@ def _gather_by_category(data: Dict, direction: str) -> Dict[str, Dict[str, Dict[
     return by_cat
 
 
+def _chance_key_for(direction: str) -> str:
+    """Return the appropriate chance field name for a direction."""
+    if "nosink" in direction:
+        return "chance_outcome_nosink" if "l2s" not in direction else "chance_statement_nosink"
+    return "chance_outcome" if "l2s" not in direction else "chance_statement"
+
+
 def plot_content_ratio_by_layer(data: Dict, output_dir: str):
     """
     Plot 1: Content attention ratio by layer, one panel per category × direction.
@@ -336,9 +414,11 @@ def plot_content_ratio_by_layer(data: Dict, output_dir: str):
     layers = data["meta"]["layers"]
     conditions = data["meta"]["conditions"]
 
-    for direction in ["s2o", "l2o", "l2s"]:
+    for direction in ALL_DIRECTIONS:
         by_cat = _gather_by_category(data, direction)
-        chance_key = "chance_outcome" if direction != "l2s" else "chance_statement"
+        if not by_cat:
+            continue
+        chance_key = _chance_key_for(direction)
 
         cats = [c for c in CATEGORY_ORDER if c in by_cat]
         n_cats = len(cats)
@@ -400,9 +480,11 @@ def plot_distribution_at_peak(data: Dict, output_dir: str):
     """
     layers = data["meta"]["layers"]
 
-    for direction in ["s2o", "l2o", "l2s"]:
+    for direction in ALL_DIRECTIONS:
         by_cat = _gather_by_category(data, direction)
-        chance_key = "chance_outcome" if direction != "l2s" else "chance_statement"
+        if not by_cat:
+            continue
+        chance_key = _chance_key_for(direction)
 
         cats = [c for c in CATEGORY_ORDER if c in by_cat]
 
@@ -473,9 +555,11 @@ def plot_category_comparison(data: Dict, output_dir: str):
     """
     layers = data["meta"]["layers"]
 
-    for direction in ["s2o", "l2o", "l2s"]:
+    for direction in ALL_DIRECTIONS:
         by_cat = _gather_by_category(data, direction)
-        chance_key = "chance_outcome" if direction != "l2s" else "chance_statement"
+        if not by_cat:
+            continue
+        chance_key = _chance_key_for(direction)
         cats = [c for c in CATEGORY_ORDER if c in by_cat]
 
         # For each category, find peak layer and get mean ± SEM (baseline)
@@ -532,10 +616,12 @@ def print_summary_stats(data: Dict):
     print("SUMMARY: Content-word attention vs chance (one-sample t-test)")
     print("=" * 80)
 
-    for direction in ["s2o", "l2o", "l2s"]:
-        print(f"\n--- {DIRECTION_LABELS[direction]} ---")
+    for direction in ALL_DIRECTIONS:
         by_cat = _gather_by_category(data, direction)
-        chance_key = "chance_outcome" if direction != "l2s" else "chance_statement"
+        if not by_cat:
+            continue
+        print(f"\n--- {DIRECTION_LABELS[direction]} ---")
+        chance_key = _chance_key_for(direction)
 
         for cat in CATEGORY_ORDER:
             if cat not in by_cat:
