@@ -212,7 +212,7 @@ def plot_statement_outcome_heatmaps(
                 color = _color_token_label(t)
                 ax.get_yticklabels()[tick_idx].set_color(color)
 
-            layer_label = ref_meta['layers'][layer_idx]
+            layer_label = baseline_meta['layers'][layer_idx]
             if row == 0:
                 ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
             else:
@@ -298,7 +298,7 @@ def plot_last_to_region_bars(
             ax.set_ylim(0, ymax * 1.15)
             ax.grid(True, alpha=0.3, axis='y')
 
-            layer_label = ref_meta['layers'][layer_idx]
+            layer_label = baseline_meta['layers'][layer_idx]
             if row == 0:
                 ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
             else:
@@ -334,6 +334,7 @@ def plot_attention_web(
     target_region: str = "outcome",
     content_normalize: bool = False,
     skip_sink: bool = False,
+    transpose: bool = False,
 ):
     """
     BertViz-style attention web: lines connect source→target tokens,
@@ -344,16 +345,25 @@ def plot_attention_web(
                     First entry is used as reference for head labels/title.
         skip_sink: if True, remove article tokens (the/a/an) from target region
                    and renormalize attention over remaining tokens.
+        transpose: if True, rows = conditions, cols = heads (default: rows = heads,
+                   cols = conditions).
 
-    Grid: rows = heads, cols = conditions
     If content_normalize, divides each condition's weights by its per-layer
     content fraction to compensate for attention "lost" to persona tokens.
     """
     n_heads = len(heads)
     n_conditions = len(conditions)
-    fig, axes = plt.subplots(n_heads, n_conditions,
-                             figsize=(5 * n_conditions, 4 * n_heads),
-                             squeeze=False)
+
+    if transpose:
+        n_rows, n_cols = n_conditions, n_heads
+        fig, axes = plt.subplots(n_rows, n_cols,
+                                 figsize=(5 * n_cols, 4 * n_rows),
+                                 squeeze=False)
+    else:
+        n_rows, n_cols = n_heads, n_conditions
+        fig, axes = plt.subplots(n_rows, n_cols,
+                                 figsize=(5 * n_cols, 4 * n_rows),
+                                 squeeze=False)
 
     line_color = '#4682B4'
 
@@ -361,7 +371,7 @@ def plot_attention_web(
 
     ref_meta = conditions[0][2]  # first condition used as reference
 
-    for row, (layer_idx, head_idx) in enumerate(heads):
+    for head_i, (layer_idx, head_idx) in enumerate(heads):
         # First pass: find shared max weight for normalization across conditions
         weight_max = 0
         submatrices = []
@@ -398,12 +408,15 @@ def plot_attention_web(
             weight_max = 1.0  # avoid division by zero
 
         # Second pass: draw
-        for col, (label, attn, meta) in enumerate(conditions):
-            ax = axes[row, col]
-            sub = submatrices[col]
+        for cond_i, (label, attn, meta) in enumerate(conditions):
+            if transpose:
+                ax = axes[cond_i, head_i]
+            else:
+                ax = axes[head_i, cond_i]
+            sub = submatrices[cond_i]
 
-            src_tokens = src_token_lists[col]
-            tgt_tokens = tgt_token_lists[col]
+            src_tokens = src_token_lists[cond_i]
+            tgt_tokens = tgt_token_lists[cond_i]
             n_src = len(src_tokens)
             n_tgt = len(tgt_tokens)
 
@@ -455,11 +468,22 @@ def plot_attention_web(
             ax.invert_yaxis()
             ax.set_axis_off()
 
+            # Title logic depends on layout orientation
             layer_label = ref_meta['layers'][layer_idx]
-            if row == 0:
-                ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
+            if transpose:
+                # Column headers: head labels (top row only)
+                if cond_i == 0:
+                    ax.set_title(f"L{layer_label}H{head_idx}", fontsize=11)
+                # Row labels: condition names (left column only)
+                if head_i == 0:
+                    ax.text(-0.12, 0.5, label, transform=ax.transAxes,
+                            ha='right', va='center', fontsize=11, fontweight='bold',
+                            rotation=0)
             else:
-                ax.set_title(f"L{layer_label}H{head_idx}", fontsize=11)
+                if head_i == 0:
+                    ax.set_title(f"{label}\nL{layer_label}H{head_idx}", fontsize=11)
+                else:
+                    ax.set_title(f"L{layer_label}H{head_idx}", fontsize=11)
 
     src_display = "Last Token" if is_single_source else source_region.capitalize()
     tgt_display = target_region.capitalize()
@@ -522,6 +546,10 @@ def main():
                         help='Apply per-layer content-conditional normalization to web plots')
     parser.add_argument('--skip-sink', action='store_true',
                         help='Remove article tokens (the/a/an) from target region in web plots')
+    parser.add_argument('--transpose', action='store_true',
+                        help='Transpose web grid: rows=conditions, cols=heads')
+    parser.add_argument('--suffix', default='',
+                        help='Extra suffix for output filenames (e.g. "_all_personas")')
 
     args = parser.parse_args()
 
@@ -566,6 +594,7 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     test_id = baseline_meta['test_id']
+    file_suffix = args.suffix
     plots = args.plot
     if 'all' in plots:
         plots = ['heatmap', 'last_outcome', 'last_statement',
@@ -576,7 +605,7 @@ def main():
             baseline_attn, persona_attn,
             baseline_meta, persona_meta,
             heads,
-            str(out_dir / f"test{test_id}_stmt_outcome_heatmap.png"),
+            str(out_dir / f"test{test_id}_stmt_outcome_heatmap{file_suffix}.png"),
             persona_name=persona_name,
         )
 
@@ -585,7 +614,7 @@ def main():
             baseline_attn, persona_attn,
             baseline_meta, persona_meta,
             heads, 'outcome',
-            str(out_dir / f"test{test_id}_last_outcome_bars.png"),
+            str(out_dir / f"test{test_id}_last_outcome_bars{file_suffix}.png"),
             persona_name=persona_name,
         )
 
@@ -594,7 +623,7 @@ def main():
             baseline_attn, persona_attn,
             baseline_meta, persona_meta,
             heads, 'statement',
-            str(out_dir / f"test{test_id}_last_statement_bars.png"),
+            str(out_dir / f"test{test_id}_last_statement_bars{file_suffix}.png"),
             persona_name=persona_name,
         )
 
@@ -604,11 +633,12 @@ def main():
         plot_attention_web(
             all_conditions,
             heads,
-            str(out_dir / f"test{test_id}_stmt_outcome_web{sink_suffix}.png"),
+            str(out_dir / f"test{test_id}_stmt_outcome_web{file_suffix}{sink_suffix}.png"),
             source_region='statement',
             target_region='outcome',
             content_normalize=args.content_normalize,
             skip_sink=args.skip_sink,
+            transpose=args.transpose,
         )
 
     if 'web_last_outcome' in plots or 'web_last_statement' in plots:
@@ -631,11 +661,12 @@ def main():
             plot_attention_web(
                 all_conditions,
                 last_heads,
-                str(out_dir / f"test{test_id}_last_{region}_web{sink_suffix}.png"),
+                str(out_dir / f"test{test_id}_last_{region}_web{file_suffix}{sink_suffix}.png"),
                 source_region='last_token',
                 target_region=region,
                 content_normalize=args.content_normalize,
                 skip_sink=args.skip_sink,
+                transpose=args.transpose,
             )
 
 
