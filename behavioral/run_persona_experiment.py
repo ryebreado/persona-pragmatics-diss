@@ -26,30 +26,43 @@ def run_command(command, description):
         print(f"✗ Command not found: {command[0]}")
         return False
 
-def find_persona_files(persona_dir="personas"):
+import re
+
+# Base persona names (originals, no variant suffix)
+BASE_PERSONAS = {"anti_gricean", "helpful_teacher", "literal_thinker", "pragmaticist"}
+
+# Variant suffix pattern: _a, _b, _c
+_VARIANT_RE = re.compile(r'^(.+)_([a-c])$')
+
+
+def _is_variant(filename):
+    """Check if a persona filename is a variant (ends in _a, _b, or _c)."""
+    name = os.path.splitext(os.path.basename(filename))[0]
+    return _VARIANT_RE.match(name) is not None
+
+
+def find_persona_files(persona_dir="personas", include_variants=False):
     """
-    Find all persona files (with or without .txt extension).
-    Returns both the file path and the persona name.
+    Find persona files (with or without .txt extension).
+
+    Args:
+        include_variants: if False (default), return only base personas.
+            If True, return base + variant personas.
     """
     if not os.path.exists(persona_dir):
         print(f"Persona directory not found: {persona_dir}")
         return []
 
-    # Try both with and without .txt extension
-    persona_files_txt = glob(os.path.join(persona_dir, "*.txt"))
-
-    # Also find files without extension
     all_files = []
     for item in os.listdir(persona_dir):
         item_path = os.path.join(persona_dir, item)
-        if os.path.isfile(item_path):
+        if os.path.isfile(item_path) and not item.startswith('.'):
             all_files.append(item_path)
 
-    # Remove duplicates and hidden files
-    unique_files = list(set(all_files))
-    persona_files = [f for f in unique_files if not os.path.basename(f).startswith('.')]
+    if not include_variants:
+        all_files = [f for f in all_files if not _is_variant(f)]
 
-    return sorted(persona_files)
+    return sorted(all_files)
 
 
 def read_persona_content(persona_file):
@@ -135,6 +148,8 @@ def main():
                        help='Skip baseline run (use existing)')
     parser.add_argument('--skip-personas', action='store_true',
                        help='Skip persona runs (use existing)')
+    parser.add_argument('--include-variants', action='store_true',
+                       help='Include prompt variants (_a, _b, _c) in addition to base personas')
     parser.add_argument('--run-comparison', action='store_true',
                        help='Run comparison after evaluations (default: skip)')
     parser.add_argument('--comparison-only', action='store_true',
@@ -177,6 +192,7 @@ def main():
     print(f"Model type: {'Local' if use_local else 'API'}")
     if use_local:
         print(f"Device: {args.device}")
+    print(f"Personas: {'base + variants' if args.include_variants else 'base only'}")
     print(f"Test file: {args.test_file}")
     print(f"Logprobs: {'Yes' if use_logprobs else 'No'}")
     if args.track_activations:
@@ -230,7 +246,7 @@ def main():
     
     # Step 2: Run persona evaluations
     if not args.comparison_only and not args.skip_personas:
-        persona_files = find_persona_files(args.persona_dir)
+        persona_files = find_persona_files(args.persona_dir, include_variants=args.include_variants)
 
         if not persona_files:
             print(f"No persona files found in {args.persona_dir}")
