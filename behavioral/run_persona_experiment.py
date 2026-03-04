@@ -41,13 +41,13 @@ def _is_variant(filename):
     return _VARIANT_RE.match(name) is not None
 
 
-def find_persona_files(persona_dir="personas", include_variants=False):
+def find_persona_files(persona_dir="personas", include_variants=False, variants_only=False):
     """
     Find persona files (with or without .txt extension).
 
     Args:
-        include_variants: if False (default), return only base personas.
-            If True, return base + variant personas.
+        include_variants: if True, return base + variant personas.
+        variants_only: if True, return only variant personas (_a, _b, _c).
     """
     if not os.path.exists(persona_dir):
         print(f"Persona directory not found: {persona_dir}")
@@ -59,7 +59,9 @@ def find_persona_files(persona_dir="personas", include_variants=False):
         if os.path.isfile(item_path) and not item.startswith('.'):
             all_files.append(item_path)
 
-    if not include_variants:
+    if variants_only:
+        all_files = [f for f in all_files if _is_variant(f)]
+    elif not include_variants:
         all_files = [f for f in all_files if not _is_variant(f)]
 
     return sorted(all_files)
@@ -76,14 +78,22 @@ def read_persona_content(persona_file):
         return None
 
 
+
+# Together AI org prefixes that should route to API, not local HuggingFace
+TOGETHER_API_ORGS = {"moonshotai", "zai-org"}
+
+
 def is_local_model(model):
-    """Determine if model should run locally vs via API"""
-    # If model has / it's likely a HuggingFace model path
+    """Determine if model should run locally vs via API."""
+    # Known API prefixes
+    if model.startswith(('gpt-', 'claude-', 'anthropic.', 'meta-')):
+        return False
+    # Known Together AI orgs → API
+    if '/' in model and model.split('/')[0] in TOGETHER_API_ORGS:
+        return False
+    # Other org/model format → HuggingFace local (auto-downloads)
     if '/' in model:
         return True
-    # API models start with these prefixes
-    if model.startswith(('gpt-', 'claude-', 'anthropic.')):
-        return False
     # Default to local for other cases
     return True
 
@@ -150,6 +160,8 @@ def main():
                        help='Skip persona runs (use existing)')
     parser.add_argument('--include-variants', action='store_true',
                        help='Include prompt variants (_a, _b, _c) in addition to base personas')
+    parser.add_argument('--variants-only', action='store_true',
+                       help='Run only prompt variants (_a, _b, _c), skip base personas')
     parser.add_argument('--run-comparison', action='store_true',
                        help='Run comparison after evaluations (default: skip)')
     parser.add_argument('--comparison-only', action='store_true',
@@ -192,7 +204,8 @@ def main():
     print(f"Model type: {'Local' if use_local else 'API'}")
     if use_local:
         print(f"Device: {args.device}")
-    print(f"Personas: {'base + variants' if args.include_variants else 'base only'}")
+    persona_mode = 'variants only' if args.variants_only else 'base + variants' if args.include_variants else 'base only'
+    print(f"Personas: {persona_mode}")
     print(f"Test file: {args.test_file}")
     print(f"Logprobs: {'Yes' if use_logprobs else 'No'}")
     if args.track_activations:
@@ -246,7 +259,9 @@ def main():
     
     # Step 2: Run persona evaluations
     if not args.comparison_only and not args.skip_personas:
-        persona_files = find_persona_files(args.persona_dir, include_variants=args.include_variants)
+        persona_files = find_persona_files(args.persona_dir,
+                                          include_variants=args.include_variants,
+                                          variants_only=args.variants_only)
 
         if not persona_files:
             print(f"No persona files found in {args.persona_dir}")

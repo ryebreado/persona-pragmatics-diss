@@ -194,10 +194,10 @@ def _query_openai(query, model, api_key, return_usage, logprobs=False, temperatu
 def _query_together(query, model, api_key, return_usage, logprobs=False, temperature=1.0, max_tokens=1024):
     """Query Together AI API"""
     if api_key is None:
-        api_key = os.getenv('TOGETHERAI_API_KEY')
-        
+        api_key = os.getenv('TOGETHERAI_API_KEY') or os.getenv('TOGETHER_API_KEY')
+
     if not api_key:
-        raise Exception("TOGETHERAI_API_KEY environment variable not set")
+        raise Exception("TOGETHERAI_API_KEY or TOGETHER_API_KEY environment variable not set")
     
     client = Together(api_key=api_key)
     

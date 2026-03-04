@@ -327,7 +327,7 @@ def figure_a(data, out_dir):
     for persona in PERSONAS:
         m, _ = _get_persona_curve(gathered, persona, CONJ_CATS, layers)
         lw = 2.5 if persona == "baseline" else 1.8
-        ls = "-" if persona in ("baseline", "anti_gricean") else "--"
+        ls = "-"
         ax.plot(layers, m, color=PERSONA_COLORS[persona],
                 label=PERSONA_DISPLAY[persona], linewidth=lw, linestyle=ls)
 
@@ -401,7 +401,7 @@ def figure_d(data, out_dir):
     for persona in PERSONAS:
         m, _ = _get_persona_curve(gathered, persona, UNDERINF_CATS, layers)
         lw = 2.5 if persona == "baseline" else 1.8
-        ls = "-" if persona in ("baseline", "anti_gricean") else "--"
+        ls = "-"
         ax.plot(layers, m, color=PERSONA_COLORS[persona],
                 label=PERSONA_DISPLAY[persona], linewidth=lw, linestyle=ls)
 
@@ -453,7 +453,7 @@ def figure_f(data, out_dir):
     for persona in PERSONAS:
         m, _ = _get_category_curve(gathered, "underinf-quant", persona, layers)
         lw = 2.5 if persona == "baseline" else 1.8
-        ls = "-" if persona in ("baseline", "anti_gricean") else "--"
+        ls = "-"
         ax.plot(layers, m, color=PERSONA_COLORS[persona],
                 label=PERSONA_DISPLAY[persona], linewidth=lw, linestyle=ls)
 
