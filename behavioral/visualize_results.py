@@ -73,10 +73,15 @@ SUBCATEGORY_LABELS = {
 }
 
 
-def load_results_from_directory(results_dir):
+import re
+
+_VARIANT_SUFFIX_RE = re.compile(r'^(.+)_([a-c])$')
+
+def load_results_from_directory(results_dir, base_only=False):
     """
     Load all result files from a directory.
     Returns dict mapping persona name to results data.
+    If base_only=True, skip variant personas (those ending in _a, _b, _c).
     """
     results = {}
     json_files = glob(os.path.join(results_dir, "*.json"))
@@ -97,6 +102,9 @@ def load_results_from_directory(results_dir):
             parts = basename.replace('.json', '').split('_')
             # Try to find persona name (after model name, before timestamp)
             persona_name = parts[-3] if len(parts) >= 3 else 'unknown'
+
+        if base_only and _VARIANT_SUFFIX_RE.match(persona_name):
+            continue
 
         results[persona_name] = data
 
@@ -194,11 +202,11 @@ def create_subplot(ax, persona_name, accuracy_by_category, title_fontsize=12, us
     return bars
 
 
-def create_visualization(results_dir, output_path=None, figsize=(15, 4), use_subcategories=False):
+def create_visualization(results_dir, output_path=None, figsize=(15, 4), use_subcategories=False, base_only=False):
     """
     Create small multiples visualization for all personas in a results directory.
     """
-    results = load_results_from_directory(results_dir)
+    results = load_results_from_directory(results_dir, base_only=base_only)
 
     if not results:
         print(f"No results found in {results_dir}")
@@ -283,6 +291,8 @@ def main():
     parser.add_argument('--height', type=float, default=4, help='Figure height in inches')
     parser.add_argument('--subcategories', '-s', action='store_true',
                        help='Use subcategories (e.g., true-quant-some vs true-quant-all)')
+    parser.add_argument('--base-only', action='store_true',
+                       help='Exclude prompt variants (_a, _b, _c), show only base personas')
 
     args = parser.parse_args()
 
@@ -294,7 +304,8 @@ def main():
         args.results_dir,
         output_path=args.output,
         figsize=(args.width, args.height),
-        use_subcategories=args.subcategories
+        use_subcategories=args.subcategories,
+        base_only=args.base_only
     )
 
     return 0
