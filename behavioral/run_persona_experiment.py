@@ -122,6 +122,23 @@ def check_logprobs_support(model):
         # Default to False for unknown models
         return False
 
+def get_run_dir(model, results_dir="results"):
+    """Get the most recent run directory for a model."""
+    model_clean = model.replace('/', '_').replace('-', '_').replace('.', '_')
+    pattern = os.path.join(results_dir, f"{model_clean}_run_*")
+    existing = sorted(glob(pattern))
+    return existing[-1] if existing else None
+
+
+def has_result_for_persona(run_dir, persona_name):
+    """Check if a result file already exists for this persona in the run dir."""
+    if not run_dir:
+        return False
+    # Match: scalar_implicature_<model>_<persona_name>_<timestamp>.json
+    matches = glob(os.path.join(run_dir, f"*_{persona_name}_*.json"))
+    return len(matches) > 0
+
+
 def find_recent_results(model, pattern_type="baseline", results_dir="results"):
     """Find the most recent result files for a model"""
     # Match the same logic as generate_output_filename - only use the last part after /
@@ -162,6 +179,8 @@ def main():
                        help='Include prompt variants (_a, _b, _c) in addition to base personas')
     parser.add_argument('--variants-only', action='store_true',
                        help='Run only prompt variants (_a, _b, _c), skip base personas')
+    parser.add_argument('--resume', action='store_true',
+                       help='Skip personas that already have results in the run directory')
     parser.add_argument('--run-comparison', action='store_true',
                        help='Run comparison after evaluations (default: skip)')
     parser.add_argument('--comparison-only', action='store_true',
@@ -218,44 +237,50 @@ def main():
     success_count = 0
     total_runs = 0
     
+    # Resolve run directory for resume checks
+    run_dir = get_run_dir(args.model, args.results_dir) if args.resume else None
+
     # Step 1: Run baseline
     if not args.comparison_only and not args.skip_baseline:
-        print(f"\nSTEP 1: Running baseline evaluation (no persona)...")
-
-        cmd = [
-            'python', evaluator_script,
-            args.test_file,
-            '--model', args.model,
-            '--temperature', str(args.temperature)
-        ]
-
-        # Add local-specific options
-        if use_local:
-            cmd.extend(['--device', args.device])
-
-            if use_logprobs:
-                cmd.append('--use-logprobs')
-
-            if args.track_activations:
-                cmd.append('--track-activations')
-                if args.layers:
-                    cmd.extend(['--layers', args.layers])
-                if args.track_keywords:
-                    cmd.extend(['--track-keywords', args.track_keywords])
+        if args.resume and has_result_for_persona(run_dir, "baseline"):
+            print(f"\nSTEP 1: Baseline already exists, skipping (--resume)")
         else:
-            # API-specific options
-            if use_logprobs:
-                cmd.append('--logprobs')
+            print(f"\nSTEP 1: Running baseline evaluation (no persona)...")
 
-        if args.verbose:
-            cmd.append('--verbose')
+            cmd = [
+                'python', evaluator_script,
+                args.test_file,
+                '--model', args.model,
+                '--temperature', str(args.temperature)
+            ]
 
-        total_runs += 1
-        if run_command(cmd, f"Baseline evaluation for {args.model}"):
-            success_count += 1
-        else:
-            print("❌ Baseline failed - cannot continue")
-            sys.exit(1)
+            # Add local-specific options
+            if use_local:
+                cmd.extend(['--device', args.device])
+
+                if use_logprobs:
+                    cmd.append('--use-logprobs')
+
+                if args.track_activations:
+                    cmd.append('--track-activations')
+                    if args.layers:
+                        cmd.extend(['--layers', args.layers])
+                    if args.track_keywords:
+                        cmd.extend(['--track-keywords', args.track_keywords])
+            else:
+                # API-specific options
+                if use_logprobs:
+                    cmd.append('--logprobs')
+
+            if args.verbose:
+                cmd.append('--verbose')
+
+            total_runs += 1
+            if run_command(cmd, f"Baseline evaluation for {args.model}"):
+                success_count += 1
+            else:
+                print("❌ Baseline failed - cannot continue")
+                sys.exit(1)
     
     # Step 2: Run persona evaluations
     if not args.comparison_only and not args.skip_personas:
@@ -271,6 +296,11 @@ def main():
             for i, persona_file in enumerate(persona_files, 1):
                 persona_name = os.path.splitext(os.path.basename(persona_file))[0]
                 print(f"\n[{i}/{len(persona_files)}] Persona: {persona_name}")
+
+                # Resume: skip if result already exists
+                if args.resume and has_result_for_persona(run_dir, persona_name):
+                    print(f"  ↳ Already has results, skipping (--resume)")
+                    continue
 
                 # Check if persona file has content
                 persona_content = read_persona_content(persona_file)
